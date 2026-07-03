@@ -117,6 +117,27 @@ lib/
   Clock and controls-hint hidden or folded in. P5 skew/aesthetic preserved. Section panels already
   use `auto-fit minmax()` grids, so they reflow with no extra work.
 
+## 9a. Live Codeforces data
+
+The rating figures are fetched live from the public Codeforces API (verified CORS-open:
+`Access-Control-Allow-Origin: *`), so no backend is required.
+
+- **Endpoint:** `https://codeforces.com/api/user.info?handles=RamenNagi`
+- **Fields used:** `rating` (1445), `maxRating` (1452), `rank` ("specialist").
+- **Consumers:**
+  - Menu status bar `CF RATING <rating> / MAX <maxRating>` and its fill %.
+  - CP section rating card (`<rating>`, `Peak <maxRating> · <Rank>`).
+  - "Climb to Candidate Master" progress bar — width derived from live `rating` mapped across the
+    Newbie→CM scale (design shows ~48% at 1445; that stays the fallback).
+- **Hook:** `lib/useCodeforces.ts` — client-side `fetch` in `useEffect` on mount. Returns
+  `{ rating, maxRating, rank }`, **seeded with the baked-in defaults from `data.ts`** so the page
+  renders correct numbers instantly (no spinner) and simply refreshes if the API responds.
+- **Failure handling:** on any error / rate-limit / non-`OK` status, keep the defaults silently.
+  No error UI.
+- **NOT fetched:** "problems solved" stays a **manual constant `472`** in `data.ts` (all-time,
+  cross-judge — the CF-only distinct count is ~397 and would understate it). The marquee "472
+  SOLVED" and the CP "TOTAL SOLVED 472" both read this constant.
+
 ## 10. Images (deferred, placeholders now)
 
 - `ImageSlot` renders the P5 placeholder styling (`DROP YOUR PHOTO`, `PROJECT SINAG SCREENSHOT`)
@@ -137,4 +158,6 @@ lib/
 
 Run the dev server and confirm: all six sections open and close; keyboard nav (`↑↓`, `1–6`,
 `Enter`/`Z`, `Esc`/`C`); hover highlight + dimming; mute toggle silences SFX; live clock ticks;
-marquee scrolls; the `< lg` breakpoint restacks to a scrollable column without overflow.
+marquee scrolls; the `< lg` breakpoint restacks to a scrollable column without overflow; the
+Codeforces rating loads from defaults and refreshes from the live API (and still renders if the
+API is blocked).
