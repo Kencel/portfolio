@@ -1,11 +1,12 @@
 'use client';
 import { ImageSlot } from '@/components/ImageSlot';
+import { angular } from '@/lib/angular';
 
 // PROTOTYPE lines 195-230
 export function Projects() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22, maxWidth: 1200 }}>
-      <div style={{ background: '#141212', border: '2px solid #2a2727', overflow: 'hidden', transform: 'skewX(-1.5deg)' }}>
+      <div style={{ background: '#141212', overflow: 'hidden', transform: 'skewX(-1.5deg)', ...angular(0) }}>
         <div style={{ transform: 'skewX(1.5deg)' }}>
           <ImageSlot src="/sinag.jpg" alt="Project SINAG" placeholder="PROJECT SINAG SCREENSHOT" style={{ width: '100%', height: 190, display: 'block' }} />
           <div style={{ padding: '20px 22px' }}>
@@ -28,7 +29,7 @@ export function Projects() {
           </div>
         </div>
       </div>
-      <div style={{ background: '#141212', border: '2px solid #2a2727', padding: 22, transform: 'skewX(-1.5deg)', display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ background: '#141212', padding: 22, transform: 'skewX(-1.5deg)', display: 'flex', flexDirection: 'column', gap: 14, ...angular(2) }}>
         <div style={{ transform: 'skewX(1.5deg)' }}>
           <span style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(26px,2.6vw,36px)' }}>BLUE HACKS</span>
           <p style={{ fontFamily: "var(--font-oswald), sans-serif", fontWeight: 300, fontSize: 17, lineHeight: 1.5, opacity: .9, margin: '10px 0 0' }}>

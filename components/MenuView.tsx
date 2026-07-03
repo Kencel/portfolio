@@ -4,6 +4,8 @@ import { useCodeforces, cmProgressPct } from '@/lib/codeforces';
 import { useClock } from '@/lib/useClock';
 import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
+import { RansomText } from './RansomText';
+import { angular, ACCENT_POP } from '@/lib/angular';
 
 const CODENAME = 'RAMENNAGI';
 
@@ -16,7 +18,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   // status bars — PROTOTYPE lines 75-84 (shared between desktop in-column and narrow flow placements)
   const statusBars = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 'min(360px,100%)', background: '#0b0a0a', border: '2px solid #2a2727', padding: '14px 18px', boxShadow: '4px 4px 0 rgba(228,0,43,.45)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 'min(360px,100%)', background: '#141212', padding: '16px 20px', ...angular(3, ACCENT_POP) }}>
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
           <span>CF RATING</span>
@@ -47,8 +49,10 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         ? { position: 'static', zIndex: 6, display: 'flex', flexDirection: 'column', gap: 'clamp(14px,2.2vh,28px)', width: '100%' }
         : { position: 'absolute', top: 'clamp(18px,3vw,46px)', left: 'clamp(24px,4vw,60px)', bottom: 'clamp(20px,3vw,44px)', zIndex: 6, display: 'flex', flexDirection: 'column', gap: 'clamp(14px,2.2vh,28px)', width: 'min(66vw,780px)' }}>
         <div>
-          {/* title block — PROTOTYPE lines 53-59 */}
-          <div style={{ display: 'inline-block', background: '#0b0a0a', color: '#F4F1EA', fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(34px,5.4vw,82px)', lineHeight: .9, letterSpacing: '.01em', transform: 'skewX(-8deg)', padding: '2px 14px 2px 0', textShadow: '5px 5px 0 var(--accent,#E4002B)' }}>{CODENAME}</div>
+          {/* title block — ransom-note hero */}
+          <div style={{ display: 'inline-block', fontSize: 'clamp(34px,5.4vw,82px)', lineHeight: .9, letterSpacing: '.01em', padding: '2px 0' }}>
+            <RansomText text={CODENAME} />
+          </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 14, transform: 'skewX(-8deg)', flexWrap: 'wrap' }}>
             <span style={{ background: 'var(--accent,#E4002B)', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '3px 12px' }}>CS · ATENEO DE MANILA</span>
             <span style={{ border: '2px solid #F4F1EA', fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '2px 12px' }}>COMPETITIVE PROGRAMMER</span>
@@ -91,9 +95,11 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
             style={{ width: 'clamp(220px,24vw,360px)', height: 'clamp(300px,32vw,470px)', display: 'block', position: 'relative' }}
           />
         </div>
-        <div style={{ background: '#0b0a0a', border: '2px solid var(--accent,#E4002B)', padding: '8px 16px', transform: 'skewX(-2deg)', textAlign: 'center' }}>
+        <div style={{ background: '#141212', padding: '10px 18px', transform: 'skewX(-2deg)', textAlign: 'center', ...angular(0, ACCENT_POP) }}>
           <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 14, letterSpacing: '.24em', color: 'var(--accent,#E4002B)' }}>CODENAME</div>
-          <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1 }}>{CODENAME}</div>
+          <div style={{ fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1, marginTop: 4, display: 'flex', justifyContent: 'center' }}>
+            <RansomText text={CODENAME} seed={1} />
+          </div>
         </div>
       </div>
 
