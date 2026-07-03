@@ -24,7 +24,7 @@ export function Projects() {
               <span style={{ border: '1px solid #444', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>PRISMA</span>
               <span style={{ border: '1px solid #444', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>POSTGRESQL</span>
             </div>
-            <a href="https://project-sinag.cjuy.dev/" target="_blank" style={{ display: 'inline-block', background: '#F4F1EA', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.14em', padding: '8px 18px', textDecoration: 'none', fontSize: 17 }}>VISIT SITE ►</a>
+            <a href="https://project-sinag.cjuy.dev/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: '#F4F1EA', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.14em', padding: '8px 18px', textDecoration: 'none', fontSize: 17 }}>VISIT SITE ►</a>
           </div>
         </div>
       </div>
