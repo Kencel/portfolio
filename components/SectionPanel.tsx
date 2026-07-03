@@ -1,6 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { SECTIONS, type SectionId } from '@/lib/data';
+import { RansomText } from './RansomText';
 import { About } from './sections/About';
 import { Cp } from './sections/Cp';
 import { Projects } from './sections/Projects';
@@ -35,7 +36,9 @@ export function SectionPanel({ view, onBack }: { view: SectionId; onBack: () => 
           </div>
           <div style={{ transform: 'skewX(-8deg)' }}>
             <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{cur.sub}</div>
-            <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(38px,6vw,84px)', lineHeight: .86, textShadow: '4px 4px 0 var(--accent,#E4002B)' }}>{cur.label}</div>
+            <div style={{ transform: 'skewX(8deg)', fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>
+              <RansomText text={cur.label} />
+            </div>
           </div>
         </div>
 

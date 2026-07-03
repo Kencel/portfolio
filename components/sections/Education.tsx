@@ -1,8 +1,10 @@
+import { angular } from '@/lib/angular';
+
 // PROTOTYPE lines 248-269
 export function Education() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 1000 }}>
-      <div style={{ background: '#141212', borderLeft: '6px solid var(--accent,#E4002B)', padding: '24px 28px', transform: 'skewX(-2deg)' }}>
+      <div style={{ background: '#141212', padding: '24px 28px', transform: 'skewX(-2deg)', ...angular(0), borderLeft: '6px solid var(--accent,#E4002B)' }}>
         <div style={{ transform: 'skewX(2deg)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
             <span style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(24px,2.6vw,38px)' }}>ATENEO DE MANILA UNIVERSITY</span>
@@ -13,7 +15,7 @@ export function Education() {
           </p>
         </div>
       </div>
-      <div style={{ background: '#141212', borderLeft: '6px solid #F4F1EA', padding: '24px 28px', transform: 'skewX(-2deg)' }}>
+      <div style={{ background: '#141212', padding: '24px 28px', transform: 'skewX(-2deg)', ...angular(2), borderLeft: '6px solid #F4F1EA' }}>
         <div style={{ transform: 'skewX(2deg)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
             <span style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(22px,2.4vw,34px)' }}>PHILIPPINE SCIENCE HS — MAIN CAMPUS</span>
