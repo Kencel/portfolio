@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
+import { useIsNarrow } from '@/lib/useIsMobile';
 import { Backdrop } from './Backdrop';
 import { MenuView } from './MenuView';
 import { SectionPanel } from './SectionPanel';
@@ -14,6 +15,7 @@ export function Portfolio() {
   const [hovered, setHovered] = useState<number | null>(null);
   const [muted, setMuted] = useState(false);
   const sfx = useSfx(muted);
+  const narrow = useIsNarrow();
 
   const viewRef = useRef<View>(view);
   const hoveredRef = useRef<number | null>(hovered);
@@ -24,7 +26,6 @@ export function Portfolio() {
   const enter = useCallback((i: number) => {
     setHovered(prev => { if (prev !== i) sfx.select(); return i; });
   }, [sfx]);
-  const clearHover = useCallback(() => setHovered(prev => (prev == null ? prev : null)), []);
   const move = useCallback((dir: 1 | -1) => {
     setHovered(prev => { const next = wrapIndex(prev, dir, SECTIONS.length); sfx.select(); return next; });
   }, [sfx]);
@@ -54,12 +55,12 @@ export function Portfolio() {
   }, [goMenu, move, open, sfx]);
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', height: '100vh', overflow: 'hidden',
+    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', height: narrow ? 'auto' : '100vh', overflow: narrow ? 'visible' : 'hidden',
       background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif', userSelect: 'none' }}>
       <Backdrop />
       {view === 'menu'
         ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
-            onEnter={enter} onOpen={open} onClearHover={clearHover} />
+            onEnter={enter} onOpen={open} narrow={narrow} />
         : <SectionPanel view={view} onBack={goMenu} />}
     </div>
   );
