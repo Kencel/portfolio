@@ -10,10 +10,14 @@ export function formatClock(now: Date): { time: string; day: string } {
 }
 
 export function useClock(): { time: string; day: string } {
-  const [now, setNow] = useState(() => new Date());
+  // Seed null so the server prerender and the first client render agree (a
+  // real Date would differ between build time and load time → hydration
+  // mismatch). The real time is filled in after mount.
+  const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
+    setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 20000);
     return () => clearInterval(id);
   }, []);
-  return formatClock(now);
+  return now ? formatClock(now) : { time: '--:--', day: '' };
 }
