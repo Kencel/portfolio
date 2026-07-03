@@ -2,3 +2,5 @@ node_modules/
 .next/
 out/
 _handoff/
+.superpowers/
+*.tsbuildinfo
