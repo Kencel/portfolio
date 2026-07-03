@@ -13,8 +13,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${anton.variable} ${bebas.variable} ${oswald.variable}`}>
-      <body style={{ margin: 0, background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif' }}>
+    // suppressHydrationWarning: some browser extensions (e.g. NightEye) inject
+    // attributes onto <html>/<body> before React hydrates. This only silences
+    // attribute mismatches on these two elements, not real mismatches deeper in
+    // the tree.
+    <html lang="en" suppressHydrationWarning className={`${anton.variable} ${bebas.variable} ${oswald.variable}`}>
+      <body suppressHydrationWarning style={{ margin: 0, background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif' }}>
         {children}
       </body>
     </html>
