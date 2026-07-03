@@ -2,19 +2,19 @@
 export function Contact() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16, maxWidth: 1000 }}>
-      <a href="https://codeforces.com/profile/RamenNagi" target="_blank" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', border: '2px solid #2a2727', padding: '22px 24px', transform: 'skewX(-4deg)', display: 'block' }}>
+      <a href="https://codeforces.com/profile/RamenNagi" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', border: '2px solid #2a2727', padding: '22px 24px', transform: 'skewX(-4deg)', display: 'block' }}>
         <div style={{ transform: 'skewX(4deg)' }}>
           <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.2em', fontSize: 15, color: '#17A2A2' }}>CODEFORCES</div>
           <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(24px,2.4vw,32px)' }}>@RamenNagi ►</div>
         </div>
       </a>
-      <a href="https://atcoder.jp/users/RamenNagi" target="_blank" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', border: '2px solid #2a2727', padding: '22px 24px', transform: 'skewX(-4deg)', display: 'block' }}>
+      <a href="https://atcoder.jp/users/RamenNagi" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', border: '2px solid #2a2727', padding: '22px 24px', transform: 'skewX(-4deg)', display: 'block' }}>
         <div style={{ transform: 'skewX(4deg)' }}>
           <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.2em', fontSize: 15, color: 'var(--accent,#E4002B)' }}>ATCODER</div>
           <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(24px,2.4vw,32px)' }}>@RamenNagi ►</div>
         </div>
       </a>
-      <a href="https://github.com/Kencel" target="_blank" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', border: '2px solid #2a2727', padding: '22px 24px', transform: 'skewX(-4deg)', display: 'block' }}>
+      <a href="https://github.com/Kencel" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', border: '2px solid #2a2727', padding: '22px 24px', transform: 'skewX(-4deg)', display: 'block' }}>
         <div style={{ transform: 'skewX(4deg)' }}>
           <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.2em', fontSize: 15, opacity: .8 }}>GITHUB</div>
           <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(24px,2.4vw,32px)' }}>@Kencel ►</div>
