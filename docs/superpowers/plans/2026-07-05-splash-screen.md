@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Palette: ink `#0b0a0a`, bone `#F4F1EA`, crimson `#E4002B` (matches existing components).
+- Palette: the splash is MONOCHROME — ink `#0b0a0a` and bone `#F4F1EA` only. No crimson (`#E4002B`) anywhere in the splash, including the ransom text tiles. (The rest of the site keeps its existing palette.)
 - sessionStorage key: `p5r-splash-seen`, value `'1'`.
 - Timings: spin `1900ms`, reveal `1100ms`, reduced-motion fade `300ms`.
 - New keyframes follow the existing `p5*` naming in `app/globals.css`.
@@ -102,10 +102,12 @@ git commit -m "feat: session-storage gate for splash screen"
 **Files:**
 - Create: `components/SplashScreen.tsx`
 - Modify: `app/globals.css` (append keyframes after the existing `@keyframes p5pulse` line)
+- Modify: `components/RansomText.tsx` (add optional `tiles` prop; default behavior unchanged)
 - Test: `components/SplashScreen.test.tsx`
 
 **Interfaces:**
 - Consumes: `RansomText` from `components/RansomText.tsx` (`<RansomText text="..." seed={n} style={...} />`).
+- Modifies: `RansomText` gains an optional prop `tiles?: ReadonlyArray<readonly [string, string]>` ([background, text] pairs) defaulting to the existing `TILES` constant, so callers can restrict the palette. No other callers change.
 - Produces: `SplashScreen({ onDone }: { onDone: () => void })` plus exported timing constants `SPIN_MS = 1900`, `REVEAL_MS = 1100`, `FADE_MS = 300`. Task 3 imports `SplashScreen`. The root element carries `data-splash-phase="spin" | "reveal" | "fade"` (used by tests).
 
 - [ ] **Step 1: Write the failing test**
@@ -132,6 +134,13 @@ describe('SplashScreen', () => {
     // RansomText renders one span per character; spaces are empty spacer spans.
     expect(container.textContent).toContain('TAKEYOURTIME');
     expect(container.querySelector('svg')).not.toBeNull();
+  });
+
+  it('is monochrome: no crimson in the rendered markup', () => {
+    const { container } = render(<SplashScreen onDone={() => {}} />);
+    // Inline styles serialize hex to rgb() in jsdom; check both spellings.
+    expect(container.innerHTML).not.toMatch(/#E4002B/i);
+    expect(container.innerHTML).not.toMatch(/228,\s*0,\s*43/);
   });
 
   it('advances spin -> reveal -> onDone on the timer', () => {
@@ -198,7 +207,33 @@ In `app/globals.css`, after the `@keyframes p5pulse` line, add:
 
 - [ ] **Step 4: Write the implementation**
 
-Create `components/SplashScreen.tsx`:
+First, in `components/RansomText.tsx`, make the tile set injectable. Add `tiles = TILES` to the props (type `tiles?: ReadonlyArray<readonly [string, string]>`) and change the tile lookup line to use it:
+
+```tsx
+export function RansomText({
+  text,
+  className,
+  style,
+  seed = 0,
+  tiles = TILES,
+}: {
+  text: string;
+  className?: string;
+  style?: CSSProperties;
+  seed?: number;
+  tiles?: ReadonlyArray<readonly [string, string]>;
+}) {
+```
+
+and inside the map:
+
+```tsx
+const [bg, color] = tiles[Math.floor(rand(i + 1) * tiles.length)];
+```
+
+Everything else in `RansomText.tsx` stays as-is (the default `TILES` keeps every existing caller pixel-identical).
+
+Then create `components/SplashScreen.tsx`:
 
 ```tsx
 'use client';
@@ -213,7 +248,12 @@ type Phase = 'spin' | 'reveal' | 'fade';
 
 const INK = '#0b0a0a';
 const BONE = '#F4F1EA';
-const CRIMSON = '#E4002B';
+
+// Monochrome ransom tiles — the splash allows no crimson.
+const MONO_TILES: ReadonlyArray<readonly [string, string]> = [
+  [BONE, INK],
+  [INK, BONE],
+];
 
 // Bowl silhouette in a 200x200 box: lower hemisphere (r=72) plus the rim
 // ellipse top. Doubles as the reveal hole, so it must stay a closed path.
@@ -226,7 +266,7 @@ function prefersReducedMotion(): boolean {
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-// The spinning splash art: bone bowl, crimson band, chopsticks, noodles, steam.
+// The spinning splash art: bone bowl, ink band, chopsticks, noodles, steam.
 function RamenBowl() {
   return (
     <svg width="180" height="180" viewBox="0 0 200 200" aria-hidden="true">
@@ -242,12 +282,12 @@ function RamenBowl() {
       {/* foot, then bowl body over it */}
       <path d={BOWL_FOOT} fill={BONE} stroke={INK} strokeWidth="5" />
       <path d="M28 88 A72 72 0 0 0 172 88 Z" fill={BONE} stroke={INK} strokeWidth="5" />
-      <rect x="24" y="112" width="152" height="22" fill={CRIMSON} clipPath="url(#p5splash-bowl-clip)" />
+      <rect x="24" y="112" width="152" height="22" fill={INK} clipPath="url(#p5splash-bowl-clip)" />
       {/* rim + broth + noodles + narutomaki */}
       <ellipse cx="100" cy="88" rx="72" ry="14" fill={BONE} stroke={INK} strokeWidth="5" />
       <ellipse cx="100" cy="88" rx="58" ry="9" fill={INK} />
       <path d="M52 88 q12 -8 24 0 t24 0 t24 0 t24 0" fill="none" stroke={BONE} strokeWidth="4" />
-      <circle cx="100" cy="85" r="7" fill={BONE} stroke={CRIMSON} strokeWidth="3" />
+      <circle cx="100" cy="85" r="7" fill={BONE} stroke={INK} strokeWidth="3" />
     </svg>
   );
 }
@@ -326,7 +366,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
         <RamenBowl />
       </div>
       <div style={{ fontSize: 'clamp(20px, 3.4vw, 34px)', animation: 'p5pulse 1.6s ease-in-out infinite' }}>
-        <RansomText text="TAKE YOUR TIME" seed={42} />
+        <RansomText text="TAKE YOUR TIME" seed={42} tiles={MONO_TILES} />
       </div>
     </div>
   );
@@ -336,13 +376,15 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
 - [ ] **Step 5: Run test to verify it passes**
 
 Run: `npx vitest run components/SplashScreen.test.tsx`
-Expected: 6 passed.
+Expected: 7 passed.
+
+Also run the full suite to confirm the `RansomText` change broke nothing: `npm test` — all pass.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add components/SplashScreen.tsx components/SplashScreen.test.tsx app/globals.css
-git commit -m "feat: P5R-style splash screen with spin and bowl-window reveal"
+git add components/SplashScreen.tsx components/SplashScreen.test.tsx components/RansomText.tsx app/globals.css
+git commit -m "feat: monochrome P5R-style splash screen with spin and bowl-window reveal"
 ```
 
 ---
@@ -434,7 +476,8 @@ Verify, capturing screenshots mid-spin and mid-reveal:
 3. Reveal hole is bowl-shaped, starts centered and small, and the zoom fully clears the viewport with no ink slivers left at the edges (check a wide and a narrow viewport via `preview_resize`).
 4. A keypress during the spin skips to the reveal, and the same keypress does not move the menu selection.
 5. Reload without clearing sessionStorage → no splash.
-6. No console errors (`preview_console_logs`).
+6. The whole splash (bowl + text) is strictly ink/bone monochrome — no crimson anywhere until the site shows through the reveal hole.
+7. No console errors (`preview_console_logs`).
 
 - [ ] **Step 2: Fix anything that looks wrong**
 
