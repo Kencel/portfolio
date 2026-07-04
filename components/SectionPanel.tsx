@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { RansomText } from './RansomText';
+import { CenterFrame } from './CenterFrame';
 import { About } from './sections/About';
 import { Cp } from './sections/Cp';
 import { Projects } from './sections/Projects';
@@ -26,26 +27,28 @@ export function SectionPanel({ view, onBack }: { view: SectionId; onBack: () => 
 
       {/* animated content wrapper — PROTOTYPE 120 */}
       <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(20px,3.5vw,52px)', animation: 'p5panelIn .32s cubic-bezier(.2,.9,.3,1) both' }}>
-        {/* header — PROTOTYPE 122-130 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-          <div
-            onClick={onBack}
-            style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#F4F1EA', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.14em', fontSize: 18, padding: '7px 16px', transform: 'skewX(-8deg)' }}
-          >
-            <span style={{ transform: 'skewX(8deg)' }}>◄ BACK</span>
-          </div>
-          <div style={{ transform: 'skewX(-8deg)' }}>
-            <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{cur.sub}</div>
-            <div style={{ transform: 'skewX(8deg)', fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>
-              <RansomText text={cur.label} />
+        <CenterFrame maxWidth={1180}>
+          {/* header — centered — PROTOTYPE 122-130 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div
+              onClick={onBack}
+              style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#F4F1EA', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.14em', fontSize: 18, padding: '7px 16px', transform: 'skewX(-8deg)' }}
+            >
+              <span style={{ transform: 'skewX(8deg)' }}>◄ BACK</span>
+            </div>
+            <div style={{ transform: 'skewX(-8deg)' }}>
+              <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{cur.sub}</div>
+              <div style={{ transform: 'skewX(8deg)', fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>
+                <RansomText text={cur.label} />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* divider — PROTOTYPE 132 */}
-        <div style={{ height: 4, background: 'var(--accent,#E4002B)', margin: '22px 0 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
+          {/* divider — centered — PROTOTYPE 132 */}
+          <div style={{ height: 4, background: 'var(--accent,#E4002B)', margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
 
-        <Body />
+          <Body />
+        </CenterFrame>
       </div>
     </div>
   );
