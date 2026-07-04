@@ -33,9 +33,11 @@ menu and the section panels:
 
 - `max-width: ~1180px`, `margin: 0 auto`, horizontal padding that collapses on
   narrow screens (reuse the existing `clamp()` scale).
-- On the menu (desktop), the frame is also **vertically centered** in the
-  viewport so the block floats in balanced whitespace rather than filling from a
-  corner.
+- **Centering is x-axis only.** The frame flows from the top with natural,
+  dynamic height — no vertical centering in the viewport. Content grows downward
+  and scrolls when it exceeds `100vh` rather than being pinned to the vertical
+  middle. Balanced horizontal margins are the whole point; vertical rhythm stays
+  top-anchored.
 - The red shard and radial-dot texture stay **ambient** behind the frame
   (screen-anchored), so the kinetic background is preserved while the functional
   content is centered.
@@ -51,7 +53,7 @@ Replace the current absolute edge-positioning with the centered frame containing
 - **Slim HUD top strip** (inside the frame): controls hint (`↑↓ / 1-6 SELECT ·
   ENTER OPEN`) on the left, mute toggle on the right. These move *out* of the
   screen corners and *into* the frame.
-- **Two balanced columns**, vertically centered:
+- **Two balanced columns** (top-aligned, not vertically centered):
   - **Left:** ransom title `RAMENNAGI`, the two tag chips, the menu list
     (`MenuRow` ×6).
   - **Right:** avatar (masked, red shard behind it) + `CODENAME` card.
@@ -78,9 +80,9 @@ frame**; shard + dot texture **stay ambient**. Screen corners read clean.
   Keep that behavior; ensure the new frame degrades to full-width with the
   existing `clamp()` padding on narrow screens (no fixed max-width squeeze on
   mobile).
-- Desktop single-screen (no-scroll) menu should be preserved where the centered
-  frame fits within `100vh`; if content exceeds it, allow scroll rather than
-  clipping.
+- No forced single-screen fit: the menu frame flows from the top with dynamic
+  height and scrolls if it exceeds `100vh` (consistent with the x-only centering
+  decision above). Do not clip or vertically compress to force a no-scroll fit.
 
 ## Non-goals
 
