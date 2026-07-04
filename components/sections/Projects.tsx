@@ -5,7 +5,7 @@ import { AngularCard } from '@/components/AngularCard';
 // PROTOTYPE lines 195-230
 export function Projects() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22, maxWidth: 1200 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22, maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
       <AngularCard style={{ transform: 'skewX(-1.5deg)' }}>
         <div style={{ background: '#141212', overflow: 'hidden' }}>
           <div style={{ transform: 'skewX(1.5deg)' }}>

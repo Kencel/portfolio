@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { RansomText } from './RansomText';
+import { CenterFrame } from './CenterFrame';
 import { About } from './sections/About';
 import { Cp } from './sections/Cp';
 import { Projects } from './sections/Projects';
@@ -18,34 +19,44 @@ export function SectionPanel({ view, onBack }: { view: SectionId; onBack: () => 
   const Body = BODY[view];
 
   return (
-    <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: '#0b0a0a', overflowY: 'auto' }}>
-      {/* panel bg — PROTOTYPE 117 */}
-      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(var(--accent,#E4002B) 1.3px, transparent 1.4px)', backgroundSize: '15px 15px', opacity: .12, pointerEvents: 'none' }} />
-      {/* red shard — PROTOTYPE 118 */}
-      <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: '40%', height: '120%', background: 'var(--accent,#E4002B)', opacity: .9, clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 8% 100%)', pointerEvents: 'none' }} />
+    <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: '#0b0a0a', overflow: 'hidden' }}>
+      {/* fixed decoration layer — clipped to the viewport, does not scroll or extend the scroll area */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        {/* panel bg — PROTOTYPE 117 */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(var(--accent,#E4002B) 1.3px, transparent 1.4px)', backgroundSize: '15px 15px', opacity: .12 }} />
+        {/* red shard — PROTOTYPE 118 */}
+        <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: '40%', height: '120%', background: 'var(--accent,#E4002B)', opacity: .9, clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 8% 100%)' }} />
+        {/* red shard screentone dots — matches Backdrop shard */}
+        <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: '40%', height: '120%', backgroundImage: 'radial-gradient(#0b0a0a 1.6px, transparent 1.7px)', backgroundSize: '12px 12px', opacity: .22, clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 8% 100%)' }} />
+      </div>
 
-      {/* animated content wrapper — PROTOTYPE 120 */}
-      <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(20px,3.5vw,52px)', animation: 'p5panelIn .32s cubic-bezier(.2,.9,.3,1) both' }}>
-        {/* header — PROTOTYPE 122-130 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-          <div
-            onClick={onBack}
-            style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#F4F1EA', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.14em', fontSize: 18, padding: '7px 16px', transform: 'skewX(-8deg)' }}
-          >
-            <span style={{ transform: 'skewX(8deg)' }}>◄ BACK</span>
-          </div>
-          <div style={{ transform: 'skewX(-8deg)' }}>
-            <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{cur.sub}</div>
-            <div style={{ transform: 'skewX(8deg)', fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>
-              <RansomText text={cur.label} />
+      {/* scroll layer — vertical scroll only, content defines its own height */}
+      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', overflowX: 'hidden' }}>
+        {/* animated content wrapper — PROTOTYPE 120 */}
+        <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(20px,3.5vw,52px)', animation: 'p5panelIn .32s cubic-bezier(.2,.9,.3,1) both' }}>
+          <CenterFrame maxWidth={1180}>
+            {/* header — centered — PROTOTYPE 122-130 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <div
+                onClick={onBack}
+                style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#F4F1EA', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.14em', fontSize: 18, padding: '7px 16px', transform: 'skewX(-8deg)' }}
+              >
+                <span style={{ transform: 'skewX(8deg)' }}>◄ BACK</span>
+              </div>
+              <div style={{ transform: 'skewX(-8deg)' }}>
+                <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{cur.sub}</div>
+                <div style={{ transform: 'skewX(8deg)', fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>
+                  <RansomText text={cur.label} />
+                </div>
+              </div>
             </div>
-          </div>
+
+            {/* divider — centered — PROTOTYPE 132 */}
+            <div style={{ height: 4, background: 'var(--accent,#E4002B)', margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
+
+            <Body />
+          </CenterFrame>
         </div>
-
-        {/* divider — PROTOTYPE 132 */}
-        <div style={{ height: 4, background: 'var(--accent,#E4002B)', margin: '22px 0 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
-
-        <Body />
       </div>
     </div>
   );

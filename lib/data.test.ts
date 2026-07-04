@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SECTIONS, SKILLS, CF_DEFAULTS, SOLVED } from './data';
+import { SECTIONS, SKILLS, CF_DEFAULTS, SOLVED, ATTRIBUTES } from './data';
 
 describe('data', () => {
   it('has six sections in menu order', () => {
@@ -15,5 +15,15 @@ describe('data', () => {
   it('exposes CF defaults and manual solved count', () => {
     expect(CF_DEFAULTS).toEqual({ rating: 1445, maxRating: 1452, rank: 'Specialist' });
     expect(SOLVED).toBe(472);
+  });
+  it('has six attributes with 0-100 values', () => {
+    expect(ATTRIBUTES).toHaveLength(6);
+    expect(ATTRIBUTES.map(a => a.axis)).toEqual([
+      'KNOWLEDGE', 'PROFICIENCY', 'GUTS', 'DILIGENCE', 'INGENUITY', 'ADAPTABILITY',
+    ]);
+    ATTRIBUTES.forEach(a => {
+      expect(a.value).toBeGreaterThanOrEqual(0);
+      expect(a.value).toBeLessThanOrEqual(100);
+    });
   });
 });

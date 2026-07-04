@@ -37,8 +37,8 @@ export function Portfolio() {
       if (v !== 'menu') return;
       const digit = sectionIndexForDigit(e.key);
       if (digit >= 0) { setHovered(digit); sfx.select(); open(SECTIONS[digit].id); return; }
-      if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') { e.preventDefault(); move(1); }
+      else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') { e.preventDefault(); move(-1); }
       else if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
         const h = hoveredRef.current; if (h != null) open(SECTIONS[h].id);
       }
@@ -55,7 +55,7 @@ export function Portfolio() {
   }, [goMenu, move, open, sfx]);
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', height: narrow ? 'auto' : '100vh', overflow: narrow ? 'visible' : 'hidden',
+    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', height: narrow ? 'auto' : '100vh', overflow: 'hidden',
       background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif', userSelect: 'none' }}>
       <Backdrop />
       {view === 'menu'
