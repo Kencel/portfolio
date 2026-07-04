@@ -74,6 +74,15 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
     return () => window.clearTimeout(t);
   }, [phase]);
 
+  // Lock document scroll while the splash is up: the page's crimson
+  // scrollbar would otherwise sit beside the monochrome splash frame.
+  useEffect(() => {
+    const el = document.documentElement;
+    const prev = el.style.overflow;
+    el.style.overflow = 'hidden';
+    return () => { el.style.overflow = prev; };
+  }, []);
+
   // Any key or click during the spin skips ahead to the reveal.
   useEffect(() => {
     if (phase !== 'spin') return;
