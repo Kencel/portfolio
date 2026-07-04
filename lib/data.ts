@@ -27,3 +27,16 @@ export const CF_DEFAULTS = { rating: 1445, maxRating: 1452, rank: 'Specialist' }
 export const SOLVED = 472;
 export const MARQUEE =
   'RAMENNAGI  ✦  PHANTOM THIEF OF ALGORITHMS  ✦  TAKE YOUR HEART  ✦  SPECIALIST  ✦  472 SOLVED  ✦ ';
+
+export interface Attribute { axis: string; value: number }
+
+// Persona-style social stats mapped to real developer traits. Placeholder
+// values — tune to taste after seeing the radar render.
+export const ATTRIBUTES: Attribute[] = [
+  { axis: 'KNOWLEDGE',    value: 88 }, // theory / algorithms
+  { axis: 'PROFICIENCY',  value: 84 }, // implementation / clean code
+  { axis: 'GUTS',         value: 82 }, // hard problems, contest pressure
+  { axis: 'DILIGENCE',    value: 80 }, // consistency, the grind
+  { axis: 'INGENUITY',    value: 78 }, // creative problem approaches
+  { axis: 'ADAPTABILITY', value: 72 }, // picking up new stacks
+];
