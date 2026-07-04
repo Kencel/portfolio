@@ -6,7 +6,7 @@ import { AngularCard } from '@/components/AngularCard';
 export function Cp() {
   const cf = useCodeforces();
   return (
-    <div style={{ maxWidth: 1200 }}>
+    <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(210px,1fr))', gap: 18, marginBottom: 24 }}>
         <AngularCard style={{ transform: 'skewX(-3deg)' }}>
           <div style={{ background: '#141212', padding: '22px 24px' }}>
@@ -36,7 +36,7 @@ export function Cp() {
           </div>
         </AngularCard>
       </div>
-      <AngularCard style={{ transform: 'skewX(-1.5deg)', maxWidth: 760 }}>
+      <AngularCard style={{ transform: 'skewX(-1.5deg)', maxWidth: 760, marginLeft: 'auto', marginRight: 'auto' }}>
         <div style={{ background: '#141212', padding: '24px 26px' }}>
           <div style={{ transform: 'skewX(1.5deg)' }}>
             <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.2em', fontSize: 16, color: 'var(--accent,#E4002B)', marginBottom: 14 }}>CLIMB TO CANDIDATE MASTER</div>

@@ -5,7 +5,7 @@ import { AttributesRadar } from '@/components/AttributesRadar';
 export function About() {
   return (
     <>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 22, maxWidth: 1200 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 22, maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
         <AngularCard style={{ transform: 'skewX(-2deg)' }}>
           <div style={{ background: '#141212', padding: '26px 28px' }}>
             <div style={{ transform: 'skewX(2deg)' }}>
@@ -40,7 +40,7 @@ export function About() {
           </AngularCard>
         </div>
       </div>
-      <div style={{ maxWidth: 1200, marginTop: 22 }}>
+      <div style={{ maxWidth: 1200, marginTop: 22, marginLeft: 'auto', marginRight: 'auto' }}>
         <AngularCard style={{ transform: 'skewX(-2deg)' }}>
           <div style={{ background: '#141212', padding: '26px 24px' }}>
             <div style={{ transform: 'skewX(2deg)' }}>
