@@ -7,6 +7,8 @@ import { useIsNarrow } from '@/lib/useIsMobile';
 import { Backdrop } from './Backdrop';
 import { MenuView } from './MenuView';
 import { SectionPanel } from './SectionPanel';
+import { SplashScreen } from './SplashScreen';
+import { hasSeenSplash, markSplashSeen } from '@/lib/splashSession';
 
 type View = 'menu' | SectionId;
 
@@ -16,6 +18,15 @@ export function Portfolio() {
   const [muted, setMuted] = useState(false);
   const sfx = useSfx(muted);
   const narrow = useIsNarrow();
+
+  // Splash starts true on server and client alike (no hydration mismatch);
+  // the effect below hides it before paint matters for repeat visitors —
+  // the one dark frame is invisible against the site's own background.
+  const [splash, setSplash] = useState(true);
+  const splashRef = useRef(splash);
+  splashRef.current = splash;
+  useEffect(() => { if (hasSeenSplash()) setSplash(false); }, []);
+  const splashDone = useCallback(() => { markSplashSeen(); setSplash(false); }, []);
 
   const viewRef = useRef<View>(view);
   const hoveredRef = useRef<number | null>(hovered);
@@ -32,6 +43,7 @@ export function Portfolio() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (splashRef.current) return;
       const v = viewRef.current;
       if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') { if (v !== 'menu') goMenu(); return; }
       if (v !== 'menu') return;
@@ -62,6 +74,7 @@ export function Portfolio() {
         ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
             onEnter={enter} onOpen={open} narrow={narrow} />
         : <SectionPanel view={view} onBack={goMenu} />}
+      {splash && <SplashScreen onDone={splashDone} />}
     </div>
   );
 }
