@@ -34,11 +34,13 @@ export function RansomText({
   className,
   style,
   seed = 0,
+  tiles = TILES,
 }: {
   text: string;
   className?: string;
   style?: CSSProperties;
   seed?: number;
+  tiles?: ReadonlyArray<readonly [string, string]>;
 }) {
   return (
     <span
@@ -55,7 +57,7 @@ export function RansomText({
       {[...text].map((ch, idx) => {
         const i = idx + seed * 131;
         if (ch === ' ') return <span key={idx} style={{ width: '0.3em' }} />;
-        const [bg, color] = TILES[Math.floor(rand(i + 1) * TILES.length)];
+        const [bg, color] = tiles[Math.floor(rand(i + 1) * tiles.length)];
         const font = FONTS[Math.floor(rand(i + 7) * FONTS.length)];
         const rot = (rand(i + 13) * 15 - 7.5).toFixed(1);
         const dy = (rand(i + 19) * 0.16 - 0.08).toFixed(3);
