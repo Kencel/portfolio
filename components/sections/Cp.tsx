@@ -8,21 +8,21 @@ export function Cp() {
   return (
     <div style={{ maxWidth: 1200 }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(210px,1fr))', gap: 18, marginBottom: 24 }}>
-        <div style={{ background: '#141212', padding: '22px 24px', transform: 'skewX(-3deg)', ...angular(0), borderLeft: '6px solid #17A2A2' }}>
+        <div style={{ background: '#141212', padding: '22px 24px', transform: 'skewX(-3deg)', ...angular(0) }}>
           <div style={{ transform: 'skewX(3deg)' }}>
             <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.18em', fontSize: 15, color: '#17A2A2' }}>CODEFORCES · RATING</div>
             <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(44px,5vw,66px)', lineHeight: .9 }}>{cf.rating}</div>
             <div style={{ fontFamily: "var(--font-oswald), sans-serif", fontSize: 16, opacity: .8 }}>Peak <b style={{ color: '#17A2A2' }}>{cf.maxRating} · {cf.rank}</b> · @RamenNagi</div>
           </div>
         </div>
-        <div style={{ background: '#141212', padding: '22px 24px', transform: 'skewX(-3deg)', ...angular(1), borderLeft: '6px solid var(--accent,#E4002B)' }}>
+        <div style={{ background: '#141212', padding: '22px 24px', transform: 'skewX(-3deg)', ...angular(1) }}>
           <div style={{ transform: 'skewX(3deg)' }}>
             <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.18em', fontSize: 15, color: 'var(--accent,#E4002B)' }}>TOTAL · SOLVED</div>
             <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(44px,5vw,66px)', lineHeight: .9 }}>472</div>
             <div style={{ fontFamily: "var(--font-oswald), sans-serif", fontSize: 16, opacity: .8 }}>problems all-time</div>
           </div>
         </div>
-        <div style={{ background: '#141212', padding: '22px 24px', transform: 'skewX(-3deg)', ...angular(2), borderLeft: '6px solid #F4F1EA' }}>
+        <div style={{ background: '#141212', padding: '22px 24px', transform: 'skewX(-3deg)', ...angular(2) }}>
           <div style={{ transform: 'skewX(3deg)' }}>
             <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.18em', fontSize: 15 }}>ATCODER</div>
             <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(30px,3vw,42px)', lineHeight: 1, marginTop: 8 }}>@RamenNagi</div>
