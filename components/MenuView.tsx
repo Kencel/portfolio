@@ -47,8 +47,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   // reusable fragments (composed differently for desktop vs narrow)
   const controlsHint = (
     <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, display: 'inline-flex', gap: 14, background: '#0b0a0a', padding: '6px 12px', border: '1px solid #333' }}>
-      <span><span style={{ color: 'var(--accent,#E4002B)' }}>↑↓ / WS / 1-6</span> SELECT</span>
-      <span><span style={{ color: 'var(--accent,#E4002B)' }}>ENTER</span> OPEN</span>
+      <span><span style={{ color: 'var(--accent,#E4002B)' }}>↑↓</span> SELECT</span>
+      <span><span style={{ color: 'var(--accent,#E4002B)' }}>Z</span> OPEN</span>
     </div>
   );
 
