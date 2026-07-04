@@ -49,7 +49,7 @@ export function AttributesRadar() {
             fill="#F4F1EA"
             style={{ fontFamily: 'var(--font-bebas), sans-serif', fontSize: 13, letterSpacing: '.12em' }}
           >
-            {a.axis} <tspan fill={ACCENT}>{a.value}</tspan>
+            {a.axis}<tspan dx={4} fill={ACCENT}>{a.value}</tspan>
           </text>
         );
       })}
