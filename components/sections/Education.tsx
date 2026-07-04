@@ -3,7 +3,7 @@ import { AngularCard } from '@/components/AngularCard';
 // PROTOTYPE lines 248-269
 export function Education() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 1000 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
       <AngularCard style={{ transform: 'skewX(-2deg)' }}>
         <div style={{ background: '#141212', padding: '24px 28px' }}>
           <div style={{ transform: 'skewX(2deg)' }}>

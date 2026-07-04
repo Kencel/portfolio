@@ -3,7 +3,7 @@ import { AngularCard } from '@/components/AngularCard';
 // PROTOTYPE lines 272-287
 export function Contact() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16, maxWidth: 1000 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16, maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
       <AngularCard style={{ transform: 'skewX(-4deg)' }}>
         <a href="https://codeforces.com/profile/RamenNagi" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', padding: '22px 24px', display: 'block' }}>
           <div style={{ transform: 'skewX(4deg)' }}>
