@@ -5,7 +5,8 @@ import { useClock } from '@/lib/useClock';
 import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
 import { RansomText } from './RansomText';
-import { angular, ACCENT_POP } from '@/lib/angular';
+import { AngularCard } from './AngularCard';
+import { ACCENT_POP } from '@/lib/angular';
 
 const CODENAME = 'RAMENNAGI';
 
@@ -18,7 +19,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   // status bars — PROTOTYPE lines 75-84 (shared between desktop in-column and narrow flow placements)
   const statusBars = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 'min(360px,100%)', background: '#141212', padding: '16px 20px', ...angular(3, ACCENT_POP) }}>
+    <AngularCard style={{ width: 'min(360px,100%)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: '#141212', padding: '16px 20px' }}>
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
           <span>CF RATING</span>
@@ -38,6 +40,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         </div>
       </div>
     </div>
+    </AngularCard>
   );
 
   return (
@@ -95,12 +98,14 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
             style={{ width: 'clamp(220px,24vw,360px)', height: 'clamp(300px,32vw,470px)', display: 'block', position: 'relative' }}
           />
         </div>
-        <div style={{ background: '#141212', padding: '10px 18px', transform: 'skewX(-2deg)', textAlign: 'center', ...angular(0, ACCENT_POP) }}>
-          <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 14, letterSpacing: '.24em', color: 'var(--accent,#E4002B)' }}>CODENAME</div>
-          <div style={{ fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1, marginTop: 4, display: 'flex', justifyContent: 'center' }}>
-            <RansomText text={CODENAME} seed={1} />
+        <AngularCard style={{ transform: 'skewX(-2deg)' }} pop={ACCENT_POP}>
+          <div style={{ background: '#141212', padding: '10px 18px', textAlign: 'center' }}>
+            <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 14, letterSpacing: '.24em', color: 'var(--accent,#E4002B)' }}>CODENAME</div>
+            <div style={{ fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1, marginTop: 4, display: 'flex', justifyContent: 'center' }}>
+              <RansomText text={CODENAME} seed={1} />
+            </div>
           </div>
-        </div>
+        </AngularCard>
       </div>
 
       {/* narrow flow order: title → menu → avatar → status bars */}
