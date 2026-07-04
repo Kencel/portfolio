@@ -13,6 +13,7 @@ A Persona 5 Royal-style splash screen on site entry: a ramen bowl SVG (in place 
 - **Skippable:** yes — any keydown or pointerdown during the spin jumps straight to the reveal.
 - **Total duration:** ~3s (spin ~1.9s, reveal ~1.1s).
 - **Motion:** the bowl does the full rotations; "TAKE YOUR TIME" holds steady with a subtle opacity pulse.
+- **Palette:** the splash is monochrome — ink (`#0b0a0a`) and bone (`#F4F1EA`) only, no crimson. The ransom text uses a monochrome tile set via a new optional `tiles` prop on `RansomText` (default tiles unchanged elsewhere).
 - **Approach:** pure CSS/SVG overlay component (no new dependencies). Rejected alternatives: Framer Motion (adds a dependency for what CSS keyframes handle), and clipping the site container itself via `clip-path`/`mask` (fragile with `position: fixed` descendants, non-responsive `path()` units).
 
 ## Architecture
@@ -29,7 +30,7 @@ New client component `components/SplashScreen.tsx`, rendered by `Portfolio` as a
 ### Phase 1 — spin (~1.9s)
 
 - Full-viewport black (`#0b0a0a`) overlay.
-- Centered inline ramen bowl SVG (~180px), drawn in the phantom palette: bone (`#F4F1EA`) bowl with a crimson (`#E4002B`) swirl stripe, ink keylines, chopsticks, noodle waves, hard-edged steam strokes.
+- Centered inline ramen bowl SVG (~180px), monochrome: bone (`#F4F1EA`) bowl with an ink band, ink keylines, chopsticks, noodle waves, hard-edged steam strokes.
 - Bowl animates 3 full turns with an ease-out (visibly decelerating, like the P5 loading icon) plus a subtle scale pop as it settles.
 - Below the bowl: `TAKE YOUR TIME` via the existing `RansomText`, with a gentle opacity pulse (reuse/adapt `p5pulse`).
 
