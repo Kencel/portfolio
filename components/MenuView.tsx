@@ -46,8 +46,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   // reusable fragments (composed differently for desktop vs narrow)
   const controlsHint = (
-    <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, opacity: .75, display: 'flex', gap: 14 }}>
-      <span><span style={{ color: 'var(--accent,#E4002B)' }}>↑↓ / 1-6</span> SELECT</span>
+    <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, display: 'inline-flex', gap: 14, background: '#0b0a0a', padding: '6px 12px', border: '1px solid #333' }}>
+      <span><span style={{ color: 'var(--accent,#E4002B)' }}>↑↓ / WS / 1-6</span> SELECT</span>
       <span><span style={{ color: 'var(--accent,#E4002B)' }}>ENTER</span> OPEN</span>
     </div>
   );
@@ -66,7 +66,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   );
 
   const clockBlock = (
-    <div style={{ textAlign: 'right', transform: 'skewX(-6deg)' }}>
+    <div style={{ textAlign: 'right', transform: 'skewX(-6deg)', marginRight: 'clamp(20px,7vw,120px)' }}>
       <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: '3px 3px 0 var(--accent,#E4002B)' }}>{time}</div>
       <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{day} · TAKE YOUR TIME</div>
     </div>
@@ -117,7 +117,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   return (
     // PROTOTYPE lines 49-52 — root scroll region unchanged (dynamic height, top-anchored)
-    <div style={{ position: 'relative', zIndex: 5, width: '100%', height: narrow ? 'auto' : '100vh', overflowY: 'auto', padding: 'clamp(20px,4vw,64px)' }}>
+    <div style={{ position: 'relative', zIndex: 5, width: '100%', height: narrow ? 'auto' : '100vh', overflowY: narrow ? 'auto' : 'hidden', padding: 'clamp(20px,4vw,64px)' }}>
       {narrow ? (
         // narrow: single-column stack (title → mute → menu → avatar → status)
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(14px,2.2vh,28px)', width: '100%' }}>
