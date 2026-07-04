@@ -19,7 +19,7 @@ export function AttributesRadar() {
   const rings = [0.25, 0.5, 0.75, 1];
 
   return (
-    <svg viewBox="0 0 300 300" width="100%" role="img" aria-label="Attributes radar" style={{ maxWidth: 340, display: 'block', margin: '0 auto' }}>
+    <svg viewBox="-24 0 348 300" width="100%" role="img" aria-label="Attributes radar" style={{ maxWidth: 340, display: 'block', margin: '0 auto' }}>
       {/* grid rings */}
       {rings.map(f => (
         <polygon key={f} points={ringPoints(f)} fill="none" stroke="rgba(244,241,234,.18)" strokeWidth={1} />
