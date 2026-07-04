@@ -62,6 +62,13 @@ describe('SplashScreen', () => {
     expect(onDone).toHaveBeenCalledTimes(1);
   });
 
+  it('locks document scroll while mounted and restores it on unmount', () => {
+    const { unmount } = render(<SplashScreen onDone={() => {}} />);
+    expect(document.documentElement.style.overflow).toBe('hidden');
+    unmount();
+    expect(document.documentElement.style.overflow).toBe('');
+  });
+
   it('uses a plain fade when prefers-reduced-motion is set', () => {
     vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }));
     const onDone = vi.fn();
