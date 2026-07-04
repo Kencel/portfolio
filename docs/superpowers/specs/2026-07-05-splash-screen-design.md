@@ -36,7 +36,7 @@ New client component `components/SplashScreen.tsx`, rendered by `Portfolio` as a
 ### Phase 2 — reveal (~1.1s)
 
 - Splash content (bowl + text) snaps away.
-- The overlay becomes a single full-viewport SVG: one path drawn as "black sheet with a bowl-silhouette hole" using `fill-rule: evenodd`. The hole starts small at screen center, site visible through it.
+- The overlay becomes a single full-viewport SVG: an ink sheet with a bowl-silhouette hole punched via an SVG `<mask>` (white sheet, black bowl shape). The hole starts small at screen center, site visible through it.
 - The sheet animates `transform: scale()` from 1 to ~30 with ease-in, transform-origin center, until the hole swallows the viewport.
 - On animation end: `onDone` fires; Portfolio unmounts the overlay and writes the sessionStorage key (Portfolio is the single owner of that write).
 
@@ -57,4 +57,5 @@ New keyframes added to `app/globals.css` following the existing `p5*` naming: `p
 - Renders spin phase (bowl + TAKE YOUR TIME) when not yet seen.
 - Keydown/pointerdown advances to reveal phase.
 - Completion invokes `onDone`.
-- Portfolio: sets `sessionStorage['p5r-splash-seen']` and skips the splash when the key is present.
+
+The sessionStorage gating lives in a small `lib/splashSession.ts` helper (`hasSeenSplash` / `markSplashSeen`) with its own unit tests; Portfolio wires it and remains the single call site of the write. Portfolio itself has no jsdom unit test (AudioContext makes it a poor candidate) — the integration is verified in the browser.
