@@ -36,20 +36,18 @@ function RamenBowl() {
         <clipPath id="p5splash-bowl-clip"><path d="M28 88 A72 72 0 0 0 172 88 Z" /></clipPath>
       </defs>
       {/* steam */}
-      <path d="M78 44 q6 -10 0 -20 q-5 -9 2 -16" fill="none" stroke={BONE} strokeWidth="6" strokeLinecap="square" opacity=".75" />
-      <path d="M116 48 q6 -10 0 -20 q-5 -9 2 -16" fill="none" stroke={BONE} strokeWidth="6" strokeLinecap="square" opacity=".55" />
+      <path d="M78 44 q6 -10 0 -20 q-5 -9 2 -16" fill="none" stroke='#F4F1EA' strokeWidth="6" strokeLinecap="square" opacity=".75" />
+      <path d="M116 48 q6 -10 0 -20 q-5 -9 2 -16" fill="none" stroke='#F4F1EA' strokeWidth="6" strokeLinecap="square" opacity=".55" />
       {/* chopsticks, leaning out of the bowl */}
-      <rect x="120" y="6" width="7" height="86" rx="2" transform="rotate(24 123 49)" fill={BONE} stroke={INK} strokeWidth="3" />
-      <rect x="136" y="12" width="7" height="82" rx="2" transform="rotate(31 139 53)" fill={BONE} stroke={INK} strokeWidth="3" />
+      <rect x="120" y="6" width="7" height="86" rx="2" transform="rotate(24 123 49)" fill='#F4F1EA' stroke='#0b0a0a' strokeWidth="3" />
+      <rect x="136" y="12" width="7" height="82" rx="2" transform="rotate(31 139 53)" fill='#F4F1EA' stroke='#0b0a0a' strokeWidth="3" />
       {/* foot, then bowl body over it */}
-      <path d={BOWL_FOOT} fill={BONE} stroke={INK} strokeWidth="5" />
-      <path d="M28 88 A72 72 0 0 0 172 88 Z" fill={BONE} stroke={INK} strokeWidth="5" />
-      <rect x="24" y="112" width="152" height="22" fill={INK} clipPath="url(#p5splash-bowl-clip)" />
+      <path d='M84 150 h32 v20 h-32 Z' fill='#F4F1EA' stroke='#0b0a0a' strokeWidth="5" />
+      <path d="M28 88 A72 72 0 0 0 172 88 Z" fill='#F4F1EA' stroke='#0b0a0a' strokeWidth="5" />
       {/* rim + broth + noodles + narutomaki */}
-      <ellipse cx="100" cy="88" rx="72" ry="14" fill={BONE} stroke={INK} strokeWidth="5" />
-      <ellipse cx="100" cy="88" rx="58" ry="9" fill={INK} />
-      <path d="M52 88 q12 -8 24 0 t24 0 t24 0 t24 0" fill="none" stroke={BONE} strokeWidth="4" />
-      <circle cx="100" cy="85" r="7" fill={BONE} stroke={INK} strokeWidth="3" />
+      <ellipse cx="100" cy="88" rx="72" ry="14" fill='#F4F1EA' stroke='#0b0a0a' strokeWidth="5" />
+      <ellipse cx="100" cy="88" rx="58" ry="9" fill='#0b0a0a' />
+      <path d="M52 88 q12 -8 24 0 t24 0 t24 0 t24 0" fill="none" stroke='#F4F1EA' strokeWidth="4" />
     </svg>
   );
 }
