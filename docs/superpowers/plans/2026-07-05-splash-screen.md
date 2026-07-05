@@ -200,7 +200,7 @@ Expected: FAIL — cannot resolve `./SplashScreen`.
 In `app/globals.css`, after the `@keyframes p5pulse` line, add:
 
 ```css
-@keyframes p5splashSpin { 0% { transform: rotate(0deg) scale(.7); } 80% { transform: rotate(1080deg) scale(1.06); } 100% { transform: rotate(1080deg) scale(1); } }
+@keyframes p5splashSpin { 0% { transform: perspective(600px) rotateY(0deg) scale(.7); } 67% { transform: perspective(600px) rotateY(1080deg) scale(1.06); } 84% { transform: perspective(600px) rotateY(1080deg) scale(1); } 100% { transform: perspective(600px) rotateY(1080deg) scale(1); } }
 @keyframes p5splashReveal { from { transform: scale(1); } to { transform: scale(30); } }
 @keyframes p5splashFadeOut { from { opacity: 1; } to { opacity: 0; } }
 ```
@@ -299,9 +299,14 @@ function RamenBowl() {
  * fake timers.
  */
 export function SplashScreen({ onDone }: { onDone: () => void }) {
-  const [phase, setPhase] = useState<Phase>(() => (prefersReducedMotion() ? 'fade' : 'spin'));
+  const [phase, setPhase] = useState<Phase>('spin');
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
+
+  // Reduced-motion swap happens in an effect, not the initializer: the server
+  // always renders the spin tree, so hydration must produce it too. (An
+  // initializer branch here hydration-mismatches for reduced-motion clients.)
+  useEffect(() => { if (prefersReducedMotion()) setPhase('fade'); }, []);
 
   useEffect(() => {
     const ms = phase === 'spin' ? SPIN_MS : phase === 'reveal' ? REVEAL_MS : FADE_MS;
@@ -327,13 +332,13 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
   if (phase === 'reveal') {
     return (
       <div data-splash-phase="reveal" role="presentation" aria-hidden="true"
-        style={{ position: 'fixed', inset: 0, zIndex: 100, pointerEvents: 'none', overflow: 'hidden' }}>
+        style={{ position: 'fixed', inset: 0, zIndex: 100, overflow: 'hidden' }}>
         {/* Ink sheet with a bowl-shaped hole; scaling it 30x makes the hole
             swallow the viewport. slice + xMidYMid pins the hole to screen
             center, which is also the transform origin. */}
         <svg width="100%" height="100%" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"
           style={{ position: 'absolute', inset: 0, transformOrigin: '50% 50%',
-            animation: 'p5splashReveal 1.1s cubic-bezier(.55,0,.85,.35) both' }}>
+            animation: `p5splashReveal ${REVEAL_MS}ms cubic-bezier(.55,0,.85,.35) both` }}>
           <defs>
             <mask id="p5splash-hole">
               <rect x="-2900" y="-2900" width="6000" height="6000" fill="#fff" />
@@ -353,7 +358,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
     return (
       <div data-splash-phase="fade" role="presentation" aria-hidden="true"
         style={{ position: 'fixed', inset: 0, zIndex: 100, background: INK, pointerEvents: 'none',
-          animation: 'p5splashFadeOut .3s ease-out both' }} />
+          animation: `p5splashFadeOut ${FADE_MS}ms ease-out both` }} />
     );
   }
 
@@ -362,7 +367,8 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
       style={{ position: 'fixed', inset: 0, zIndex: 100, background: INK, display: 'flex',
         flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 28,
         cursor: 'pointer', userSelect: 'none' }}>
-      <div style={{ animation: 'p5splashSpin 1.6s cubic-bezier(.22,.9,.3,1) both' }}>
+      <div style={{ animation: `p5splashSpin ${SPIN_MS}ms cubic-bezier(.22,.9,.3,1) both` }}>
+        {/* Keyframes hold the final ~16% as an intentional settle beat before reveal. */}
         <RamenBowl />
       </div>
       <div style={{ fontSize: 'clamp(20px, 3.4vw, 34px)', animation: 'p5pulse 1.6s ease-in-out infinite' }}>
