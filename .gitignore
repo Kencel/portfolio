@@ -6,3 +6,5 @@ _handoff/
 *.tsbuildinfo
 .claude/
 docs/
+.vercel
+.env*
