@@ -4,7 +4,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#F4F1EA', base: '#0b0a0a', panel: '#141212', row: '#151313',
         cfteal: '#17A2A2', discord: '#5865F2',
       },
       fontFamily: {
