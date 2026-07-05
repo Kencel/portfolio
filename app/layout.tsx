@@ -7,8 +7,11 @@ const bebas = Bebas_Neue({ weight: '400', subsets: ['latin'], variable: '--font-
 const oswald = Oswald({ weight: ['300','400','500','600','700'], subsets: ['latin'], variable: '--font-oswald' });
 
 export const metadata: Metadata = {
-  title: 'RAMENNAGI — Phantom Thief of Algorithms',
+  title: 'RAMENNAGI',
   description: 'Persona 5 styled portfolio of Kenaz Celestino (@Kencel / CF @RamenNagi).',
+  icons: {
+    icon: "icon.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
