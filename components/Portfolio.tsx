@@ -8,7 +8,6 @@ import { Backdrop } from './Backdrop';
 import { MenuView } from './MenuView';
 import { SectionPanel } from './SectionPanel';
 import { SplashScreen } from './SplashScreen';
-import { hasSeenSplash, markSplashSeen } from '@/lib/splashSession';
 
 type View = 'menu' | SectionId;
 
@@ -19,15 +18,12 @@ export function Portfolio() {
   const sfx = useSfx(muted);
   const narrow = useIsNarrow();
 
-  // Splash starts true on server and client alike (no hydration mismatch);
-  // the effect below hides it for repeat visitors once the client hydrates.
-  // Until hydration lands they may briefly see the spin frame — acceptable:
-  // it reads as intentional branding, not a glitch.
+  // The splash plays on every load: the site has no routing, so a reload is
+  // always a genuine re-entry. Starts true on server and client alike.
   const [splash, setSplash] = useState(true);
   const splashRef = useRef(splash);
   splashRef.current = splash;
-  useEffect(() => { if (hasSeenSplash()) setSplash(false); }, []);
-  const splashDone = useCallback(() => { markSplashSeen(); setSplash(false); }, []);
+  const splashDone = useCallback(() => { setSplash(false); }, []);
 
   const viewRef = useRef<View>(view);
   const hoveredRef = useRef<number | null>(hovered);
