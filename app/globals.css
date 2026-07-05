@@ -1,0 +1,14 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #0b0a0a; }
+
+@keyframes p5marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes p5panelIn { from { opacity: 0; transform: translateX(60px) skewX(-4deg); } to { opacity: 1; transform: translateX(0) skewX(0deg); } }
+@keyframes p5rowIn { from { opacity: 0; transform: translateX(-80px) skewX(-9deg); } to { opacity: 1; transform: translateX(0) skewX(-9deg); } }
+@keyframes p5pulse { 0%,100% { opacity: .85; } 50% { opacity: .35; } }
+@keyframes p5splashSpin { 0% { transform: perspective(600px) rotateY(0deg) scale(.7); } 67% { transform: perspective(600px) rotateY(1080deg) scale(1.06); } 84% { transform: perspective(600px) rotateY(1080deg) scale(1); } 100% { transform: perspective(600px) rotateY(1080deg) scale(1); } }
+@keyframes p5splashReveal { from { transform: scale(1); } to { transform: scale(30); } }
+@keyframes p5splashFadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0b0a0a; }
+::-webkit-scrollbar-thumb { background: #E4002B; }
