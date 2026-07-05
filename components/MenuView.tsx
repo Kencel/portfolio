@@ -6,7 +6,7 @@ import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
 import { RansomText } from './RansomText';
 import { AngularCard } from './AngularCard';
-import { COLOR, POP } from '@/lib/tokens';
+import { COLOR, FONT, POP } from '@/lib/tokens';
 import { CenterFrame } from './CenterFrame';
 
 const CODENAME = 'RAMENNAGI';
@@ -21,23 +21,23 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   // status bars — PROTOTYPE lines 75-84 (shared between desktop in-column and narrow flow placements)
   const statusBars = (
     <AngularCard style={{ width: 'min(360px,100%)' }}>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: '#141212', padding: '16px 20px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: COLOR.panel, padding: '16px 20px' }}>
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
           <span>CF RATING</span>
           <span style={{ color: COLOR.accent }}>{cf.rating} / MAX {cf.maxRating}</span>
         </div>
-        <div style={{ height: 11, background: '#1c1a1a', transform: 'skewX(-18deg)', border: '1px solid #333' }}>
+        <div style={{ height: 11, background: COLOR.trackBg, transform: 'skewX(-18deg)', border: `1px solid ${COLOR.trackBorder}` }}>
           <div style={{ height: '100%', width: cmProgressPct(cf.rating) + '%', background: COLOR.accent }} />
         </div>
       </div>
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
           <span>PROBLEMS SOLVED</span>
-          <span style={{ color: '#F4F1EA' }}>{SOLVED}</span>
+          <span style={{ color: COLOR.ink }}>{SOLVED}</span>
         </div>
-        <div style={{ height: 11, background: '#1c1a1a', transform: 'skewX(-18deg)', border: '1px solid #333' }}>
-          <div style={{ height: '100%', width: '72%', background: '#F4F1EA' }} />
+        <div style={{ height: 11, background: COLOR.trackBg, transform: 'skewX(-18deg)', border: `1px solid ${COLOR.trackBorder}` }}>
+          <div style={{ height: '100%', width: '72%', background: COLOR.ink }} />
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   // reusable fragments (composed differently for desktop vs narrow)
   const controlsHint = (
-    <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, display: 'inline-flex', gap: 14, background: '#0b0a0a', padding: '6px 12px', border: '1px solid #333' }}>
+    <div style={{ fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, display: 'inline-flex', gap: 14, background: COLOR.base, padding: '6px 12px', border: `1px solid ${COLOR.trackBorder}` }}>
       <span><span style={{ color: COLOR.accent }}>↑↓</span> SELECT</span>
       <span><span style={{ color: COLOR.accent }}>Z</span> OPEN</span>
     </div>
@@ -56,8 +56,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
     <button
       onClick={onToggleMute}
       style={{
-        fontFamily: 'var(--font-bebas), sans-serif', border: `2px solid ${COLOR.accent}`,
-        background: '#0b0a0a', color: '#F4F1EA', padding: '6px 12px', letterSpacing: '.16em',
+        fontFamily: FONT.bebas, border: `2px solid ${COLOR.accent}`,
+        background: COLOR.base, color: COLOR.ink, padding: '6px 12px', letterSpacing: '.16em',
         fontSize: 14, transform: 'skewX(-6deg)', cursor: 'pointer',
       }}
     >
@@ -67,8 +67,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   const clockBlock = (
     <div style={{ textAlign: 'right', transform: 'skewX(-6deg)', marginRight: 'clamp(20px,7vw,120px)' }}>
-      <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: `3px 3px 0 ${COLOR.accent}` }}>{time}</div>
-      <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.accent }}>{day} · TAKE YOUR TIME</div>
+      <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: `3px 3px 0 ${COLOR.accent}` }}>{time}</div>
+      <div style={{ fontFamily: FONT.bebas, letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.accent }}>{day} · TAKE YOUR TIME</div>
     </div>
   );
 
@@ -78,8 +78,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         <RansomText text={CODENAME} />
       </div>
       <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 14, transform: 'skewX(-8deg)', flexWrap: 'wrap' }}>
-        <span style={{ background: COLOR.accent, color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '3px 12px' }}>CS · ATENEO DE MANILA</span>
-        <span style={{ border: '2px solid #F4F1EA', fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '2px 12px' }}>COMPETITIVE PROGRAMMER</span>
+        <span style={{ background: COLOR.accent, color: COLOR.base, fontFamily: FONT.bebas, fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '3px 12px' }}>CS · ATENEO DE MANILA</span>
+        <span style={{ border: `2px solid ${COLOR.ink}`, fontFamily: FONT.bebas, fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '2px 12px' }}>COMPETITIVE PROGRAMMER</span>
       </div>
     </div>
   );
@@ -105,8 +105,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         />
       </div>
       <AngularCard style={{ transform: 'skewX(-2deg)' }} pop={POP.accent}>
-        <div style={{ background: '#141212', padding: '10px 18px', textAlign: 'center' }}>
-          <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 14, letterSpacing: '.24em', color: COLOR.accent }}>CODENAME</div>
+        <div style={{ background: COLOR.panel, padding: '10px 18px', textAlign: 'center' }}>
+          <div style={{ fontFamily: FONT.bebas, fontSize: 14, letterSpacing: '.24em', color: COLOR.accent }}>CODENAME</div>
           <div style={{ fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1, marginTop: 4, display: 'flex', justifyContent: 'center' }}>
             <RansomText text={CODENAME} seed={1} />
           </div>
