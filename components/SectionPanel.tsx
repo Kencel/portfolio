@@ -3,6 +3,10 @@ import type { JSX } from 'react';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { RansomText } from './RansomText';
 import { CenterFrame } from './CenterFrame';
+import { HalftoneLayer } from './ui/HalftoneLayer';
+import { Shard } from './ui/Shard';
+import { SkewBox } from './ui/SkewBox';
+import { COLOR, FONT, SKEW } from '@/lib/tokens';
 import { About } from './sections/About';
 import { Cp } from './sections/Cp';
 import { Projects } from './sections/Projects';
@@ -19,15 +23,19 @@ export function SectionPanel({ view, onBack }: { view: SectionId; onBack: () => 
   const Body = BODY[view];
 
   return (
-    <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: '#0b0a0a', overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: COLOR.base, overflow: 'hidden' }}>
       {/* fixed decoration layer — clipped to the viewport, does not scroll or extend the scroll area */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
         {/* panel bg — PROTOTYPE 117 */}
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(var(--accent,#E4002B) 1.3px, transparent 1.4px)', backgroundSize: '15px 15px', opacity: .12 }} />
-        {/* red shard — PROTOTYPE 118 */}
-        <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: '40%', height: '120%', background: 'var(--accent,#E4002B)', opacity: .9, clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 8% 100%)' }} />
-        {/* red shard screentone dots — matches Backdrop shard */}
-        <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: '40%', height: '120%', backgroundImage: 'radial-gradient(#0b0a0a 1.6px, transparent 1.7px)', backgroundSize: '12px 12px', opacity: .22, clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 8% 100%)' }} />
+        <HalftoneLayer color={COLOR.accent} dotRadius={1.3} gap={15} opacity={.12} />
+        {/* red shard + its dots — PROTOTYPE 118 */}
+        <Shard
+          clipPath="polygon(30% 0, 100% 0, 100% 100%, 8% 100%)"
+          fill={COLOR.accent}
+          opacity={.9}
+          style={{ top: '-10%', right: '-10%', width: '40%', height: '120%' }}
+          dots={{ color: COLOR.base, radius: 1.6, gap: 12, opacity: .22 }}
+        />
       </div>
 
       {/* scroll layer — vertical scroll only, content defines its own height */}
@@ -37,22 +45,23 @@ export function SectionPanel({ view, onBack }: { view: SectionId; onBack: () => 
           <CenterFrame maxWidth={1180}>
             {/* header — centered — PROTOTYPE 122-130 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <div
+              <SkewBox
+                deg={SKEW.panel}
                 onClick={onBack}
-                style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#F4F1EA', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.14em', fontSize: 18, padding: '7px 16px', transform: 'skewX(-8deg)' }}
+                style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: COLOR.ink, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 18, padding: '7px 16px' }}
               >
-                <span style={{ transform: 'skewX(8deg)' }}>◄ BACK</span>
-              </div>
-              <div style={{ transform: 'skewX(-8deg)' }}>
-                <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{cur.sub}</div>
-                <div style={{ transform: 'skewX(8deg)', fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>
+                <span>◄ BACK</span>
+              </SkewBox>
+              <div style={{ transform: `skewX(${SKEW.panel}deg)` }}>
+                <div style={{ fontFamily: FONT.bebas, letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.accent }}>{cur.sub}</div>
+                <div style={{ transform: `skewX(${-SKEW.panel}deg)`, fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>
                   <RansomText text={cur.label} />
                 </div>
               </div>
             </div>
 
             {/* divider — centered — PROTOTYPE 132 */}
-            <div style={{ height: 4, background: 'var(--accent,#E4002B)', margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
+            <div style={{ height: 4, background: COLOR.accent, margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
 
             <Body />
           </CenterFrame>
