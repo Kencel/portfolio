@@ -12,7 +12,7 @@ describe('rowState', () => {
   });
   it('selected state for the hovered index', () => {
     const s = rowState(2, 2);
-    expect(s.background).toBe('var(--accent,#E4002B)');
+    expect(s.background).toBe('#E4002B');
     expect(s.color).toBe('#0b0a0a');
     expect(s.transform).toContain('translateX(30px)');
     expect(s.pop).toBe('8px 8px 0 rgba(0,0,0,.9)'); // bigger pop when selected
