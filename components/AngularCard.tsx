@@ -1,6 +1,6 @@
 'use client';
 import { useId, type CSSProperties, type ReactNode } from 'react';
-import { BLACK_POP } from '@/lib/angular';
+import { POP } from '@/lib/tokens';
 
 // Stable per-instance seed from useId (matches on server + client, so the
 // randomised corners never cause a hydration mismatch).
@@ -33,7 +33,7 @@ function quadClip(seed: number, maxOff: number): string {
  */
 export function AngularCard({
   children,
-  pop = BLACK_POP,
+  pop = POP.black,
   frame = 7,
   seed,
   style,

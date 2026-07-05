@@ -6,7 +6,7 @@ import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
 import { RansomText } from './RansomText';
 import { AngularCard } from './AngularCard';
-import { ACCENT_POP } from '@/lib/angular';
+import { POP } from '@/lib/tokens';
 import { CenterFrame } from './CenterFrame';
 
 const CODENAME = 'RAMENNAGI';
@@ -104,7 +104,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
           style={{ width: 'clamp(220px,24vw,360px)', height: 'clamp(300px,32vw,470px)', display: 'block', position: 'relative' }}
         />
       </div>
-      <AngularCard style={{ transform: 'skewX(-2deg)' }} pop={ACCENT_POP}>
+      <AngularCard style={{ transform: 'skewX(-2deg)' }} pop={POP.accent}>
         <div style={{ background: '#141212', padding: '10px 18px', textAlign: 'center' }}>
           <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 14, letterSpacing: '.24em', color: 'var(--accent,#E4002B)' }}>CODENAME</div>
           <div style={{ fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1, marginTop: 4, display: 'flex', justifyContent: 'center' }}>
