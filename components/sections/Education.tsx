@@ -1,4 +1,5 @@
 import { AngularCard } from '@/components/AngularCard';
+import { COLOR } from '@/lib/tokens';
 
 // PROTOTYPE lines 248-269
 export function Education() {
@@ -9,10 +10,10 @@ export function Education() {
           <div style={{ transform: 'skewX(2deg)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
               <span style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(24px,2.6vw,38px)' }}>ATENEO DE MANILA UNIVERSITY</span>
-              <span style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', color: 'var(--accent,#E4002B)', fontSize: 18 }}>BS COMPUTER SCIENCE</span>
+              <span style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', color: COLOR.accent, fontSize: 18 }}>BS COMPUTER SCIENCE</span>
             </div>
             <p style={{ fontFamily: "var(--font-oswald), sans-serif", fontWeight: 300, fontSize: 17, lineHeight: 1.5, opacity: .9, margin: '10px 0 0' }}>
-              Member of <b>CompSAt</b> (Ateneo&apos;s premier CS organization). Served as a <b style={{ color: 'var(--accent,#E4002B)' }}>Trainer for Learn-2-Dev 2026</b>, teaching development fundamentals to fellow students.
+              Member of <b>CompSAt</b> (Ateneo&apos;s premier CS organization). Served as a <b style={{ color: COLOR.accent }}>Trainer for Learn-2-Dev 2026</b>, teaching development fundamentals to fellow students.
             </p>
           </div>
         </div>

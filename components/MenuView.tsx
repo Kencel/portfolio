@@ -6,7 +6,7 @@ import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
 import { RansomText } from './RansomText';
 import { AngularCard } from './AngularCard';
-import { POP } from '@/lib/tokens';
+import { COLOR, POP } from '@/lib/tokens';
 import { CenterFrame } from './CenterFrame';
 
 const CODENAME = 'RAMENNAGI';
@@ -25,10 +25,10 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
           <span>CF RATING</span>
-          <span style={{ color: 'var(--accent,#E4002B)' }}>{cf.rating} / MAX {cf.maxRating}</span>
+          <span style={{ color: COLOR.accent }}>{cf.rating} / MAX {cf.maxRating}</span>
         </div>
         <div style={{ height: 11, background: '#1c1a1a', transform: 'skewX(-18deg)', border: '1px solid #333' }}>
-          <div style={{ height: '100%', width: cmProgressPct(cf.rating) + '%', background: 'var(--accent,#E4002B)' }} />
+          <div style={{ height: '100%', width: cmProgressPct(cf.rating) + '%', background: COLOR.accent }} />
         </div>
       </div>
       <div>
@@ -47,8 +47,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   // reusable fragments (composed differently for desktop vs narrow)
   const controlsHint = (
     <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14, display: 'inline-flex', gap: 14, background: '#0b0a0a', padding: '6px 12px', border: '1px solid #333' }}>
-      <span><span style={{ color: 'var(--accent,#E4002B)' }}>↑↓</span> SELECT</span>
-      <span><span style={{ color: 'var(--accent,#E4002B)' }}>Z</span> OPEN</span>
+      <span><span style={{ color: COLOR.accent }}>↑↓</span> SELECT</span>
+      <span><span style={{ color: COLOR.accent }}>Z</span> OPEN</span>
     </div>
   );
 
@@ -56,7 +56,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
     <button
       onClick={onToggleMute}
       style={{
-        fontFamily: 'var(--font-bebas), sans-serif', border: '2px solid var(--accent,#E4002B)',
+        fontFamily: 'var(--font-bebas), sans-serif', border: `2px solid ${COLOR.accent}`,
         background: '#0b0a0a', color: '#F4F1EA', padding: '6px 12px', letterSpacing: '.16em',
         fontSize: 14, transform: 'skewX(-6deg)', cursor: 'pointer',
       }}
@@ -67,8 +67,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   const clockBlock = (
     <div style={{ textAlign: 'right', transform: 'skewX(-6deg)', marginRight: 'clamp(20px,7vw,120px)' }}>
-      <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: '3px 3px 0 var(--accent,#E4002B)' }}>{time}</div>
-      <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: 'var(--accent,#E4002B)' }}>{day} · TAKE YOUR TIME</div>
+      <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: `3px 3px 0 ${COLOR.accent}` }}>{time}</div>
+      <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.accent }}>{day} · TAKE YOUR TIME</div>
     </div>
   );
 
@@ -78,7 +78,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         <RansomText text={CODENAME} />
       </div>
       <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 14, transform: 'skewX(-8deg)', flexWrap: 'wrap' }}>
-        <span style={{ background: 'var(--accent,#E4002B)', color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '3px 12px' }}>CS · ATENEO DE MANILA</span>
+        <span style={{ background: COLOR.accent, color: '#0b0a0a', fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '3px 12px' }}>CS · ATENEO DE MANILA</span>
         <span style={{ border: '2px solid #F4F1EA', fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '2px 12px' }}>COMPETITIVE PROGRAMMER</span>
       </div>
     </div>
@@ -95,7 +95,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   const avatarCluster = (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, transform: 'skewX(-6deg)' }}>
       <div style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: -14, background: 'var(--accent,#E4002B)', clipPath: 'polygon(14% 0, 100% 6%, 92% 100%, 0 90%)' }} />
+        <div style={{ position: 'absolute', inset: -14, background: COLOR.accent, clipPath: 'polygon(14% 0, 100% 6%, 92% 100%, 0 90%)' }} />
         <ImageSlot
           src="/avatar.jpg"
           alt="RAMENNAGI"
@@ -106,7 +106,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
       </div>
       <AngularCard style={{ transform: 'skewX(-2deg)' }} pop={POP.accent}>
         <div style={{ background: '#141212', padding: '10px 18px', textAlign: 'center' }}>
-          <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 14, letterSpacing: '.24em', color: 'var(--accent,#E4002B)' }}>CODENAME</div>
+          <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 14, letterSpacing: '.24em', color: COLOR.accent }}>CODENAME</div>
           <div style={{ fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1, marginTop: 4, display: 'flex', justifyContent: 'center' }}>
             <RansomText text={CODENAME} seed={1} />
           </div>

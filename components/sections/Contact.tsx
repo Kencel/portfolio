@@ -1,4 +1,5 @@
 import { AngularCard } from '@/components/AngularCard';
+import { COLOR } from '@/lib/tokens';
 
 // PROTOTYPE lines 272-287
 export function Contact() {
@@ -15,7 +16,7 @@ export function Contact() {
       <AngularCard style={{ transform: 'skewX(-4deg)' }}>
         <a href="https://atcoder.jp/users/RamenNagi" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#F4F1EA', background: '#141212', padding: '22px 24px', display: 'block' }}>
           <div style={{ transform: 'skewX(4deg)' }}>
-            <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.2em', fontSize: 15, color: 'var(--accent,#E4002B)' }}>ATCODER</div>
+            <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.2em', fontSize: 15, color: COLOR.accent }}>ATCODER</div>
             <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(24px,2.4vw,32px)' }}>@RamenNagi ►</div>
           </div>
         </a>
