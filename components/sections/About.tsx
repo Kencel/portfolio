@@ -1,5 +1,6 @@
 import { AngularCard } from '@/components/AngularCard';
 import { AttributesRadar } from '@/components/AttributesRadar';
+import { COLOR } from '@/lib/tokens';
 
 // PROTOTYPE lines 135-156
 export function About() {
@@ -10,7 +11,7 @@ export function About() {
           <div style={{ background: '#141212', padding: '26px 28px' }}>
             <div style={{ transform: 'skewX(2deg)' }}>
               <p style={{ fontFamily: "var(--font-oswald), sans-serif", fontWeight: 300, fontSize: 'clamp(16px,1.4vw,21px)', lineHeight: 1.55, margin: '0 0 16px' }}>
-                A third-year Computer Science student at the <b style={{ color: 'var(--accent,#E4002B)' }}>Ateneo de Manila University</b>, in it for the problem-solving. Competitive programming enthusiast. Chasing cleaner logic and tighter solutions for the thrill of the solve with <b>C++ and Python</b>.
+                A third-year Computer Science student at the <b style={{ color: COLOR.accent }}>Ateneo de Manila University</b>, in it for the problem-solving. Competitive programming enthusiast. Chasing cleaner logic and tighter solutions for the thrill of the solve with <b>C++ and Python</b>.
               </p>
               <p style={{ fontFamily: "var(--font-oswald), sans-serif", fontWeight: 300, fontSize: 'clamp(16px,1.4vw,21px)', lineHeight: 1.55, margin: 0 }}>
                 Lately I've been pointing that same drive toward <b>AI/ML and data science</b>, and toward actually building things, starting with this site, my first passion project. On the web, I work in <b>Next.js and React</b>.
@@ -20,7 +21,7 @@ export function About() {
         </AngularCard>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <AngularCard style={{ transform: 'skewX(-4deg)' }}>
-            <div style={{ background: 'var(--accent,#E4002B)', color: '#0b0a0a', padding: '18px 22px' }}>
+            <div style={{ background: COLOR.accent, color: '#0b0a0a', padding: '18px 22px' }}>
               <div style={{ transform: 'skewX(4deg)' }}>
                 <div style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.2em', fontSize: 15 }}>CLASS</div>
                 <div style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(24px,2.4vw,34px)', lineHeight: 1 }}>COMPETITIVE PROGRAMMER</div>

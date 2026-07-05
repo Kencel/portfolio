@@ -1,9 +1,10 @@
 import { ATTRIBUTES } from '@/lib/data';
+import { COLOR } from '@/lib/tokens';
 
 const CX = 150;
 const CY = 150;
 const MAX_R = 110;
-const ACCENT = 'var(--accent, #E4002B)';
+const ACCENT = COLOR.accent;
 
 function pt(i: number, f: number): [number, number] {
   const ang = (-90 + i * 60) * (Math.PI / 180);
