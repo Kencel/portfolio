@@ -6,6 +6,7 @@ export const COLOR = {
   row: '#151313',
   trackBg: '#1c1a1a',
   trackBorder: '#333',
+  tagBorder: '#444',
   cfteal: '#17A2A2',
   discord: '#5865F2',
 } as const;

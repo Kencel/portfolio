@@ -14,6 +14,7 @@ describe('tokens', () => {
   it('exposes the progress-bar track colors and the CF/Discord brand colors', () => {
     expect(COLOR.trackBg).toBe('#1c1a1a');
     expect(COLOR.trackBorder).toBe('#333');
+    expect(COLOR.tagBorder).toBe('#444');
     expect(COLOR.cfteal).toBe('#17A2A2');
     expect(COLOR.discord).toBe('#5865F2');
   });
