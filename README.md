@@ -36,3 +36,4 @@ npm install
 npm run dev    # dev server at http://localhost:3000
 npm run build  # static export in out/
 npm test       # vitest
+```
