@@ -2,6 +2,7 @@
 import type { Section, SectionId } from '@/lib/data';
 import { rowState } from '@/lib/rowStyle';
 import { AngularCard } from './AngularCard';
+import { FONT, SKEW } from '@/lib/tokens';
 
 // PROTOTYPE lines 64-69, housed in a white encasing frame (AngularCard). The
 // skew + hover transform live on the frame, so the white border stays concentric
@@ -23,10 +24,10 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen }: {
       }}
     >
       <div style={{ background: st.background, color: st.color, padding: '9px 22px 9px 16px', transition: 'background .16s, color .16s' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, transform: 'skewX(9deg)' }}>
-          <span style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(14px,1.3vw,20px)', opacity: .65, minWidth: 34 }}>{section.n}</span>
-          <span style={{ fontFamily: "var(--font-anton), sans-serif", fontSize: 'clamp(20px,2.7vw,38px)', lineHeight: .92, letterSpacing: '.005em' }}>{section.label}</span>
-          <span style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(12px,1.1vw,17px)', letterSpacing: '.18em', opacity: .7, alignSelf: 'center' }}>{section.sub}</span>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, transform: `skewX(${-SKEW.row}deg)` }}>
+          <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(14px,1.3vw,20px)', opacity: .65, minWidth: 34 }}>{section.n}</span>
+          <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(20px,2.7vw,38px)', lineHeight: .92, letterSpacing: '.005em' }}>{section.label}</span>
+          <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(12px,1.1vw,17px)', letterSpacing: '.18em', opacity: .7, alignSelf: 'center' }}>{section.sub}</span>
         </div>
       </div>
     </AngularCard>
