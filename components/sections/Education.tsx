@@ -5,7 +5,7 @@ import { COLOR, FONT } from '@/lib/tokens';
 export function Education() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
-      <AngularCard style={{ transform: 'skewX(-2deg)' }}>
+      <AngularCard seed={51} style={{ transform: 'skewX(-2deg)' }}>
         <div style={{ background: COLOR.panel, padding: '24px 28px' }}>
           <div style={{ transform: 'skewX(2deg)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
@@ -18,7 +18,7 @@ export function Education() {
           </div>
         </div>
       </AngularCard>
-      <AngularCard style={{ transform: 'skewX(-2deg)' }}>
+      <AngularCard seed={52} style={{ transform: 'skewX(-2deg)' }}>
         <div style={{ background: COLOR.panel, padding: '24px 28px' }}>
           <div style={{ transform: 'skewX(2deg)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>

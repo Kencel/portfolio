@@ -15,6 +15,7 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen }: {
   return (
     <AngularCard
       pop={st.pop}
+      seed={index + 1}
       rowMarker
       onMouseEnter={() => onEnter(index)}
       onClick={() => onOpen(section.id)}
