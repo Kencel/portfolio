@@ -61,9 +61,13 @@ function RamenBowl() {
  * fake timers.
  */
 export function SplashScreen({ onDone }: { onDone: () => void }) {
-  const [phase, setPhase] = useState<Phase>(() => (prefersReducedMotion() ? 'fade' : 'spin'));
+  const [phase, setPhase] = useState<Phase>('spin');
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
+
+  // Reduced-motion swap happens in an effect, not the initializer: the server
+  // always renders the spin tree, so hydration must produce it too.
+  useEffect(() => { if (prefersReducedMotion()) setPhase('fade'); }, []);
 
   useEffect(() => {
     const ms = phase === 'spin' ? SPIN_MS : phase === 'reveal' ? REVEAL_MS : FADE_MS;
@@ -98,7 +102,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
   if (phase === 'reveal') {
     return (
       <div data-splash-phase="reveal" role="presentation" aria-hidden="true"
-        style={{ position: 'fixed', inset: 0, zIndex: 100, pointerEvents: 'none', overflow: 'hidden' }}>
+        style={{ position: 'fixed', inset: 0, zIndex: 100, overflow: 'hidden' }}>
         {/* Ink sheet with a bowl-shaped hole; scaling it 30x makes the hole
             swallow the viewport. slice + xMidYMid pins the hole to screen
             center, which is also the transform origin. */}

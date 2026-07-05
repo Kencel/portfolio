@@ -20,8 +20,9 @@ export function Portfolio() {
   const narrow = useIsNarrow();
 
   // Splash starts true on server and client alike (no hydration mismatch);
-  // the effect below hides it before paint matters for repeat visitors —
-  // the one dark frame is invisible against the site's own background.
+  // the effect below hides it for repeat visitors once the client hydrates.
+  // Until hydration lands they may briefly see the spin frame — acceptable:
+  // it reads as intentional branding, not a glitch.
   const [splash, setSplash] = useState(true);
   const splashRef = useRef(splash);
   splashRef.current = splash;
