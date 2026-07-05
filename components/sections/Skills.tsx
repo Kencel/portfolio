@@ -1,18 +1,55 @@
 import { SKILLS } from '@/lib/data';
-import { ProgressBar } from '@/components/ui/ProgressBar';
-import { FONT } from '@/lib/tokens';
+import { COLOR, FONT, POP, SKEW } from '@/lib/tokens';
+import type { IconType } from 'react-icons';
+import {
+  SiCplusplus, SiPython, SiDjango, SiNextdotjs, SiReact,
+  SiNodedotjs, SiPnpm, SiGit, SiPostgresql,
+} from 'react-icons/si';
+import { FaJava } from 'react-icons/fa';
 
-// PROTOTYPE lines 233-245
+// simple-icons dropped the Java mark, so it comes from Font Awesome instead
+const ICONS: Record<string, IconType> = {
+  'C++': SiCplusplus,
+  'PYTHON': SiPython,
+  'JAVA': FaJava,
+  'DJANGO': SiDjango,
+  'NEXT.JS': SiNextdotjs,
+  'REACT': SiReact,
+  'NODE.JS': SiNodedotjs,
+  'PNPM': SiPnpm,
+  'GIT': SiGit,
+  'POSTGRESQL': SiPostgresql,
+};
+
 export function Skills() {
   return (
-    <div style={{ maxWidth: 1150, marginLeft: 'auto', marginRight: 'auto' }}>
-      {SKILLS.map((sk) => (
-        <div key={sk.name} style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 11, transform: 'skewX(-6deg)' }}>
-          <span style={{ transform: 'skewX(6deg)', fontFamily: FONT.anton, fontSize: 'clamp(17px,1.7vw,23px)', minWidth: 'min(240px,34vw)' }}>{sk.name}</span>
-          <ProgressBar pct={sk.w} style={{ flex: 1 }} />
-          <span style={{ transform: 'skewX(6deg)', fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 14, opacity: .75, minWidth: 60 }}>{sk.tag}</span>
-        </div>
-      ))}
+    <div style={{ maxWidth: 1150, marginLeft: 'auto', marginRight: 'auto', display: 'flex', flexWrap: 'wrap', gap: 'clamp(12px,1.8vw,22px)' }}>
+      {SKILLS.map((name, i) => {
+        const Icon = ICONS[name];
+        return (
+          <div
+            key={name}
+            style={{
+              transform: `skewX(${SKEW.row}deg)`,
+              background: COLOR.row,
+              border: `2px solid ${COLOR.tagBorder}`,
+              boxShadow: POP.rowBase,
+              padding: '14px 30px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 15,
+            }}
+          >
+            <span style={{ transform: `skewX(${-SKEW.row}deg)`, fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 13, opacity: .55 }}>
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span style={{ transform: `skewX(${-SKEW.row}deg)`, display: 'inline-flex', alignItems: 'center', gap: 11, fontSize: 'clamp(19px,2vw,28px)' }}>
+              {Icon && <Icon aria-hidden style={{ opacity: .9, flexShrink: 0 }} />}
+              <span style={{ fontFamily: FONT.anton, textTransform: 'uppercase' }}>{name}</span>
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

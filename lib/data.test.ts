@@ -7,10 +7,10 @@ describe('data', () => {
     expect(SECTIONS[0]).toMatchObject({ n: '01', label: 'ABOUT ME', sub: 'PROFILE' });
     expect(SECTIONS[5]).toMatchObject({ n: '06', label: 'CONTACT', sub: 'CONFIDANTS' });
   });
-  it('has eight skills with percentage widths', () => {
-    expect(SKILLS).toHaveLength(8);
-    expect(SKILLS[0]).toEqual({ name: 'C++ / ALGORITHMS', w: '92%', tag: 'MAIN' });
-    SKILLS.forEach(s => expect(s.w).toMatch(/^\d{1,3}%$/));
+  it('lists skills as plain names without quantification', () => {
+    expect(SKILLS).toEqual([
+      'C++', 'PYTHON', 'JAVA', 'DJANGO', 'NEXT.JS', 'REACT', 'NODE.JS', 'PNPM', 'GIT', 'POSTGRESQL',
+    ]);
   });
   it('exposes CF defaults and manual solved count', () => {
     expect(CF_DEFAULTS).toEqual({ rating: 1445, maxRating: 1452, rank: 'Specialist' });
