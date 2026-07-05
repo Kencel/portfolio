@@ -5,7 +5,7 @@ import { COLOR, FONT } from '@/lib/tokens';
 export function Contact() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16, maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
-      <AngularCard style={{ transform: 'skewX(-4deg)' }}>
+      <AngularCard seed={31} style={{ transform: 'skewX(-4deg)' }}>
         <a href="https://codeforces.com/profile/RamenNagi" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: COLOR.ink, background: COLOR.panel, padding: '22px 24px', display: 'block' }}>
           <div style={{ transform: 'skewX(4deg)' }}>
             <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 15, color: COLOR.cfteal }}>CODEFORCES</div>
@@ -13,7 +13,7 @@ export function Contact() {
           </div>
         </a>
       </AngularCard>
-      <AngularCard style={{ transform: 'skewX(-4deg)' }}>
+      <AngularCard seed={32} style={{ transform: 'skewX(-4deg)' }}>
         <a href="https://atcoder.jp/users/RamenNagi" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: COLOR.ink, background: COLOR.panel, padding: '22px 24px', display: 'block' }}>
           <div style={{ transform: 'skewX(4deg)' }}>
             <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 15, color: COLOR.accent }}>ATCODER</div>
@@ -21,7 +21,7 @@ export function Contact() {
           </div>
         </a>
       </AngularCard>
-      <AngularCard style={{ transform: 'skewX(-4deg)' }}>
+      <AngularCard seed={33} style={{ transform: 'skewX(-4deg)' }}>
         <a href="https://github.com/Kencel" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: COLOR.ink, background: COLOR.panel, padding: '22px 24px', display: 'block' }}>
           <div style={{ transform: 'skewX(4deg)' }}>
             <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 15, opacity: .8 }}>GITHUB</div>
@@ -29,7 +29,7 @@ export function Contact() {
           </div>
         </a>
       </AngularCard>
-      <AngularCard style={{ transform: 'skewX(-4deg)' }}>
+      <AngularCard seed={34} style={{ transform: 'skewX(-4deg)' }}>
         <div style={{ color: COLOR.ink, background: COLOR.panel, padding: '22px 24px' }}>
           <div style={{ transform: 'skewX(4deg)' }}>
             <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 15, color: COLOR.discord }}>DISCORD</div>

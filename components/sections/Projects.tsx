@@ -7,7 +7,7 @@ import { COLOR, FONT } from '@/lib/tokens';
 export function Projects() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22, maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
-      <AngularCard style={{ transform: 'skewX(-1.5deg)' }}>
+      <AngularCard seed={61} style={{ transform: 'skewX(-1.5deg)' }}>
         <div style={{ background: COLOR.panel, overflow: 'hidden' }}>
           <div style={{ transform: 'skewX(1.5deg)' }}>
             <ImageSlot src="/sinag.jpg" alt="Project SINAG" placeholder="PROJECT SINAG SCREENSHOT" style={{ width: '100%', height: 190, display: 'block' }} />
@@ -32,7 +32,7 @@ export function Projects() {
           </div>
         </div>
       </AngularCard>
-      <AngularCard style={{ transform: 'skewX(-1.5deg)' }}>
+      <AngularCard seed={62} style={{ transform: 'skewX(-1.5deg)' }}>
         <div style={{ background: COLOR.panel, padding: 22, display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div style={{ transform: 'skewX(1.5deg)' }}>
             <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(26px,2.6vw,36px)' }}>BLUE HACKS</span>

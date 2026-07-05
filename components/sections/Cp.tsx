@@ -10,7 +10,7 @@ export function Cp() {
   return (
     <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(210px,1fr))', gap: 18, marginBottom: 24 }}>
-        <AngularCard style={{ transform: 'skewX(-3deg)' }}>
+        <AngularCard seed={41} style={{ transform: 'skewX(-3deg)' }}>
           <div style={{ background: COLOR.panel, padding: '22px 24px' }}>
             <div style={{ transform: 'skewX(3deg)' }}>
               <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15, color: COLOR.cfteal }}>CODEFORCES · RATING</div>
@@ -19,7 +19,7 @@ export function Cp() {
             </div>
           </div>
         </AngularCard>
-        <AngularCard style={{ transform: 'skewX(-3deg)' }}>
+        <AngularCard seed={42} style={{ transform: 'skewX(-3deg)' }}>
           <div style={{ background: COLOR.panel, padding: '22px 24px' }}>
             <div style={{ transform: 'skewX(3deg)' }}>
               <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15, color: COLOR.accent }}>TOTAL · SOLVED</div>
@@ -28,7 +28,7 @@ export function Cp() {
             </div>
           </div>
         </AngularCard>
-        <AngularCard style={{ transform: 'skewX(-3deg)' }}>
+        <AngularCard seed={43} style={{ transform: 'skewX(-3deg)' }}>
           <div style={{ background: COLOR.panel, padding: '22px 24px' }}>
             <div style={{ transform: 'skewX(3deg)' }}>
               <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15 }}>ATCODER</div>
@@ -38,7 +38,7 @@ export function Cp() {
           </div>
         </AngularCard>
       </div>
-      <AngularCard style={{ transform: 'skewX(-1.5deg)', maxWidth: 760, marginLeft: 'auto', marginRight: 'auto' }}>
+      <AngularCard seed={44} style={{ transform: 'skewX(-1.5deg)', maxWidth: 760, marginLeft: 'auto', marginRight: 'auto' }}>
         <div style={{ background: COLOR.panel, padding: '24px 26px' }}>
           <div style={{ transform: 'skewX(1.5deg)' }}>
             <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 16, color: COLOR.accent, marginBottom: 14 }}>CLIMB TO CANDIDATE MASTER</div>

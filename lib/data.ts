@@ -1,6 +1,5 @@
 export type SectionId = 'about' | 'cp' | 'projects' | 'skills' | 'education' | 'contact';
 export interface Section { id: SectionId; n: string; label: string; sub: string }
-export interface Skill { name: string; w: string; tag: string }
 
 export const SECTIONS: Section[] = [
   { id: 'about',     n: '01', label: 'ABOUT ME',           sub: 'PROFILE' },
@@ -11,15 +10,17 @@ export const SECTIONS: Section[] = [
   { id: 'contact',   n: '06', label: 'CONTACT',            sub: 'CONFIDANTS' },
 ];
 
-export const SKILLS: Skill[] = [
-  { name: 'C++ / ALGORITHMS', w: '92%', tag: 'MAIN' },
-  { name: 'NEXT.JS / REACT',  w: '85%', tag: 'WEB' },
-  { name: 'TAILWINDCSS',      w: '84%', tag: 'WEB' },
-  { name: 'SHADCN/UI',        w: '78%', tag: 'WEB' },
-  { name: 'NITRO',            w: '70%', tag: 'API' },
-  { name: 'PRISMA',           w: '74%', tag: 'DATA' },
-  { name: 'POSTGRESQL',       w: '72%', tag: 'DATA' },
-  { name: 'PNPM / GIT',       w: '80%', tag: 'TOOL' },
+export const SKILLS: string[] = [
+  'C++',
+  'PYTHON',
+  'JAVA',
+  'DJANGO',
+  'NEXT.JS',
+  'REACT',
+  'NODE.JS',
+  'PNPM',
+  'GIT',
+  'POSTGRESQL',
 ];
 
 export const CF_HANDLE = 'RamenNagi';
