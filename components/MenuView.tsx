@@ -20,7 +20,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   // status bars — PROTOTYPE lines 75-84 (shared between desktop in-column and narrow flow placements)
   const statusBars = (
-    <AngularCard style={{ width: 'min(360px,100%)' }}>
+    <AngularCard seed={11} style={{ width: 'min(360px,100%)' }}>
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: COLOR.panel, padding: '16px 20px' }}>
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
@@ -104,7 +104,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
           style={{ width: 'clamp(220px,24vw,360px)', height: 'clamp(300px,32vw,470px)', display: 'block', position: 'relative' }}
         />
       </div>
-      <AngularCard style={{ transform: 'skewX(-2deg)' }} pop={POP.accent}>
+      <AngularCard seed={12} style={{ transform: 'skewX(-2deg)' }} pop={POP.accent}>
         <div style={{ background: COLOR.panel, padding: '10px 18px', textAlign: 'center' }}>
           <div style={{ fontFamily: FONT.bebas, fontSize: 14, letterSpacing: '.24em', color: COLOR.accent }}>CODENAME</div>
           <div style={{ fontSize: 'clamp(22px,2vw,30px)', lineHeight: 1, marginTop: 4, display: 'flex', justifyContent: 'center' }}>

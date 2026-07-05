@@ -2,8 +2,9 @@
 import { useId, type CSSProperties, type ReactNode } from 'react';
 import { POP } from '@/lib/tokens';
 
-// Stable per-instance seed from useId (matches on server + client, so the
-// randomised corners never cause a hydration mismatch).
+// Fallback seed only — useId is NOT guaranteed to match between the server
+// render and client hydration (it diverges under Next dev), so every call
+// site should pass an explicit `seed` to keep the clip-path hydration-safe.
 function hashStr(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
