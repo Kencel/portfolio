@@ -40,12 +40,15 @@ export function Projects({ projects }: { projects: Project[] }) {
     <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
       {/* filter + sort bar */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 14, marginBottom: 26 }}>
-        <div data-testid="filter-bar" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          <button aria-pressed={selected.size === 0} onClick={() => setSelected(new Set())} style={chip(selected.size === 0)}>
+        {/* single row; overflowing chips scroll horizontally instead of wrapping.
+            minWidth: 0 lets the flex child shrink below its content width so the
+            overflow happens here, not on the page. */}
+        <div data-testid="filter-bar" style={{ display: 'flex', flexWrap: 'nowrap', gap: 8, flex: '1 1 auto', minWidth: 0, overflowX: 'auto', scrollbarWidth: 'thin', padding: '2px 0 6px' }}>
+          <button aria-pressed={selected.size === 0} onClick={() => setSelected(new Set())} style={{ ...chip(selected.size === 0), flexShrink: 0 }}>
             <span style={unskew}>ALL</span>
           </button>
           {tags.map(tag => (
-            <button key={tag} aria-pressed={selected.has(tag)} onClick={() => toggleTag(tag)} style={chip(selected.has(tag))}>
+            <button key={tag} aria-pressed={selected.has(tag)} onClick={() => toggleTag(tag)} style={{ ...chip(selected.has(tag)), flexShrink: 0 }}>
               <span style={unskew}>{tag}</span>
             </button>
           ))}
