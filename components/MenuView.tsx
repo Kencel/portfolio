@@ -8,6 +8,7 @@ import { RansomText } from './RansomText';
 import { AngularCard } from './AngularCard';
 import { COLOR, FONT, POP } from '@/lib/tokens';
 import { CenterFrame } from './CenterFrame';
+import { FitToViewport } from './FitToViewport';
 
 const CODENAME = 'RAMENNAGI';
 
@@ -117,7 +118,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   return (
     // PROTOTYPE lines 49-52 — root scroll region unchanged (dynamic height, top-anchored)
-    <div style={{ position: 'relative', zIndex: 5, width: '100%', height: narrow ? 'auto' : '100vh', overflowY: narrow ? 'auto' : 'hidden', padding: 'clamp(20px,4vw,64px)' }}>
+    <div style={{ position: 'relative', zIndex: 5, width: '100%', minHeight: '100vh', padding: 'clamp(16px,2.5vh,44px) clamp(20px,4vw,64px)' }}>
       {narrow ? (
         // narrow: single-column stack (title → mute → menu → avatar → status)
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(14px,2.2vh,28px)', width: '100%' }}>
@@ -128,7 +129,10 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
           {statusBars}
         </div>
       ) : (
-        // desktop: centered frame — HUD strip, two columns, footer strip
+        // desktop: centered frame — HUD strip, two columns, footer strip.
+        // FitToViewport scales the whole HUD down on short viewports so the
+        // menu never scrolls; at full height it renders unscaled.
+        <FitToViewport>
         <CenterFrame maxWidth={1180}>
           {/* HUD top strip: controls left, mute right */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'clamp(16px,2.4vh,32px)' }}>
@@ -153,6 +157,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
             {clockBlock}
           </div>
         </CenterFrame>
+        </FitToViewport>
       )}
     </div>
   );
