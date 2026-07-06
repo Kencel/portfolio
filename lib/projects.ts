@@ -10,6 +10,18 @@ export interface Project {
 
 export type SortMode = 'newest' | 'alpha';
 
+// Dashboard edits are free-text, so URL-shaped columns are restricted to schemes
+// that can't execute script (e.g. `javascript:`) when rendered as href/src.
+function sanitizeLinkUrl(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  return value.startsWith('http://') || value.startsWith('https://') ? value : null;
+}
+
+function sanitizeImageUrl(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  return value.startsWith('http://') || value.startsWith('https://') || value.startsWith('/') ? value : null;
+}
+
 // Maps one raw DB row (snake_case columns) to a Project. Rows are hand-edited
 // in the Neon dashboard, so anything structurally unusable becomes null and is
 // dropped rather than crashing the page.
@@ -17,12 +29,14 @@ export function mapRow(row: Record<string, unknown>): Project | null {
   if (typeof row.title !== 'string' || typeof row.description !== 'string') return null;
   const year = typeof row.year === 'number' ? row.year : Number(row.year);
   if (!Number.isFinite(year)) return null;
+  const id = typeof row.id === 'number' ? row.id : Number(row.id);
+  if (!Number.isFinite(id)) return null;
   return {
-    id: typeof row.id === 'number' ? row.id : Number(row.id) || 0,
+    id,
     title: row.title,
     description: row.description,
-    imageUrl: typeof row.image_url === 'string' && row.image_url !== '' ? row.image_url : null,
-    linkUrl: typeof row.link_url === 'string' && row.link_url !== '' ? row.link_url : null,
+    imageUrl: sanitizeImageUrl(row.image_url),
+    linkUrl: sanitizeLinkUrl(row.link_url),
     year,
     tags: Array.isArray(row.tags) ? row.tags.filter((t): t is string => typeof t === 'string') : [],
   };

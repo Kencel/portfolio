@@ -32,6 +32,19 @@ describe('mapRow', () => {
     expect(mapRow({ id: 1, title: 'T', description: 'd', year: 2024, tags: 'oops' })!.tags).toEqual([]);
     expect(mapRow({ id: 1, title: 'T', description: 'd', year: 2024, tags: ['A', 3, 'B'] })!.tags).toEqual(['A', 'B']);
   });
+  it('rejects unsafe link_url schemes and keeps http(s)', () => {
+    expect(mapRow({ id: 1, title: 'T', description: 'd', year: 2024, tags: [], link_url: 'javascript:alert(1)' })!.linkUrl).toBeNull();
+    expect(mapRow({ id: 1, title: 'T', description: 'd', year: 2024, tags: [], link_url: 'https://x.dev/' })!.linkUrl).toBe('https://x.dev/');
+  });
+  it('rejects unsafe image_url schemes and keeps http(s) or a leading slash', () => {
+    expect(mapRow({ id: 1, title: 'T', description: 'd', year: 2024, tags: [], image_url: 'javascript:alert(1)' })!.imageUrl).toBeNull();
+    expect(mapRow({ id: 1, title: 'T', description: 'd', year: 2024, tags: [], image_url: '/sinag.jpg' })!.imageUrl).toBe('/sinag.jpg');
+    expect(mapRow({ id: 1, title: 'T', description: 'd', year: 2024, tags: [], image_url: 'https://cdn.example/x.jpg' })!.imageUrl).toBe('https://cdn.example/x.jpg');
+  });
+  it('rejects a non-numeric id and coerces a numeric string id', () => {
+    expect(mapRow({ id: 'nope', title: 'T', description: 'd', year: 2024, tags: [] })).toBeNull();
+    expect(mapRow({ id: '7', title: 'T', description: 'd', year: 2024, tags: [] })!.id).toBe(7);
+  });
 });
 
 describe('allTags', () => {
