@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "db:apply": "node --env-file=.env.local db/apply.mjs"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "next": "^15.5.20",
     "react": "19.0.0",
     "react-dom": "19.0.0",
