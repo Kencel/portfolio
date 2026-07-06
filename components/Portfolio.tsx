@@ -64,7 +64,7 @@ export function Portfolio() {
   }, [goMenu, move, open, sfx]);
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', height: narrow ? 'auto' : '100vh', overflow: 'hidden',
+    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden',
       background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif', userSelect: 'none' }}>
       <Backdrop />
       {view === 'menu'
