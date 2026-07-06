@@ -20,7 +20,7 @@ export function ProjectCard({ project, selectedTags }: {
           />
           <div style={{ padding: '20px 22px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(26px,2.6vw,36px)' }}>{project.title}</span>
+              <span data-testid="project-title" style={{ fontFamily: FONT.anton, fontSize: 'clamp(26px,2.6vw,36px)' }}>{project.title}</span>
               <span style={{ background: COLOR.accent, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', padding: '2px 10px', fontSize: 15 }}>{project.year}</span>
             </div>
             <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 17, lineHeight: 1.5, opacity: .9, margin: '10px 0 14px' }}>
