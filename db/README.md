@@ -23,7 +23,9 @@ site within ~60 seconds.
 ## Local setup / re-seeding
 
 `npm run db:apply -- schema seed` — applies `db/schema.sql` then `db/seed.sql`
-using `DATABASE_URL` from `.env.local` (pull it with
-`npx vercel env pull .env.local --environment=production`). Both files are
-idempotent: the schema is `create table if not exists`, the seed only inserts
-into an empty table.
+using `DATABASE_URL` from `.env.local`. The Neon env vars are marked
+*Sensitive* on Vercel, so `vercel env pull` writes them back **empty** — copy
+the connection string from the Neon console instead and paste it into
+`.env.local` yourself (re-paste after any future `env pull`, which blanks it
+again). Both files are idempotent: the schema is `create table if not
+exists`, the seed only inserts into an empty table.
