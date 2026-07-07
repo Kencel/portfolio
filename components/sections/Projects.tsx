@@ -3,15 +3,7 @@ import { useMemo, useState, type CSSProperties } from 'react';
 import { ProjectCard } from '@/components/ProjectCard';
 import { COLOR, FONT } from '@/lib/tokens';
 import { allTags, filterByTags, sortProjects, type Project, type SortMode } from '@/lib/projects';
-
-const chip = (active: boolean): CSSProperties => ({
-  background: active ? COLOR.accent : 'transparent',
-  color: active ? COLOR.base : COLOR.ink,
-  border: `1px solid ${active ? COLOR.accent : COLOR.tagBorder}`,
-  fontFamily: FONT.bebas, letterSpacing: '.12em', fontSize: 15,
-  padding: '4px 14px', cursor: 'pointer', transform: 'skewX(-8deg)',
-});
-const unskew: CSSProperties = { display: 'inline-block', transform: 'skewX(8deg)' };
+import { chip, unskew } from '@/lib/chipStyle';
 const themedLine: CSSProperties = {
   fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 22,
   color: COLOR.ink, opacity: .75, textAlign: 'center', padding: '40px 0',
