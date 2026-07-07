@@ -74,4 +74,13 @@ describe('fetchAtcoderSubmissions', () => {
     expect(sleep).toHaveBeenCalledTimes(1);
     expect(sleep).toHaveBeenCalledWith(1000);
   });
+
+  it('caps pagination at 40 pages even if upstream keeps returning full pages', async () => {
+    const fullPage = Array.from({ length: 500 }, (_, i) => ({ problem_id: `p${i}`, result: 'AC', epoch_second: i }));
+    const fetcher = vi.fn(async () => jsonRes(fullPage)) as unknown as typeof fetch;
+    const sleep = vi.fn(noSleep);
+    const all = await fetchAtcoderSubmissions(fetcher, sleep);
+    expect(all).toHaveLength(40 * 500);
+    expect(fetcher).toHaveBeenCalledTimes(40);
+  });
 });

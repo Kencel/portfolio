@@ -12,6 +12,9 @@ const ATCODER_HANDLE = 'RamenNagi';
 // kenkoooo asks API users to identify themselves and pace their requests.
 const UA = { 'user-agent': 'ramennagi-portfolio/1.0 (github.com/Kencel; contact: kenaz.celestino@gmail.com)' };
 const KENKOOOO_PAGE = 500;
+// Safety valve: 40 pages * 500 = 20k submissions, far above this account's
+// ~1k history. Bounds a pathological upstream loop to a truncated-but-rendered chart.
+const MAX_PAGES = 40;
 
 const HOUR = 3600;
 
@@ -29,7 +32,7 @@ async function getJson(fetcher: Fetcher, url: string, revalidate: number, header
 export async function fetchAtcoderSubmissions(fetcher: Fetcher, sleep: Sleep): Promise<unknown[]> {
   const all: unknown[] = [];
   let from = 0;
-  for (;;) {
+  for (let pages = 0; pages < MAX_PAGES; pages++) {
     const page = await getJson(
       fetcher,
       `https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${ATCODER_HANDLE}&from_second=${from}`,
@@ -56,7 +59,10 @@ async function getCf(fetcher: Fetcher): Promise<PlatformStats | null> {
       getJson(fetcher, `${base}/user.status?handle=${CF_HANDLE}`, HOUR),
     ]);
     const head = mapCfInfo(info);
-    if (!head) return null;
+    if (!head) {
+      console.error('getCpStats: codeforces user.info unusable');
+      return null;
+    }
     const { solved, ratings } = mapCfSolved(status);
     return { ...head, solved, contests: mapCfContests(rating), buckets: bucketize(ratings, 100) };
   } catch (err) {
@@ -73,7 +79,10 @@ async function getAtcoder(fetcher: Fetcher, sleep: Sleep): Promise<PlatformStats
       getJson(fetcher, 'https://kenkoooo.com/atcoder/resources/problem-models.json', 24 * HOUR, UA),
     ]);
     const contests = mapAtcoderContests(history);
-    if (contests.length === 0) return null;
+    if (contests.length === 0) {
+      console.warn('getCpStats: atcoder history empty or unusable');
+      return null;
+    }
     const { solved, difficulties } = mapAtcoderSolved(submissions, models);
     const rating = contests[contests.length - 1].ratingAfter;
     return {
