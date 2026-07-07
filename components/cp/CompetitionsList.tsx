@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { AngularCard } from '@/components/AngularCard';
+import { SkewBox } from '@/components/ui/SkewBox';
 import { COLOR, FONT, POP } from '@/lib/tokens';
 import { formatMonthYear, type Competition } from '@/lib/competitions';
 
@@ -49,13 +50,17 @@ export function CompetitionsList({ competitions }: { competitions: Competition[]
       <div data-testid="cert-backdrop" onClick={() => setCert(null)}
         style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <div role="dialog" aria-modal="true" aria-label={`${cert.name} certificate`} onClick={e => e.stopPropagation()}
-          style={{ position: 'relative', background: COLOR.accent, border: `3px solid ${COLOR.base}`, boxShadow: POP.black, padding: 14 }}>
+          style={{ position: 'relative' }}>
+          {/* bigger black plate behind, skewed opposite to the red frame */}
+          <div aria-hidden style={{ position: 'absolute', inset: '-18px -26px', transform: 'skewX(4deg)', background: COLOR.base, boxShadow: POP.black }} />
+          <SkewBox deg={-4} style={{ position: 'relative', background: COLOR.accent, boxShadow: POP.rowBase, padding: 16 }}>
+            <img src={cert.certImageUrl} alt={`${cert.name} certificate`}
+              style={{ display: 'block', maxWidth: 'min(84vw, 880px)', maxHeight: '76vh' }} />
+          </SkewBox>
           <button aria-label="CLOSE" onClick={() => setCert(null)}
-            style={{ position: 'absolute', top: -16, right: -16, background: COLOR.base, color: COLOR.ink, border: `2px solid ${COLOR.ink}`, fontFamily: FONT.bebas, fontSize: 18, lineHeight: 1, padding: '7px 11px', cursor: 'pointer' }}>
+            style={{ position: 'absolute', top: -32, right: -34, zIndex: 1, background: COLOR.base, color: COLOR.ink, border: `2px solid ${COLOR.ink}`, fontFamily: FONT.bebas, fontSize: 18, lineHeight: 1, padding: '7px 11px', cursor: 'pointer', transform: 'skewX(-4deg)' }}>
             ✕
           </button>
-          <img src={cert.certImageUrl} alt={`${cert.name} certificate`}
-            style={{ display: 'block', maxWidth: 'min(86vw, 900px)', maxHeight: '78vh' }} />
         </div>
       </div>
     )}
