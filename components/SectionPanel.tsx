@@ -1,6 +1,8 @@
 'use client';
 import type { JSX } from 'react';
 import type { Project } from '@/lib/projects';
+import type { Competition } from '@/lib/competitions';
+import type { CpStats } from '@/lib/cp/types';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { RansomText } from './RansomText';
 import { CenterFrame } from './CenterFrame';
@@ -15,13 +17,16 @@ import { Skills } from './sections/Skills';
 import { Education } from './sections/Education';
 import { Contact } from './sections/Contact';
 
-const BODY: Record<Exclude<SectionId, 'projects'>, () => JSX.Element> = {
-  about: About, cp: Cp, skills: Skills, education: Education, contact: Contact,
+const BODY: Record<Exclude<SectionId, 'projects' | 'cp'>, () => JSX.Element> = {
+  about: About, skills: Skills, education: Education, contact: Contact,
 };
 
-export function SectionPanel({ view, onBack, projects }: { view: SectionId; onBack: () => void; projects: Project[] }) {
+export function SectionPanel({ view, onBack, projects, competitions, cpStats }: {
+  view: SectionId; onBack: () => void; projects: Project[];
+  competitions: Competition[]; cpStats: CpStats;
+}) {
   const cur = SECTIONS.find(s => s.id === view)!;
-  const Body = view === 'projects' ? null : BODY[view];
+  const Body = view === 'projects' || view === 'cp' ? null : BODY[view];
 
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: COLOR.base, overflow: 'hidden' }}>
@@ -64,7 +69,11 @@ export function SectionPanel({ view, onBack, projects }: { view: SectionId; onBa
             {/* divider — centered — PROTOTYPE 132 */}
             <div style={{ height: 4, background: COLOR.accent, margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
 
-            {Body ? <Body /> : <Projects projects={projects} />}
+            {Body
+              ? <Body />
+              : view === 'projects'
+                ? <Projects projects={projects} />
+                : <Cp stats={cpStats} competitions={competitions} />}
           </CenterFrame>
         </div>
       </div>

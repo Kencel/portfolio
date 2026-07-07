@@ -8,3 +8,15 @@ create table if not exists projects (
   tags        text[] not null default '{}',
   created_at  timestamptz not null default now()
 );
+
+create table if not exists competitions (
+  id             serial primary key,
+  name           text not null,          -- "UP ACM Algolympics 2026"
+  event_date     date not null,          -- sort key; rendered as "MAY 2026"
+  team           text,                   -- "Team KMP"; null = solo
+  result         text not null,          -- "10/13 problems", "60 points"
+  placement      text,                   -- "Finalist", "Top 30 of 71", "Top 25%", "1st place"
+  note           text,                   -- "Certificate of Distinction, Junior Division"
+  cert_image_url text,                   -- "/algolympics2026_cert.jpg"
+  created_at     timestamptz not null default now()
+);

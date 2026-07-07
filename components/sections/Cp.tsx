@@ -1,54 +1,52 @@
 'use client';
-import { useCodeforces, cmProgressPct } from '@/lib/codeforces';
-import { AngularCard } from '@/components/AngularCard';
-import { ProgressBar } from '@/components/ui/ProgressBar';
+import { useState } from 'react';
+import { chip, unskew } from '@/lib/chipStyle';
 import { COLOR, FONT } from '@/lib/tokens';
+import { CF_BANDS, ATCODER_BANDS } from '@/lib/cp/bands';
+import type { CpStats } from '@/lib/cp/types';
+import type { Competition } from '@/lib/competitions';
+import { PlatformPanel, type PlatformConfig } from '@/components/cp/PlatformPanel';
+import { CompetitionsList } from '@/components/cp/CompetitionsList';
 
-// PROTOTYPE lines 159-192
-export function Cp() {
-  const cf = useCodeforces();
+type Tab = 'cf' | 'atcoder' | 'competitions';
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'cf', label: 'CODEFORCES' },
+  { id: 'atcoder', label: 'ATCODER' },
+  { id: 'competitions', label: 'COMPETITIONS' },
+];
+
+const CF_CONFIG: PlatformConfig = {
+  title: 'CODEFORCES', accent: COLOR.cfteal, bands: CF_BANDS,
+  handleUrl: 'https://codeforces.com/profile/RamenNagi', perfApprox: true, seedBase: 41,
+};
+const ATCODER_CONFIG: PlatformConfig = {
+  title: 'ATCODER', accent: '#C0C0C0', bands: ATCODER_BANDS,
+  handleUrl: 'https://atcoder.jp/users/RamenNagi', perfApprox: false, seedBase: 51,
+};
+
+const themedLine = {
+  fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 22,
+  color: COLOR.ink, opacity: .75, textAlign: 'center' as const, padding: '40px 0',
+};
+
+export function Cp({ stats, competitions }: { stats: CpStats; competitions: Competition[] }) {
+  const [tab, setTab] = useState<Tab>('cf');
   return (
     <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(210px,1fr))', gap: 18, marginBottom: 24 }}>
-        <AngularCard seed={41} style={{ transform: 'skewX(-3deg)' }}>
-          <div style={{ background: COLOR.panel, padding: '22px 24px' }}>
-            <div style={{ transform: 'skewX(3deg)' }}>
-              <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15, color: COLOR.cfteal }}>CODEFORCES · RATING</div>
-              <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(44px,5vw,66px)', lineHeight: .9 }}>{cf.rating}</div>
-              <div style={{ fontFamily: FONT.oswald, fontSize: 16, opacity: .8 }}>Peak <b style={{ color: COLOR.cfteal }}>{cf.maxRating} · {cf.rank}</b> · @RamenNagi</div>
-            </div>
-          </div>
-        </AngularCard>
-        <AngularCard seed={42} style={{ transform: 'skewX(-3deg)' }}>
-          <div style={{ background: COLOR.panel, padding: '22px 24px' }}>
-            <div style={{ transform: 'skewX(3deg)' }}>
-              <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15, color: COLOR.accent }}>TOTAL · SOLVED</div>
-              <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(44px,5vw,66px)', lineHeight: .9 }}>472</div>
-              <div style={{ fontFamily: FONT.oswald, fontSize: 16, opacity: .8 }}>problems all-time</div>
-            </div>
-          </div>
-        </AngularCard>
-        <AngularCard seed={43} style={{ transform: 'skewX(-3deg)' }}>
-          <div style={{ background: COLOR.panel, padding: '22px 24px' }}>
-            <div style={{ transform: 'skewX(3deg)' }}>
-              <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15 }}>ATCODER</div>
-              <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(30px,3vw,42px)', lineHeight: 1, marginTop: 8 }}>@RamenNagi</div>
-              <div style={{ fontFamily: FONT.oswald, fontSize: 16, opacity: .8 }}>active competitor</div>
-            </div>
-          </div>
-        </AngularCard>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 26 }}>
+        {TABS.map(t => (
+          <button key={t.id} aria-pressed={tab === t.id} onClick={() => setTab(t.id)} style={chip(tab === t.id)}>
+            <span style={unskew}>{t.label}</span>
+          </button>
+        ))}
       </div>
-      <AngularCard seed={44} style={{ transform: 'skewX(-1.5deg)', maxWidth: 760, marginLeft: 'auto', marginRight: 'auto' }}>
-        <div style={{ background: COLOR.panel, padding: '24px 26px' }}>
-          <div style={{ transform: 'skewX(1.5deg)' }}>
-            <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 16, color: COLOR.accent, marginBottom: 14 }}>CLIMB TO CANDIDATE MASTER</div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: FONT.oswald, fontSize: 15, marginBottom: 5 }}>
-              <span>Newbie</span><span>Pupil</span><span style={{ color: COLOR.cfteal, fontWeight: 600 }}>▲ Specialist</span><span>Expert</span><span>CM</span>
-            </div>
-            <ProgressBar pct={`${cmProgressPct(cf.rating)}%`} fill="linear-gradient(90deg,#808080,#17A2A2)" height={16} />
-          </div>
-        </div>
-      </AngularCard>
+      {tab === 'cf' && (stats.cf
+        ? <PlatformPanel stats={stats.cf} config={CF_CONFIG} />
+        : <p style={themedLine}>CODEFORCES DATA UNAVAILABLE — CHECK BACK SOON</p>)}
+      {tab === 'atcoder' && (stats.atcoder
+        ? <PlatformPanel stats={stats.atcoder} config={ATCODER_CONFIG} />
+        : <p style={themedLine}>ATCODER DATA UNAVAILABLE — CHECK BACK SOON</p>)}
+      {tab === 'competitions' && <CompetitionsList competitions={competitions} />}
     </div>
   );
 }

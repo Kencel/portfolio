@@ -1,4 +1,4 @@
-# Projects database
+# Portfolio database
 
 The PROJECTS section is read from a Neon Postgres table (`projects`) at most
 once per minute (ISR). **To add a project, insert a row — no code, no deploy.**
@@ -19,6 +19,23 @@ Vercel dashboard → Storage → the Neon database → *Open in Neon* → Tables
 
 Leave `id` and `created_at` alone (auto-filled). Changes appear on the live
 site within ~60 seconds.
+
+## Competitions table
+
+The COMPETITIONS tab of the COMP. PROG section reads from `competitions`
+(same ISR cadence — changes live within ~60s). Columns:
+
+| column           | required | notes                                                       |
+|------------------|----------|-------------------------------------------------------------|
+| `name`           | yes      | e.g. `UP ACM Algolympics 2026`                              |
+| `event_date`     | yes      | Any day in the right month — rendered as `MAY 2026`, sorts newest-first |
+| `team`           | no       | e.g. `Team KMP`; empty for solo contests                    |
+| `result`         | yes      | e.g. `10/13 problems`, `60 points`, `Finalist`              |
+| `placement`      | no       | e.g. `1st place`, `Top 30 of 71`, `Top 25%`                 |
+| `note`           | no       | e.g. `Certificate of Distinction, Junior Division`          |
+| `cert_image_url` | no       | `/file.jpg` in `public/` or a full URL; empty → no thumbnail |
+
+Leave `id` and `created_at` alone (auto-filled).
 
 ## Local setup / re-seeding
 
