@@ -53,6 +53,14 @@ describe('mapCfContests', () => {
     expect(mapCfContests({ status: 'FAILED' })).toEqual([]);
     expect(mapCfContests({ status: 'OK', result: [{ contestName: 'no numbers' }] })).toEqual([]);
   });
+  it('skips null and non-object entries in result array', () => {
+    const out = mapCfContests({
+      status: 'OK',
+      result: [null, { contestId: 1900, contestName: 'Round A', rank: 1543, ratingUpdateTimeSeconds: 1735689600, oldRating: 1400, newRating: 1445 }],
+    });
+    expect(out).toHaveLength(1);
+    expect(out[0].name).toBe('Round A');
+  });
 });
 
 describe('mapCfSolved', () => {
@@ -61,5 +69,12 @@ describe('mapCfSolved', () => {
   });
   it('returns zero state on malformed payloads', () => {
     expect(mapCfSolved(undefined)).toEqual({ solved: 0, ratings: [] });
+  });
+  it('skips null and non-object entries in result array', () => {
+    const out = mapCfSolved({
+      status: 'OK',
+      result: [null, 'junk', { problem: { contestId: 1, index: 'A', rating: 800 }, verdict: 'OK' }],
+    });
+    expect(out).toEqual({ solved: 1, ratings: [800] });
   });
 });

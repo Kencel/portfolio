@@ -32,6 +32,7 @@ export function mapCfInfo(json: unknown): { rating: number; peakRating: number; 
 export function mapCfContests(json: unknown): CpContest[] {
   const out: CpContest[] = [];
   for (const raw of resultRows(json)) {
+    if (!raw || typeof raw !== 'object') continue;
     const r = raw as {
       contestId?: unknown; contestName?: unknown; rank?: unknown;
       ratingUpdateTimeSeconds?: unknown; oldRating?: unknown; newRating?: unknown;
@@ -58,6 +59,7 @@ export function mapCfSolved(json: unknown): { solved: number; ratings: number[] 
   const seen = new Set<string>();
   const ratings: number[] = [];
   for (const raw of resultRows(json)) {
+    if (!raw || typeof raw !== 'object') continue;
     const s = raw as { verdict?: unknown; problem?: { contestId?: unknown; index?: unknown; rating?: unknown } };
     if (s.verdict !== 'OK' || !s.problem) continue;
     const key = `${s.problem.contestId}-${s.problem.index}`;
