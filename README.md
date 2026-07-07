@@ -22,18 +22,22 @@ a keyboard-navigable menu.
 
 - **Keyboard-first navigation** — arrow keys + Enter drive the whole menu,
   complete with synthesized UI blips
-- **Live Codeforces stats** — rating and rank fetched from the public
-  Codeforces API, with offline fallbacks so the layout never breaks
-- **Hand-built SVG visuals** — like the hexagonal attributes radar, drawn
-  from scratch instead of pulling in a charting library
-- **Fully static** — Next.js static export, deployed on Vercel, tested with
-  Vitest
+- **Live competitive-programming stats** — Codeforces and AtCoder ratings,
+  contest history, and solved-problem counts fetched from their public APIs,
+  with offline fallbacks so the layout never breaks
+- **Hand-built SVG visuals** — the hexagonal attributes radar, rating line
+  charts, and difficulty histograms are all drawn from scratch instead of
+  pulling in a charting library
+- **Database-driven content** — projects and contest results live in Neon
+  Postgres and appear on the site within a minute of adding a row, no deploy
+  needed (Next.js ISR)
+- **Deployed on Vercel** — Next.js App Router, tested with Vitest
 
 ## Run it locally
 
 ```bash
 npm install
 npm run dev    # dev server at http://localhost:3000
-npm run build  # static export in out/
+npm run build  # production build
 npm test       # vitest
 ```
