@@ -8,3 +8,4 @@ _handoff/
 docs/
 .vercel
 .env*
+CLAUDE.local.md
