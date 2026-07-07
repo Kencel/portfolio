@@ -1,52 +1,75 @@
 'use client';
-import { ImageSlot } from '@/components/ImageSlot';
-import { AngularCard } from '@/components/AngularCard';
+import { useMemo, useState, type CSSProperties } from 'react';
+import { ProjectCard } from '@/components/ProjectCard';
 import { COLOR, FONT } from '@/lib/tokens';
+import { allTags, filterByTags, sortProjects, type Project, type SortMode } from '@/lib/projects';
 
-// PROTOTYPE lines 195-230
-export function Projects() {
+const chip = (active: boolean): CSSProperties => ({
+  background: active ? COLOR.accent : 'transparent',
+  color: active ? COLOR.base : COLOR.ink,
+  border: `1px solid ${active ? COLOR.accent : COLOR.tagBorder}`,
+  fontFamily: FONT.bebas, letterSpacing: '.12em', fontSize: 15,
+  padding: '4px 14px', cursor: 'pointer', transform: 'skewX(-8deg)',
+});
+const unskew: CSSProperties = { display: 'inline-block', transform: 'skewX(8deg)' };
+const themedLine: CSSProperties = {
+  fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 22,
+  color: COLOR.ink, opacity: .75, textAlign: 'center', padding: '40px 0',
+};
+
+export function Projects({ projects }: { projects: Project[] }) {
+  const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
+  const [sort, setSort] = useState<SortMode>('newest');
+  const tags = useMemo(() => allTags(projects), [projects]);
+  const shown = useMemo(
+    () => sortProjects(filterByTags(projects, selected), sort),
+    [projects, selected, sort],
+  );
+
+  if (projects.length === 0) {
+    return <p style={themedLine}>TREASURE DATA UNAVAILABLE — CHECK BACK SOON</p>;
+  }
+
+  const toggleTag = (tag: string) => setSelected(prev => {
+    const next = new Set(prev);
+    if (next.has(tag)) next.delete(tag); else next.add(tag);
+    return next;
+  });
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22, maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
-      <AngularCard seed={61} style={{ transform: 'skewX(-1.5deg)' }}>
-        <div style={{ background: COLOR.panel, overflow: 'hidden' }}>
-          <div style={{ transform: 'skewX(1.5deg)' }}>
-            <ImageSlot src="/sinag.jpg" alt="Project SINAG" placeholder="PROJECT SINAG SCREENSHOT" style={{ width: '100%', height: 190, display: 'block' }} />
-            <div style={{ padding: '20px 22px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(26px,2.6vw,36px)' }}>PROJECT SINAG</span>
-                <span style={{ background: COLOR.accent, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', padding: '2px 10px', fontSize: 15 }}>TEAM McCODERS</span>
-              </div>
-              <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 17, lineHeight: 1.5, opacity: .9, margin: '10px 0 14px' }}>
-                Full-stack web product built as Team McCoders. Next.js on both ends, typed data with Prisma over PostgreSQL, styled with Tailwind &amp; shadcn/ui.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 16 }}>
-                <span style={{ border: `1px solid ${COLOR.accent}`, color: COLOR.accent, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>NEXT.JS</span>
-                <span style={{ border: `1px solid ${COLOR.tagBorder}`, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>TAILWIND</span>
-                <span style={{ border: `1px solid ${COLOR.tagBorder}`, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>SHADCN/UI</span>
-                <span style={{ border: `1px solid ${COLOR.tagBorder}`, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>NITRO</span>
-                <span style={{ border: `1px solid ${COLOR.tagBorder}`, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>PRISMA</span>
-                <span style={{ border: `1px solid ${COLOR.tagBorder}`, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>POSTGRESQL</span>
-              </div>
-              <a href="https://project-sinag.cjuy.dev/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: COLOR.ink, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', padding: '8px 18px', textDecoration: 'none', fontSize: 17 }}>VISIT SITE ►</a>
-            </div>
-          </div>
+    <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
+      {/* filter + sort bar */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 14, marginBottom: 26 }}>
+        {/* single row; overflowing chips scroll horizontally instead of wrapping.
+            minWidth: 0 lets the flex child shrink below its content width so the
+            overflow happens here, not on the page. */}
+        <div data-testid="filter-bar" style={{ display: 'flex', flexWrap: 'nowrap', gap: 8, flex: '1 1 auto', minWidth: 0, overflowX: 'auto', scrollbarWidth: 'thin', padding: '2px 0 6px' }}>
+          <button aria-pressed={selected.size === 0} onClick={() => setSelected(new Set())} style={{ ...chip(selected.size === 0), flexShrink: 0 }}>
+            <span style={unskew}>ALL</span>
+          </button>
+          {tags.map(tag => (
+            <button key={tag} aria-pressed={selected.has(tag)} onClick={() => toggleTag(tag)} style={{ ...chip(selected.has(tag)), flexShrink: 0 }}>
+              <span style={unskew}>{tag}</span>
+            </button>
+          ))}
         </div>
-      </AngularCard>
-      <AngularCard seed={62} style={{ transform: 'skewX(-1.5deg)' }}>
-        <div style={{ background: COLOR.panel, padding: 22, display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ transform: 'skewX(1.5deg)' }}>
-            <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(26px,2.6vw,36px)' }}>BLUE HACKS</span>
-            <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 17, lineHeight: 1.5, opacity: .9, margin: '10px 0 0' }}>
-              Hackathon competitor — building and shipping working products under pressure alongside a team, from idea to demo within the event window.
-            </p>
-            <div style={{ marginTop: 16, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              <span style={{ border: `1px solid ${COLOR.accent}`, color: COLOR.accent, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>HACKATHON</span>
-              <span style={{ border: `1px solid ${COLOR.tagBorder}`, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>FULL-STACK</span>
-              <span style={{ border: `1px solid ${COLOR.tagBorder}`, fontFamily: FONT.bebas, letterSpacing: '.1em', padding: '2px 9px', fontSize: 14 }}>TEAMWORK</span>
-            </div>
-          </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button aria-pressed={sort === 'newest'} onClick={() => setSort('newest')} style={chip(sort === 'newest')}>
+            <span style={unskew}>NEWEST</span>
+          </button>
+          <button aria-pressed={sort === 'alpha'} onClick={() => setSort('alpha')} style={chip(sort === 'alpha')}>
+            <span style={unskew}>A–Z</span>
+          </button>
         </div>
-      </AngularCard>
+      </div>
+
+      {shown.length === 0 ? (
+        <p style={themedLine}>NO TREASURES FOUND — TRY ANOTHER TAG</p>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22 }}>
+          {shown.map(p => <ProjectCard key={p.id} project={p} selectedTags={selected} />)}
+        </div>
+      )}
     </div>
   );
 }

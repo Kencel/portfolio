@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { Project } from '@/lib/projects';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
@@ -11,7 +12,7 @@ import { SplashScreen } from './SplashScreen';
 
 type View = 'menu' | SectionId;
 
-export function Portfolio() {
+export function Portfolio({ projects }: { projects: Project[] }) {
   const [view, setView] = useState<View>('menu');
   const [hovered, setHovered] = useState<number | null>(null);
   const [muted, setMuted] = useState(false);
@@ -70,7 +71,7 @@ export function Portfolio() {
       {view === 'menu'
         ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
             onEnter={enter} onOpen={open} narrow={narrow} />
-        : <SectionPanel view={view} onBack={goMenu} />}
+        : <SectionPanel view={view} onBack={goMenu} projects={projects} />}
       {splash && <SplashScreen onDone={splashDone} />}
     </div>
   );

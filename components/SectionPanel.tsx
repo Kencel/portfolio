@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import type { Project } from '@/lib/projects';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { RansomText } from './RansomText';
 import { CenterFrame } from './CenterFrame';
@@ -14,13 +15,13 @@ import { Skills } from './sections/Skills';
 import { Education } from './sections/Education';
 import { Contact } from './sections/Contact';
 
-const BODY: Record<SectionId, () => JSX.Element> = {
-  about: About, cp: Cp, projects: Projects, skills: Skills, education: Education, contact: Contact,
+const BODY: Record<Exclude<SectionId, 'projects'>, () => JSX.Element> = {
+  about: About, cp: Cp, skills: Skills, education: Education, contact: Contact,
 };
 
-export function SectionPanel({ view, onBack }: { view: SectionId; onBack: () => void }) {
+export function SectionPanel({ view, onBack, projects }: { view: SectionId; onBack: () => void; projects: Project[] }) {
   const cur = SECTIONS.find(s => s.id === view)!;
-  const Body = BODY[view];
+  const Body = view === 'projects' ? null : BODY[view];
 
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: COLOR.base, overflow: 'hidden' }}>
@@ -63,7 +64,7 @@ export function SectionPanel({ view, onBack }: { view: SectionId; onBack: () => 
             {/* divider — centered — PROTOTYPE 132 */}
             <div style={{ height: 4, background: COLOR.accent, margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
 
-            <Body />
+            {Body ? <Body /> : <Projects projects={projects} />}
           </CenterFrame>
         </div>
       </div>
