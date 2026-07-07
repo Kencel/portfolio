@@ -13,8 +13,15 @@ export interface Competition {
 
 // The Neon HTTP driver may hand back `date` columns as strings or Date objects
 // depending on type parsers; normalize both to yyyy-mm-dd.
+// Note: the driver parses date columns as local midnight (new Date(y, m-1, d)),
+// so we must derive the ISO string from local date parts, not toISOString().
 function isoDate(value: unknown): string | null {
-  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString().slice(0, 10);
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    const y = value.getFullYear();
+    const m = String(value.getMonth() + 1).padStart(2, '0');
+    const d = String(value.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
   if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) return value.slice(0, 10);
   return null;
 }

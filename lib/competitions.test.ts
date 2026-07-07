@@ -17,6 +17,10 @@ describe('mapCompetitionRow', () => {
     const out = mapCompetitionRow({ ...row, event_date: new Date('2026-05-01T00:00:00Z') });
     expect(out?.eventDate).toBe('2026-05-01');
   });
+  it('treats driver Date objects as local dates (Neon parses date columns to local midnight)', () => {
+    const out = mapCompetitionRow({ ...row, event_date: new Date(2026, 4, 1) }); // local midnight May 1
+    expect(out?.eventDate).toBe('2026-05-01');
+  });
   it('nulls optional fields that are missing or non-string', () => {
     const out = mapCompetitionRow({ id: 2, name: 'CCC 2023', event_date: '2023-02-01', result: '60 points', team: 7 });
     expect(out).toMatchObject({ team: null, placement: null, note: null, certImageUrl: null });
