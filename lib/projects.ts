@@ -17,7 +17,7 @@ function sanitizeLinkUrl(value: unknown): string | null {
   return value.startsWith('http://') || value.startsWith('https://') ? value : null;
 }
 
-function sanitizeImageUrl(value: unknown): string | null {
+export function sanitizeImageUrl(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   return value.startsWith('http://') || value.startsWith('https://') || value.startsWith('/') ? value : null;
 }
