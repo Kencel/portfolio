@@ -48,15 +48,18 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
         {hl.bestRank != null && hlChip('BEST RANK', `#${hl.bestRank}`)}
         {hl.biggestGain != null && hlChip('BIGGEST GAIN', hl.biggestGain >= 0 ? `+${hl.biggestGain}` : String(hl.biggestGain))}
         {hlChip('CONTESTS', String(hl.joined))}
-        <a href={config.handleUrl} target="_blank" rel="noreferrer" style={{ marginLeft: 'auto', fontFamily: FONT.oswald, fontSize: 14, color: COLOR.cfteal, alignSelf: 'center' }}>
-          @RamenNagi ►
+        <a href={config.handleUrl} target="_blank" rel="noreferrer"
+          style={{ marginLeft: 'auto', alignSelf: 'center', display: 'inline-block', transform: 'skewX(-8deg)',
+            backgroundColor: config.accent, color: COLOR.base, textDecoration: 'none',
+            fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 14, padding: '4px 12px' }}>
+          <span style={{ display: 'inline-block', transform: 'skewX(8deg)' }}>@RamenNagi ►</span>
         </a>
       </div>
       <div style={{ display: 'grid', gap: 24 }}>
         <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
-          detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} bands={config.bands} />
+          detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} bands={config.bands} accent={config.accent} />
         <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
-          value={c => c.performance} detail={c => `PERF ${c.performance}`} bands={config.bands} />
+          value={c => c.performance} detail={c => `PERF ${c.performance}`} bands={config.bands} accent={config.accent} />
         <CpBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} bands={config.bands} />
       </div>
     </div>

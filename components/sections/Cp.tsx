@@ -20,7 +20,7 @@ const CF_CONFIG: PlatformConfig = {
   handleUrl: 'https://codeforces.com/profile/RamenNagi', perfApprox: true, seedBase: 41,
 };
 const ATCODER_CONFIG: PlatformConfig = {
-  title: 'ATCODER', accent: '#C0C0C0', bands: ATCODER_BANDS,
+  title: 'ATCODER', accent: COLOR.atsilver, bands: ATCODER_BANDS,
   handleUrl: 'https://atcoder.jp/users/RamenNagi', perfApprox: false, seedBase: 51,
 };
 

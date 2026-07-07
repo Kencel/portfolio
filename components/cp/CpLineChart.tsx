@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { COLOR, FONT } from '@/lib/tokens';
+import { COLOR, FONT, POP } from '@/lib/tokens';
 import type { CpContest, RatingBand } from '@/lib/cp/types';
 
 const W = 640, H = 240;
@@ -17,12 +17,13 @@ export function yDomain(values: number[]): { lo: number; hi: number } {
   };
 }
 
-export function CpLineChart({ title, contests, value, detail, bands }: {
+export function CpLineChart({ title, contests, value, detail, bands, accent = COLOR.cfteal }: {
   title: string;
   contests: CpContest[];
   value: (c: CpContest) => number;
   detail: (c: CpContest) => string;
   bands: RatingBand[];
+  accent?: string; // platform accent for the popup's contest link
 }) {
   const [active, setActive] = useState<number | null>(null);
   if (contests.length === 0) return null;
@@ -40,9 +41,17 @@ export function CpLineChart({ title, contests, value, detail, bands }: {
     .filter(t => t >= lo && t <= hi).sort((a, b) => a - b);
   const cur = active == null ? null : contests[active];
 
+  // Popup anchor in percent of the chart box — the svg fills its wrapper and
+  // keeps the viewBox aspect ratio, so viewBox coords map 1:1 to percentages.
+  const xPct = active == null ? 0 : (x(active) / W) * 100;
+  const yPct = cur == null ? 0 : (y(value(cur)) / H) * 100;
+  // Clamp near the edges so the popup never overflows the chart horizontally.
+  const shiftX = xPct < 18 ? '0%' : xPct > 82 ? '-100%' : '-50%';
+
   return (
     <div>
       <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15, color: COLOR.ink, opacity: .85, marginBottom: 6 }}>{title}</div>
+      <div data-testid="chart-body" style={{ position: 'relative' }} onMouseLeave={() => setActive(null)}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={title}
         style={{ width: '100%', display: 'block', background: COLOR.trackBg, border: `1px solid ${COLOR.trackBorder}` }}>
         {visible.map(b => {
@@ -67,15 +76,22 @@ export function CpLineChart({ title, contests, value, detail, bands }: {
             onMouseEnter={() => setActive(i)} onClick={() => setActive(i)} />
         ))}
       </svg>
-      <div data-testid="chart-caption" style={{ minHeight: 24, fontFamily: FONT.oswald, fontSize: 14, marginTop: 6 }}>
-        {cur ? (
-          <>
-            <a href={cur.url} target="_blank" rel="noreferrer" style={{ color: COLOR.cfteal, fontWeight: 600 }}>{cur.name}</a>
-            <span style={{ opacity: .8 }}> · {cur.date} · {detail(cur)}</span>
-          </>
-        ) : (
-          <span style={{ opacity: .55 }}>HOVER A POINT FOR DETAILS</span>
-        )}
+      {cur && (
+        <div data-testid="chart-popup" style={{
+          position: 'absolute', left: `${xPct}%`, top: `${yPct}%`,
+          transform: `translate(${shiftX}, calc(-100% - 12px)) skewX(-3deg)`,
+          background: COLOR.panel, border: `1px solid ${COLOR.ink}`, boxShadow: POP.rowBase,
+          padding: '8px 14px', whiteSpace: 'nowrap', zIndex: 5,
+        }}>
+          <div style={{ transform: 'skewX(3deg)' }}>
+            <a href={cur.url} target="_blank" rel="noreferrer"
+              style={{ display: 'block', color: accent, fontFamily: FONT.bebas, letterSpacing: '.1em', fontSize: 15, textDecoration: 'none' }}>
+              {cur.name} ►
+            </a>
+            <div style={{ fontFamily: FONT.oswald, fontSize: 13, opacity: .8 }}>{cur.date} · {detail(cur)}</div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

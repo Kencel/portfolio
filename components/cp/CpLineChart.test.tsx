@@ -27,21 +27,30 @@ describe('CpLineChart', () => {
     bands: CF_BANDS,
   };
 
-  it('renders one point per contest and the default caption', () => {
+  it('renders one point per contest and no popup by default', () => {
     render(<CpLineChart {...props} />);
     expect(screen.getByTestId('pt-0')).toBeInTheDocument();
     expect(screen.getByTestId('pt-1')).toBeInTheDocument();
-    expect(screen.getByTestId('chart-caption')).toHaveTextContent(/HOVER A POINT/);
+    expect(screen.queryByTestId('chart-popup')).not.toBeInTheDocument();
   });
 
-  it('hovering a point shows linked name, date, and detail', () => {
-    render(<CpLineChart {...props} />);
+  it('hovering a point pops up linked name, date, and detail in the accent color', () => {
+    render(<CpLineChart {...props} accent="#123456" />);
     fireEvent.mouseEnter(screen.getByTestId('pt-1'));
-    const caption = screen.getByTestId('chart-caption');
-    const link = screen.getByRole('link', { name: 'Round B' });
+    const popup = screen.getByTestId('chart-popup');
+    const link = screen.getByRole('link', { name: /Round B/ });
     expect(link).toHaveAttribute('href', 'https://codeforces.com/contest/1901');
-    expect(caption).toHaveTextContent('2025-02-01');
-    expect(caption).toHaveTextContent('-15');
+    expect(link).toHaveStyle({ color: '#123456' });
+    expect(popup).toHaveTextContent('2025-02-01');
+    expect(popup).toHaveTextContent('-15');
+  });
+
+  it('leaving the chart area closes the popup', () => {
+    render(<CpLineChart {...props} />);
+    fireEvent.mouseEnter(screen.getByTestId('pt-0'));
+    expect(screen.getByTestId('chart-popup')).toBeInTheDocument();
+    fireEvent.mouseLeave(screen.getByTestId('chart-body'));
+    expect(screen.queryByTestId('chart-popup')).not.toBeInTheDocument();
   });
 
   it('renders nothing for an empty history', () => {

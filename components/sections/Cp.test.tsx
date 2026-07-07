@@ -40,6 +40,15 @@ describe('Cp tabs', () => {
     expect(screen.getByText(/PERFORMANCE.*APPROX/)).toBeInTheDocument(); // CF perf is approximated
   });
 
+  it('styles the profile link as a platform-accent chip', () => {
+    render(<Cp stats={stats} competitions={competitions} />);
+    const profile = screen.getByRole('link', { name: /@RamenNagi/ });
+    expect(profile).toHaveAttribute('href', 'https://codeforces.com/profile/RamenNagi');
+    expect(profile).toHaveStyle({ backgroundColor: '#17A2A2' }); // cfteal on the CF tab
+    fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
+    expect(screen.getByRole('link', { name: /@RamenNagi/ })).toHaveStyle({ backgroundColor: '#C0C0C0' });
+  });
+
   it('switches to AtCoder (official performance — no APPROX)', () => {
     render(<Cp stats={stats} competitions={competitions} />);
     fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
@@ -49,7 +58,7 @@ describe('Cp tabs', () => {
     expect(screen.queryByText(/APPROX/)).not.toBeInTheDocument();
   });
 
-  it('switches to Competitions, newest first, with team chips, notes, and cert link', () => {
+  it('switches to Competitions, newest first, with team chips, notes, and cert button', () => {
     render(<Cp stats={stats} competitions={competitions} />);
     fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
     const names = screen.getAllByTestId('competition-name').map(el => el.textContent);
@@ -57,7 +66,26 @@ describe('Cp tabs', () => {
     expect(screen.getByText('MAY 2026')).toBeInTheDocument();
     expect(screen.getByText('Team KMP')).toBeInTheDocument();
     expect(screen.getByText(/Certificate of Distinction/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /CERTIFICATE/ })).toHaveAttribute('href', '/algolympics2026_cert.jpg');
+    expect(screen.getByRole('button', { name: /VIEW CERTIFICATE/ })).toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('opens the certificate in a modal and closes via the close button', () => {
+    render(<Cp stats={stats} competitions={competitions} />);
+    fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
+    fireEvent.click(screen.getByRole('button', { name: /VIEW CERTIFICATE/ }));
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByRole('img', { name: /certificate/i })).toHaveAttribute('src', '/algolympics2026_cert.jpg');
+    fireEvent.click(screen.getByRole('button', { name: 'CLOSE' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('closes the certificate modal on backdrop click', () => {
+    render(<Cp stats={stats} competitions={competitions} />);
+    fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
+    fireEvent.click(screen.getByRole('button', { name: /VIEW CERTIFICATE/ }));
+    fireEvent.click(screen.getByTestId('cert-backdrop'));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('shows a themed fallback when a platform is null', () => {
