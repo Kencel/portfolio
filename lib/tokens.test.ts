@@ -16,6 +16,7 @@ describe('tokens', () => {
     expect(COLOR.trackBorder).toBe('#333');
     expect(COLOR.tagBorder).toBe('#444');
     expect(COLOR.cfteal).toBe('#17A2A2');
+    expect(COLOR.atsilver).toBe('#C0C0C0');
     expect(COLOR.discord).toBe('#5865F2');
   });
   it('exposes hard-shadow pop strings', () => {
