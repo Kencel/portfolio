@@ -14,7 +14,7 @@ const noop = () => {};
 
 function renderRoot(narrow: boolean) {
   const { container } = render(
-    <MenuView hovered={null} muted={false} onToggleMute={noop} onEnter={noop} onOpen={noop} narrow={narrow} />,
+    <MenuView hovered={null} muted={false} onToggleMute={noop} onEnter={noop} onOpen={noop} narrow={narrow} menuVisit={0} />,
   );
   return container.firstChild as HTMLElement;
 }

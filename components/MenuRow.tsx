@@ -8,12 +8,15 @@ import { COLOR, FONT, SKEW } from '@/lib/tokens';
 // PROTOTYPE lines 64-69, housed in a white encasing frame (AngularCard). The
 // skew + hover transform live on the frame, so the white border stays concentric
 // with the content and tracks the hover slide/scale as one unit.
-export function MenuRow({ section, index, hovered, onEnter, onOpen }: {
+export function MenuRow({ section, index, hovered, onEnter, onOpen, visit }: {
   section: Section; index: number; hovered: number | null;
-  onEnter: (i: number) => void; onOpen: (id: SectionId) => void;
+  onEnter: (i: number) => void; onOpen: (id: SectionId) => void; visit: number;
 }) {
   const st = rowState(hovered, index);
   const isHovered = hovered === index;
+  const entrance = visit > 0
+    ? `p5rowIn .3s cubic-bezier(.2,.9,.3,1) ${index * 0.055}s backwards`
+    : undefined;
   const boxBase: CSSProperties = {
     position: 'absolute', inset: -8, pointerEvents: 'none',
     opacity: 0.5, mixBlendMode: 'multiply',
@@ -36,6 +39,7 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen }: {
         style={{
           cursor: 'pointer', opacity: st.opacity, transform: st.transform,
           transition: 'transform .16s cubic-bezier(.2,.9,.3,1), opacity .16s',
+          animation: entrance,
         }}
       >
         <div style={{ background: st.background, color: st.color, padding: '9px 22px 9px 16px', transition: 'background .16s, color .16s' }}>

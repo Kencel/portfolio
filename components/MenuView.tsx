@@ -12,9 +12,9 @@ import { FitToViewport } from './FitToViewport';
 
 const CODENAME = 'RAMENNAGI';
 
-export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow }: {
+export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow, menuVisit }: {
   hovered: number | null; muted: boolean; onToggleMute: () => void;
-  onEnter: (i: number) => void; onOpen: (id: SectionId) => void; narrow?: boolean;
+  onEnter: (i: number) => void; onOpen: (id: SectionId) => void; narrow?: boolean; menuVisit: number;
 }) {
   const cf = useCodeforces();
   const { time, day } = useClock();
@@ -88,7 +88,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   const menuList = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(6px,1vh,11px)' }}>
       {SECTIONS.map((s, i) => (
-        <MenuRow key={s.id} section={s} index={i} hovered={hovered} onEnter={onEnter} onOpen={onOpen} />
+        <MenuRow key={`${s.id}-${menuVisit}`} section={s} index={i} hovered={hovered} onEnter={onEnter} onOpen={onOpen} visit={menuVisit} />
       ))}
     </div>
   );
