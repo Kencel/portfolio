@@ -9,14 +9,14 @@ html, body { margin: 0; padding: 0; background: #0b0a0a; }
 @keyframes p5splashReveal { from { transform: scale(1); } to { transform: scale(30); } }
 @keyframes p5splashFadeOut { from { opacity: 1; } to { opacity: 0; } }
 @keyframes p5hoverJitter {
-  0%   { scale: 1 1;       translate: 0 0; }
-  15%  { scale: 1.14 0.8;  translate: -3px 2px; }
-  27%  { scale: 0.86 1.16; translate: 4px -3px; }
-  41%  { scale: 1.2 0.9;   translate: -2px -4px; }
-  55%  { scale: 0.82 1.12; translate: 3px 3px; }
-  68%  { scale: 1.12 0.84; translate: -4px 1px; }
-  83%  { scale: 0.94 1.14; translate: 2px -2px; }
-  100% { scale: 1 1;       translate: 0 0; }
+  0%   { scale: 1 1; }
+  15%  { scale: 1.16 0.82; }
+  27%  { scale: 0.84 1.18; }
+  41%  { scale: 1.22 0.9; }
+  55%  { scale: 0.8 1.14; }
+  68%  { scale: 1.14 0.85; }
+  83%  { scale: 0.92 1.16; }
+  100% { scale: 1 1; }
 }
 
 ::-webkit-scrollbar { width: 10px; }
