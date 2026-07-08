@@ -22,6 +22,7 @@ export function Portfolio({ projects, competitions, cpStats }: {
   const [view, setView] = useState<View>('menu');
   const [hovered, setHovered] = useState<number | null>(null);
   const [muted, setMuted] = useState(false);
+  const [menuVisit, setMenuVisit] = useState(0);
   const sfx = useSfx(muted);
   const narrow = useIsNarrow();
 
@@ -37,7 +38,7 @@ export function Portfolio({ projects, competitions, cpStats }: {
   viewRef.current = view; hoveredRef.current = hovered;
 
   const open = useCallback((id: SectionId) => { sfx.confirm(); setView(id); }, [sfx]);
-  const goMenu = useCallback(() => { sfx.back(); setView('menu'); setHovered(null); }, [sfx]);
+  const goMenu = useCallback(() => { sfx.back(); setView('menu'); setHovered(null); setMenuVisit(v => v + 1); }, [sfx]);
   const enter = useCallback((i: number) => {
     setHovered(prev => { if (prev !== i) sfx.select(); return i; });
   }, [sfx]);
@@ -76,7 +77,7 @@ export function Portfolio({ projects, competitions, cpStats }: {
       <Backdrop />
       {view === 'menu'
         ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
-            onEnter={enter} onOpen={open} narrow={narrow} />
+            onEnter={enter} onOpen={open} narrow={narrow} menuVisit={menuVisit} />
         : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} cpStats={cpStats} />}
       {splash && <SplashScreen onDone={splashDone} />}
     </div>

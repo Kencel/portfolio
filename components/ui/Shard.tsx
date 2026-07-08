@@ -18,28 +18,25 @@ export function Shard({
   style?: CSSProperties;
 }) {
   return (
-    <>
-      <div
-        style={{
-          position: 'absolute',
-          pointerEvents: 'none',
-          background: fill ?? 'transparent',
-          opacity,
-          clipPath,
-          ...(border ? { border } : {}),
-          ...style,
-        }}
-      />
+    <div
+      style={{
+        position: 'absolute',
+        pointerEvents: 'none',
+        background: fill ?? 'transparent',
+        opacity,
+        clipPath,
+        ...(border ? { border } : {}),
+        ...style,
+      }}
+    >
       {dots && (
         <HalftoneLayer
           color={dots.color ?? COLOR.base}
           dotRadius={dots.radius ?? 1.6}
           gap={dots.gap ?? 12}
           opacity={dots.opacity ?? 0.22}
-          clipPath={clipPath}
-          style={style}
         />
       )}
-    </>
+    </div>
   );
 }

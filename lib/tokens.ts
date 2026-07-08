@@ -10,6 +10,8 @@ export const COLOR = {
   cfteal: '#17A2A2',
   atsilver: '#C0C0C0',
   discord: '#5865F2',
+  neonRed: '#FF1744',
+  neonCyan: '#00E5FF',
 } as const;
 
 export const POP = {

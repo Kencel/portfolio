@@ -8,6 +8,17 @@ html, body { margin: 0; padding: 0; background: #0b0a0a; }
 @keyframes p5splashSpin { 0% { transform: perspective(600px) rotateY(0deg) scale(.7); } 67% { transform: perspective(600px) rotateY(1080deg) scale(1.06); } 84% { transform: perspective(600px) rotateY(1080deg) scale(1); } 100% { transform: perspective(600px) rotateY(1080deg) scale(1); } }
 @keyframes p5splashReveal { from { transform: scale(1); } to { transform: scale(30); } }
 @keyframes p5splashFadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes p5hoverJitter {
+  0%    { scale: 1.1 0.88;  translate: 3px 2px; }
+  12.5% { scale: 0.86 1.16; translate: 4px -2px; }
+  25%   { scale: 1.2 0.84;  translate: 2px -4px; }
+  37.5% { scale: 0.82 1.12; translate: 3px 3px; }
+  50%   { scale: 1.15 0.9;  translate: 4px 1px; }
+  62.5% { scale: 0.88 1.18; translate: 2px -3px; }
+  75%   { scale: 1.18 0.82; translate: 1px 4px; }
+  87.5% { scale: 0.84 1.1;  translate: 3px -1px; }
+  100%  { scale: 1.1 0.88;  translate: 3px 2px; }
+}
 
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: #0b0a0a; }

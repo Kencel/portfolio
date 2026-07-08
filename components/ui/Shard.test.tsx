@@ -28,11 +28,13 @@ describe('Shard', () => {
     expect(el.style.border).toBe('3px solid rgb(228, 0, 43)');
   });
 
-  it('renders a companion dot overlay when dots is provided', () => {
+  it('renders the dot overlay nested inside the clipped shard when dots is provided', () => {
     const { container } = render(
       <Shard clipPath="polygon(0 0, 100% 0, 62% 100%, 0% 100%)" fill="#E4002B" dots={{}} />
     );
-    expect(container.children.length).toBe(2);
+    const shard = container.firstChild as HTMLElement;
+    expect(container.children.length).toBe(1);
+    expect(shard.children.length).toBe(1); // halftone nested inside, not a sibling
   });
 
   it('omits the dot overlay when dots is not provided', () => {
