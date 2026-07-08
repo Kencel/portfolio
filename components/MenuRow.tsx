@@ -1,8 +1,9 @@
 'use client';
+import type { CSSProperties } from 'react';
 import type { Section, SectionId } from '@/lib/data';
 import { rowState } from '@/lib/rowStyle';
 import { AngularCard } from './AngularCard';
-import { FONT, SKEW } from '@/lib/tokens';
+import { COLOR, FONT, SKEW } from '@/lib/tokens';
 
 // PROTOTYPE lines 64-69, housed in a white encasing frame (AngularCard). The
 // skew + hover transform live on the frame, so the white border stays concentric
@@ -12,25 +13,39 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen }: {
   onEnter: (i: number) => void; onOpen: (id: SectionId) => void;
 }) {
   const st = rowState(hovered, index);
+  const isHovered = hovered === index;
+  const boxBase: CSSProperties = {
+    position: 'absolute', inset: -8, pointerEvents: 'none',
+    opacity: 0.5, mixBlendMode: 'multiply',
+    animation: 'p5hoverSquish 1.1s ease-in-out infinite',
+  };
   return (
-    <AngularCard
-      pop={st.pop}
-      seed={index + 1}
-      rowMarker
-      onMouseEnter={() => onEnter(index)}
-      onClick={() => onOpen(section.id)}
-      style={{
-        cursor: 'pointer', opacity: st.opacity, transform: st.transform,
-        transition: 'transform .16s cubic-bezier(.2,.9,.3,1), opacity .16s',
-      }}
-    >
-      <div style={{ background: st.background, color: st.color, padding: '9px 22px 9px 16px', transition: 'background .16s, color .16s' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, transform: `skewX(${-SKEW.row}deg)` }}>
-          <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(14px,1.3vw,20px)', opacity: .65, minWidth: 34 }}>{section.n}</span>
-          <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(20px,2.7vw,38px)', lineHeight: .92, letterSpacing: '.005em' }}>{section.label}</span>
-          <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(12px,1.1vw,17px)', letterSpacing: '.18em', opacity: .7, alignSelf: 'center' }}>{section.sub}</span>
+    <div style={{ position: 'relative' }}>
+      {isHovered && (
+        <>
+          <div style={{ ...boxBase, background: COLOR.accent, transform: 'skewX(14deg) translateX(-10px)' }} />
+          <div style={{ ...boxBase, background: COLOR.cfteal, transform: 'skewX(-14deg) translateX(10px)', animationDelay: '-0.55s' }} />
+        </>
+      )}
+      <AngularCard
+        pop={st.pop}
+        seed={index + 1}
+        rowMarker
+        onMouseEnter={() => onEnter(index)}
+        onClick={() => onOpen(section.id)}
+        style={{
+          cursor: 'pointer', opacity: st.opacity, transform: st.transform,
+          transition: 'transform .16s cubic-bezier(.2,.9,.3,1), opacity .16s',
+        }}
+      >
+        <div style={{ background: st.background, color: st.color, padding: '9px 22px 9px 16px', transition: 'background .16s, color .16s' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, transform: `skewX(${-SKEW.row}deg)` }}>
+            <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(14px,1.3vw,20px)', opacity: .65, minWidth: 34 }}>{section.n}</span>
+            <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(20px,2.7vw,38px)', lineHeight: .92, letterSpacing: '.005em' }}>{section.label}</span>
+            <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(12px,1.1vw,17px)', letterSpacing: '.18em', opacity: .7, alignSelf: 'center' }}>{section.sub}</span>
+          </div>
         </div>
-      </div>
-    </AngularCard>
+      </AngularCard>
+    </div>
   );
 }
