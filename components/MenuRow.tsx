@@ -19,15 +19,14 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen, visit }: {
     : undefined;
   const boxBase: CSSProperties = {
     position: 'absolute', inset: -8, pointerEvents: 'none',
-    opacity: 0.5, mixBlendMode: 'multiply',
-    animation: 'p5hoverSquish 1.1s ease-in-out infinite',
+    opacity: 0.6, mixBlendMode: 'screen',
   };
   return (
     <div style={{ position: 'relative' }}>
       {isHovered && (
         <>
-          <div style={{ ...boxBase, background: COLOR.accent, transform: 'skewX(14deg) translateX(-10px)' }} />
-          <div style={{ ...boxBase, background: COLOR.cfteal, transform: 'skewX(-14deg) translateX(10px)', animationDelay: '-0.55s' }} />
+          <div style={{ ...boxBase, background: COLOR.neonRed, transform: 'skewX(14deg) translateX(-10px)', animation: 'p5hoverJitter .7s ease-in-out infinite' }} />
+          <div style={{ ...boxBase, background: COLOR.neonCyan, transform: 'skewX(-14deg) translateX(10px)', animation: 'p5hoverJitter .95s ease-in-out infinite reverse', animationDelay: '-0.3s' }} />
         </>
       )}
       <AngularCard

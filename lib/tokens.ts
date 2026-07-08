@@ -9,6 +9,8 @@ export const COLOR = {
   tagBorder: '#444',
   cfteal: '#17A2A2',
   discord: '#5865F2',
+  neonRed: '#FF1744',
+  neonCyan: '#00E5FF',
 } as const;
 
 export const POP = {
