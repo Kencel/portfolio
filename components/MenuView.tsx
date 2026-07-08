@@ -96,6 +96,11 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   const avatarCluster = (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, transform: 'skewX(-6deg)' }}>
       <div style={{ position: 'relative' }}>
+        <div style={{
+          position: 'absolute', inset: -14, transform: 'skewX(8deg) translate(14px, 16px)',
+          background: '#000', border: '1px solid rgba(244,241,234,.25)',
+          clipPath: 'polygon(10% 0, 100% 4%, 94% 100%, 0 92%)', pointerEvents: 'none',
+        }} />
         <div style={{ position: 'absolute', inset: -14, background: COLOR.accent, clipPath: 'polygon(14% 0, 100% 6%, 92% 100%, 0 90%)' }} />
         <ImageSlot
           src="/avatar.jpg"
