@@ -25,8 +25,8 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen, visit }: {
     <div style={{ position: 'relative' }}>
       {isHovered && (
         <>
-          <div style={{ ...boxBase, background: COLOR.neonRed, transform: 'skewX(14deg) translateX(-10px)', animation: 'p5hoverJitter .45s ease-in-out infinite' }} />
-          <div style={{ ...boxBase, background: COLOR.neonCyan, transform: 'skewX(-14deg) translateX(10px)', animation: 'p5hoverJitter .65s ease-in-out infinite reverse', animationDelay: '-0.2s' }} />
+          <div style={{ ...boxBase, background: COLOR.neonRed, transform: 'skewX(14deg) translateX(-10px)', animation: 'p5hoverJitter 1.4s linear infinite' }} />
+          <div style={{ ...boxBase, background: COLOR.neonCyan, transform: 'skewX(-14deg) translateX(10px)', animation: 'p5hoverJitter 1.4s linear infinite reverse', animationDelay: '-0.2s' }} />
         </>
       )}
       <AngularCard
