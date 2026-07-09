@@ -25,11 +25,16 @@ export function Backdrop() {
         opacity={.35}
         style={{ bottom: '-30%', right: '-6%', width: '46%', height: '80%', transform: 'rotate(-4deg)' }}
       />
-      {/* marquee band — lines 40–45 */}
+      {/* marquee band — lines 40–45.
+          Two identical groups + a -50% translate = seamless loop. Each group must
+          be at least as wide as the band (130vw) or a blank gap scrolls through on
+          wide screens; MARQUEE is ~1000px, so 6 copies (~6000px) covers past 4K.
+          Duration scales with copy count to keep velocity constant: 34s was tuned
+          for 2 copies, so 6 copies → 102s. Change both together. */}
       <div style={{ position: 'absolute', bottom: '6%', left: '-10%', width: '130%', transform: 'rotate(-4deg)', overflow: 'hidden', pointerEvents: 'none', opacity: .9, zIndex: 1 }}>
-        <div style={{ display: 'flex', width: 'max-content', whiteSpace: 'nowrap', animation: 'p5marquee 34s linear infinite', background: COLOR.base, borderTop: `2px solid ${COLOR.accent}`, borderBottom: `2px solid ${COLOR.accent}` }}>
-          <span style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE}{MARQUEE}</span>
-          <span aria-hidden style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE}{MARQUEE}</span>
+        <div style={{ display: 'flex', width: 'max-content', whiteSpace: 'nowrap', animation: 'p5marquee 102s linear infinite', background: COLOR.base, borderTop: `2px solid ${COLOR.accent}`, borderBottom: `2px solid ${COLOR.accent}` }}>
+          <span style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE.repeat(6)}</span>
+          <span aria-hidden style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE.repeat(6)}</span>
         </div>
       </div>
     </>

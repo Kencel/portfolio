@@ -73,12 +73,13 @@ inline styles built from these tokens. Visuals (radar chart, progress bars) are
 hand-built SVG — prefer that over adding a charting dependency; it matches the
 angular aesthetic and keeps the bundle lean.
 
-**Live stats with offline fallbacks.** Two coexisting paths: the menu HUD
-fetches Codeforces rating client-side (`lib/codeforces.ts`) with hardcoded
-fallbacks in `lib/data.ts` (`CF_DEFAULTS`); the COMP. PROG dashboard gets its
-richer stats server-side at ISR time (`lib/cp/`, rendered by `components/cp/`).
-Any new external data source should follow the same pattern: fallback first,
-live data as enhancement.
+**Live stats with offline fallbacks.** The COMP. PROG dashboard gets its
+stats server-side at ISR time (`lib/cp/`, rendered by `components/cp/`). A
+client-side Codeforces fetcher with hardcoded fallbacks also exists
+(`lib/codeforces.ts`, `CF_DEFAULTS` in `lib/data.ts`) — kept for reuse, though
+the menu HUD no longer surfaces CF stats (they'd duplicate COMP. PROG). Any new
+external data source should follow the same pattern: fallback first, live data
+as enhancement.
 
 ## Content guardrails
 

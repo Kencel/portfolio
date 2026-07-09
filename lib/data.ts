@@ -27,7 +27,7 @@ export const CF_HANDLE = 'RamenNagi';
 export const CF_DEFAULTS = { rating: 1445, maxRating: 1452, rank: 'Specialist' };
 export const SOLVED = 472;
 export const MARQUEE =
-  'RAMENNAGI  ✦  PHANTOM THIEF OF ALGORITHMS  ✦  TAKE YOUR HEART  ✦  SPECIALIST  ✦  472 SOLVED  ✦ ';
+  'RAMENNAGI  ✦  COMPUTER SCIENCE @ ATENEO  ✦  COMPETITIVE PROGRAMMER  ✦  PROBLEM SOLVER  ✦ ';
 
 export interface Attribute { axis: string; value: number }
 
