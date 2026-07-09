@@ -2,10 +2,6 @@ import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { MenuView } from './MenuView';
 
-vi.mock('@/lib/codeforces', () => ({
-  useCodeforces: () => ({ rating: 1900, maxRating: 1950, rank: 'candidate master' }),
-  cmProgressPct: () => 50,
-}));
 vi.mock('@/lib/useClock', () => ({
   useClock: () => ({ time: '12:00', day: 'MON' }),
 }));

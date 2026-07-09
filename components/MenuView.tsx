@@ -1,6 +1,5 @@
 'use client';
-import { SECTIONS, SOLVED, type SectionId } from '@/lib/data';
-import { useCodeforces, cmProgressPct } from '@/lib/codeforces';
+import { SECTIONS, type SectionId } from '@/lib/data';
 import { useClock } from '@/lib/useClock';
 import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
@@ -16,40 +15,40 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   hovered: number | null; muted: boolean; onToggleMute: () => void;
   onEnter: (i: number) => void; onOpen: (id: SectionId) => void; narrow?: boolean; menuVisit: number;
 }) {
-  const cf = useCodeforces();
   const { time, day } = useClock();
 
-  // status bars — PROTOTYPE lines 75-84 (shared between desktop in-column and narrow flow placements)
-  const statusBars = (
-    <AngularCard seed={11} style={{ width: 'min(360px,100%)' }}>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: COLOR.panel, padding: '16px 20px' }}>
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
-          <span>CF RATING</span>
-          <span style={{ color: COLOR.accent }}>{cf.rating} / MAX {cf.maxRating}</span>
-        </div>
-        <div style={{ height: 11, background: COLOR.trackBg, transform: 'skewX(-18deg)', border: `1px solid ${COLOR.trackBorder}` }}>
-          <div style={{ height: '100%', width: cmProgressPct(cf.rating) + '%', background: COLOR.accent }} />
-        </div>
-      </div>
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, marginBottom: 2 }}>
-          <span>PROBLEMS SOLVED</span>
-          <span style={{ color: COLOR.ink }}>{SOLVED}</span>
-        </div>
-        <div style={{ height: 11, background: COLOR.trackBg, transform: 'skewX(-18deg)', border: `1px solid ${COLOR.trackBorder}` }}>
-          <div style={{ height: '100%', width: '72%', background: COLOR.ink }} />
-        </div>
+  // current-focus card — mirrors the AngularCard + panel shell the sections use.
+  // Replaces the old CF/solved stat bars (those stats live in COMP. PROG now).
+  // Copy is grounded in the About section — evergreen, no stale numbers.
+  const STATUS: [string, string][] = [
+    ['LEARNING', 'AI/ML & DATA SCIENCE'],
+    ['BUILDING', 'THIS SITE'],
+    ['GRINDING', 'COMPETITIVE PROGRAMMING'],
+  ];
+  const statusCard = (
+    <AngularCard seed={11} style={{ width: 'min(360px,100%)', transform: 'skewX(-4deg)' }}>
+    <div style={{ background: COLOR.panel, padding: '18px 22px' }}>
+      <div style={{ transform: 'skewX(4deg)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {STATUS.map(([k, v]) => (
+          <div key={k} style={{ display: 'flex', justifyContent: 'space-between', gap: 16, fontFamily: FONT.bebas, letterSpacing: '.12em', fontSize: 18 }}>
+            <span style={{ color: COLOR.accent }}>{k}</span>
+            <span style={{ textAlign: 'right' }}>{v}</span>
+          </div>
+        ))}
       </div>
     </div>
     </AngularCard>
   );
 
   // reusable fragments (composed differently for desktop vs narrow)
+  // top-HUD controls — matched to the sections' skill-chip idiom
+  // (row bg, tag border, hard POP.rowBase offset shadow, skew).
   const controlsHint = (
-    <div style={{ fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, display: 'inline-flex', gap: 14, background: COLOR.base, padding: '6px 12px', border: `1px solid ${COLOR.trackBorder}` }}>
-      <span><span style={{ color: COLOR.accent }}>↑↓</span> SELECT</span>
-      <span><span style={{ color: COLOR.accent }}>Z</span> OPEN</span>
+    <div style={{ fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14, display: 'inline-flex', gap: 14, background: COLOR.row, padding: '7px 14px', border: `2px solid ${COLOR.tagBorder}`, boxShadow: POP.rowBase, transform: 'skewX(-6deg)' }}>
+      <span style={{ display: 'inline-flex', gap: 14, transform: 'skewX(6deg)' }}>
+        <span><span style={{ color: COLOR.accent }}>↑↓</span> SELECT</span>
+        <span><span style={{ color: COLOR.accent }}>Z</span> OPEN</span>
+      </span>
     </div>
   );
 
@@ -58,8 +57,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
       onClick={onToggleMute}
       style={{
         fontFamily: FONT.bebas, border: `2px solid ${COLOR.accent}`,
-        background: COLOR.base, color: COLOR.ink, padding: '6px 12px', letterSpacing: '.16em',
-        fontSize: 14, transform: 'skewX(-6deg)', cursor: 'pointer',
+        background: COLOR.row, color: COLOR.ink, padding: '7px 14px', letterSpacing: '.16em',
+        fontSize: 14, transform: 'skewX(-6deg)', boxShadow: POP.rowBase, cursor: 'pointer',
       }}
     >
       {!muted ? '♪ SFX ON' : 'SFX MUTED'}
@@ -68,8 +67,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
 
   const clockBlock = (
     <div style={{ textAlign: 'right', transform: 'skewX(-6deg)', marginRight: 'clamp(20px,7vw,120px)' }}>
-      <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: `3px 3px 0 ${COLOR.accent}` }}>{time}</div>
-      <div style={{ fontFamily: FONT.bebas, letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.accent }}>{day} · TAKE YOUR TIME</div>
+      <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: '3px 3px 0 rgba(0,0,0,.9)' }}>{time}</div>
+      <div style={{ fontFamily: FONT.bebas, letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.ink }}>{day} · TAKE YOUR TIME</div>
     </div>
   );
 
@@ -79,7 +78,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         <RansomText text={CODENAME} />
       </div>
       <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 14, transform: 'skewX(-8deg)', flexWrap: 'wrap' }}>
-        <span style={{ background: COLOR.accent, color: COLOR.base, fontFamily: FONT.bebas, fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '3px 12px' }}>CS · ATENEO DE MANILA</span>
+        <span style={{ background: COLOR.ink, color: COLOR.accent, fontFamily: FONT.bebas, fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '3px 12px' }}>CS · ATENEO DE MANILA</span>
         <span style={{ border: `2px solid ${COLOR.ink}`, fontFamily: FONT.bebas, fontSize: 'clamp(15px,1.5vw,22px)', letterSpacing: '.14em', padding: '2px 12px' }}>COMPETITIVE PROGRAMMER</span>
       </div>
     </div>
@@ -96,12 +95,8 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   const avatarCluster = (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, transform: 'skewX(-6deg)' }}>
       <div style={{ position: 'relative' }}>
-        <div style={{
-          position: 'absolute', inset: -14, transform: 'skewX(8deg) translate(14px, 16px)',
-          background: '#000', border: '1px solid rgba(244,241,234,.25)',
-          clipPath: 'polygon(10% 0, 100% 4%, 94% 100%, 0 92%)', pointerEvents: 'none',
-        }} />
-        <div style={{ position: 'absolute', inset: -14, background: COLOR.accent, clipPath: 'polygon(14% 0, 100% 6%, 92% 100%, 0 90%)' }} />
+        {/* red frame with the same hard offset pop the AngularCards use (POP.black) */}
+        <div style={{ position: 'absolute', inset: -14, background: COLOR.accent, clipPath: 'polygon(14% 0, 100% 6%, 92% 100%, 0 90%)', filter: `drop-shadow(${POP.black})` }} />
         <ImageSlot
           src="/avatar.jpg"
           alt="RAMENNAGI"
@@ -131,7 +126,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
           <div>{muteButton}</div>
           {menuList}
           <div style={{ marginTop: 'clamp(10px,2vh,20px)' }}>{avatarCluster}</div>
-          {statusBars}
+          {statusCard}
         </div>
       ) : (
         // desktop: centered frame — HUD strip, two columns, footer strip.
@@ -156,9 +151,9 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
             </div>
           </div>
 
-          {/* footer strip: status bars left, clock right */}
+          {/* footer strip: status card left, clock right */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 'clamp(20px,3vw,48px)', marginTop: 'clamp(20px,3vh,40px)' }}>
-            <div style={{ flex: '1 1 auto' }}>{statusBars}</div>
+            <div style={{ flex: '1 1 auto' }}>{statusCard}</div>
             {clockBlock}
           </div>
         </CenterFrame>
