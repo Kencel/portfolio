@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { HoverQuad } from '@/components/ui/HoverQuad';
 import { chip, unskew } from '@/lib/chipStyle';
 import { COLOR, FONT } from '@/lib/tokens';
 import { CF_BANDS, ATCODER_BANDS } from '@/lib/cp/bands';
@@ -34,10 +35,12 @@ export function Cp({ stats, competitions }: { stats: CpStats; competitions: Comp
   return (
     <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 26 }}>
-        {TABS.map(t => (
-          <button key={t.id} aria-pressed={tab === t.id} onClick={() => setTab(t.id)} style={chip(tab === t.id)}>
-            <span style={unskew}>{t.label}</span>
-          </button>
+        {TABS.map((t, i) => (
+          <HoverQuad key={t.id} seed={20 + i}>
+            <button aria-pressed={tab === t.id} onClick={() => setTab(t.id)} style={chip(tab === t.id)}>
+              <span style={unskew}>{t.label}</span>
+            </button>
+          </HoverQuad>
         ))}
       </div>
       {tab === 'cf' && (stats.cf
