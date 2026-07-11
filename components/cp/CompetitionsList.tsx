@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { AngularCard } from '@/components/AngularCard';
 import { SkewBox } from '@/components/ui/SkewBox';
+import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT, POP } from '@/lib/tokens';
 import { formatMonthYear, type Competition } from '@/lib/competitions';
 
@@ -36,10 +37,12 @@ export function CompetitionsList({ competitions }: { competitions: Competition[]
               </div>
               {c.note && <div style={{ fontFamily: FONT.oswald, fontSize: 14, opacity: .75, marginTop: 4 }}>{c.note}</div>}
               {c.certImageUrl && (
-                <button onClick={() => setCert(c)}
-                  style={{ display: 'inline-block', marginTop: 12, fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 14, color: COLOR.base, background: COLOR.ink, padding: '4px 12px', border: 'none', cursor: 'pointer' }}>
-                  VIEW CERTIFICATE ►
-                </button>
+                <HoverQuad seed={80 + c.id} style={{ display: 'inline-block', marginTop: 12 }}>
+                  <button onClick={() => setCert(c)}
+                    style={{ display: 'inline-block', fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 14, color: COLOR.base, background: COLOR.ink, padding: '4px 12px', border: 'none', cursor: 'pointer' }}>
+                    VIEW CERTIFICATE ►
+                  </button>
+                </HoverQuad>
               )}
             </div>
           </div>
@@ -57,10 +60,12 @@ export function CompetitionsList({ competitions }: { competitions: Competition[]
             <img src={cert.certImageUrl} alt={`${cert.name} certificate`}
               style={{ display: 'block', maxWidth: 'min(84vw, 880px)', maxHeight: '76vh' }} />
           </SkewBox>
-          <button aria-label="CLOSE" onClick={() => setCert(null)}
-            style={{ position: 'absolute', top: -32, right: -34, zIndex: 1, background: COLOR.base, color: COLOR.ink, border: `2px solid ${COLOR.ink}`, fontFamily: FONT.bebas, fontSize: 18, lineHeight: 1, padding: '7px 11px', cursor: 'pointer', transform: 'skewX(-4deg)' }}>
-            ✕
-          </button>
+          <HoverQuad seed={8} style={{ position: 'absolute', top: -32, right: -34, zIndex: 1 }}>
+            <button aria-label="CLOSE" onClick={() => setCert(null)}
+              style={{ background: COLOR.base, color: COLOR.ink, border: `2px solid ${COLOR.ink}`, fontFamily: FONT.bebas, fontSize: 18, lineHeight: 1, padding: '7px 11px', cursor: 'pointer', transform: 'skewX(-4deg)' }}>
+              ✕
+            </button>
+          </HoverQuad>
         </div>
       </div>
     )}
