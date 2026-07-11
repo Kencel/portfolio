@@ -20,6 +20,42 @@ html, body { margin: 0; padding: 0; background: #0b0a0a; }
   100%  { scale: 1.1 0.88;  translate: 3px 2px; }
 }
 
+/* Corner jitter for HoverQuad: only clip-path polygon vertices move (px via
+   calc so the excursion is size-independent); 8 even steps, 100% = 0%. */
+@keyframes p5quadJitterA {
+  0%    { clip-path: polygon(2px 4px, calc(100% - 5px) 2px, calc(100% - 2px) calc(100% - 6px), 5px calc(100% - 1px)); }
+  12.5% { clip-path: polygon(6px 1px, calc(100% - 2px) 5px, calc(100% - 6px) calc(100% - 2px), 1px calc(100% - 5px)); }
+  25%   { clip-path: polygon(1px 5px, calc(100% - 6px) 0px, calc(100% - 1px) calc(100% - 4px), 4px calc(100% - 6px)); }
+  37.5% { clip-path: polygon(5px 2px, calc(100% - 1px) 6px, calc(100% - 4px) calc(100% - 1px), 6px calc(100% - 3px)); }
+  50%   { clip-path: polygon(0px 6px, calc(100% - 4px) 1px, calc(100% - 5px) calc(100% - 5px), 2px calc(100% - 0px)); }
+  62.5% { clip-path: polygon(4px 0px, calc(100% - 6px) 4px, calc(100% - 0px) calc(100% - 2px), 5px calc(100% - 6px)); }
+  75%   { clip-path: polygon(6px 3px, calc(100% - 3px) 6px, calc(100% - 3px) calc(100% - 6px), 0px calc(100% - 2px)); }
+  87.5% { clip-path: polygon(3px 6px, calc(100% - 0px) 3px, calc(100% - 6px) calc(100% - 0px), 3px calc(100% - 4px)); }
+  100%  { clip-path: polygon(2px 4px, calc(100% - 5px) 2px, calc(100% - 2px) calc(100% - 6px), 5px calc(100% - 1px)); }
+}
+@keyframes p5quadJitterB {
+  0%    { clip-path: polygon(5px 1px, calc(100% - 2px) 4px, calc(100% - 5px) calc(100% - 1px), 2px calc(100% - 6px)); }
+  12.5% { clip-path: polygon(1px 4px, calc(100% - 6px) 1px, calc(100% - 1px) calc(100% - 5px), 6px calc(100% - 2px)); }
+  25%   { clip-path: polygon(4px 6px, calc(100% - 1px) 5px, calc(100% - 4px) calc(100% - 0px), 0px calc(100% - 4px)); }
+  37.5% { clip-path: polygon(0px 2px, calc(100% - 4px) 0px, calc(100% - 6px) calc(100% - 3px), 5px calc(100% - 5px)); }
+  50%   { clip-path: polygon(6px 5px, calc(100% - 0px) 2px, calc(100% - 2px) calc(100% - 6px), 3px calc(100% - 0px)); }
+  62.5% { clip-path: polygon(2px 0px, calc(100% - 5px) 6px, calc(100% - 0px) calc(100% - 2px), 6px calc(100% - 3px)); }
+  75%   { clip-path: polygon(5px 3px, calc(100% - 3px) 1px, calc(100% - 5px) calc(100% - 4px), 1px calc(100% - 6px)); }
+  87.5% { clip-path: polygon(3px 5px, calc(100% - 6px) 3px, calc(100% - 1px) calc(100% - 0px), 4px calc(100% - 1px)); }
+  100%  { clip-path: polygon(5px 1px, calc(100% - 2px) 4px, calc(100% - 5px) calc(100% - 1px), 2px calc(100% - 6px)); }
+}
+@keyframes p5quadJitterC {
+  0%    { clip-path: polygon(3px 6px, calc(100% - 4px) 3px, calc(100% - 1px) calc(100% - 2px), 6px calc(100% - 4px)); }
+  12.5% { clip-path: polygon(0px 3px, calc(100% - 1px) 6px, calc(100% - 5px) calc(100% - 6px), 2px calc(100% - 1px)); }
+  25%   { clip-path: polygon(5px 0px, calc(100% - 5px) 2px, calc(100% - 3px) calc(100% - 0px), 0px calc(100% - 5px)); }
+  37.5% { clip-path: polygon(2px 5px, calc(100% - 0px) 0px, calc(100% - 6px) calc(100% - 4px), 4px calc(100% - 2px)); }
+  50%   { clip-path: polygon(6px 2px, calc(100% - 3px) 5px, calc(100% - 0px) calc(100% - 6px), 1px calc(100% - 0px)); }
+  62.5% { clip-path: polygon(1px 0px, calc(100% - 6px) 3px, calc(100% - 4px) calc(100% - 1px), 5px calc(100% - 6px)); }
+  75%   { clip-path: polygon(4px 4px, calc(100% - 2px) 6px, calc(100% - 2px) calc(100% - 5px), 3px calc(100% - 3px)); }
+  87.5% { clip-path: polygon(0px 1px, calc(100% - 4px) 1px, calc(100% - 6px) calc(100% - 3px), 6px calc(100% - 5px)); }
+  100%  { clip-path: polygon(3px 6px, calc(100% - 4px) 3px, calc(100% - 1px) calc(100% - 2px), 6px calc(100% - 4px)); }
+}
+
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: #0b0a0a; }
 ::-webkit-scrollbar-thumb { background: #E4002B; }
