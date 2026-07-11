@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT, POP } from '@/lib/tokens';
 import type { CpContest, RatingBand } from '@/lib/cp/types';
 
@@ -84,10 +85,12 @@ export function CpLineChart({ title, contests, value, detail, bands, accent = CO
           padding: '8px 14px', whiteSpace: 'nowrap', zIndex: 5,
         }}>
           <div style={{ transform: 'skewX(3deg)' }}>
-            <a href={cur.url} target="_blank" rel="noreferrer"
-              style={{ display: 'block', color: accent, fontFamily: FONT.bebas, letterSpacing: '.1em', fontSize: 15, textDecoration: 'none' }}>
-              {cur.name} ►
-            </a>
+            <HoverQuad seed={9}>
+              <a href={cur.url} target="_blank" rel="noreferrer"
+                style={{ display: 'block', color: accent, fontFamily: FONT.bebas, letterSpacing: '.1em', fontSize: 15, textDecoration: 'none' }}>
+                {cur.name} ►
+              </a>
+            </HoverQuad>
             <div style={{ fontFamily: FONT.oswald, fontSize: 13, opacity: .8 }}>{cur.date} · {detail(cur)}</div>
           </div>
         </div>
