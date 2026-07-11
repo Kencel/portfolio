@@ -9,6 +9,7 @@ import { CenterFrame } from './CenterFrame';
 import { HalftoneLayer } from './ui/HalftoneLayer';
 import { Shard } from './ui/Shard';
 import { SkewBox } from './ui/SkewBox';
+import { HoverQuad } from './ui/HoverQuad';
 import { COLOR, FONT, SKEW } from '@/lib/tokens';
 import { About } from './sections/About';
 import { Cp } from './sections/Cp';
@@ -51,13 +52,15 @@ export function SectionPanel({ view, onBack, projects, competitions, cpStats }: 
           <CenterFrame maxWidth={1180}>
             {/* header — centered — PROTOTYPE 122-130 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <SkewBox
-                deg={SKEW.panel}
-                onClick={onBack}
-                style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: COLOR.ink, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 18, padding: '7px 16px' }}
-              >
-                <span>◄ BACK</span>
-              </SkewBox>
+              <HoverQuad seed={1} clickSound="none">
+                <SkewBox
+                  deg={SKEW.panel}
+                  onClick={onBack}
+                  style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, background: COLOR.ink, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 18, padding: '7px 16px' }}
+                >
+                  <span>◄ BACK</span>
+                </SkewBox>
+              </HoverQuad>
               <div style={{ transform: `skewX(${SKEW.panel}deg)` }}>
                 <div style={{ fontFamily: FONT.bebas, letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.accent }}>{cur.sub}</div>
                 <div style={{ transform: `skewX(${-SKEW.panel}deg)`, fontSize: 'clamp(38px,6vw,84px)', lineHeight: .9, marginTop: 6 }}>

@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { MenuView } from './MenuView';
 
@@ -26,5 +26,14 @@ describe('MenuView layout', () => {
     const root = renderRoot(true);
     expect(root.style.height).not.toBe('100vh');
     expect(root.style.overflowY).not.toBe('hidden');
+  });
+
+  it('shows a hover quad on the mute button on mouse enter', () => {
+    render(
+      <MenuView hovered={null} muted={false} onToggleMute={noop} onEnter={noop} onOpen={noop} narrow={false} menuVisit={0} />,
+    );
+    const btn = screen.getAllByText('♪ SFX ON')[0];
+    fireEvent.mouseEnter(btn.parentElement!.parentElement!);
+    expect(screen.getByTestId('hover-quad')).toBeInTheDocument();
   });
 });
