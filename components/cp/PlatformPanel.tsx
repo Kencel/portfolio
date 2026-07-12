@@ -1,5 +1,6 @@
 'use client';
 import { AngularCard } from '@/components/AngularCard';
+import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT } from '@/lib/tokens';
 import { highlights } from '@/lib/cp/stats';
 import type { PlatformStats, RatingBand } from '@/lib/cp/types';
@@ -48,12 +49,14 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
         {hl.bestRank != null && hlChip('BEST RANK', `#${hl.bestRank}`)}
         {hl.biggestGain != null && hlChip('BIGGEST GAIN', hl.biggestGain >= 0 ? `+${hl.biggestGain}` : String(hl.biggestGain))}
         {hlChip('CONTESTS', String(hl.joined))}
-        <a href={config.handleUrl} target="_blank" rel="noreferrer"
-          style={{ marginLeft: 'auto', alignSelf: 'center', display: 'inline-block', transform: 'skewX(-8deg)',
-            backgroundColor: config.accent, color: COLOR.base, textDecoration: 'none',
-            fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 14, padding: '4px 12px' }}>
-          <span style={{ display: 'inline-block', transform: 'skewX(8deg)' }}>@RamenNagi ►</span>
-        </a>
+        <HoverQuad seed={config.seedBase + 3} style={{ marginLeft: 'auto', alignSelf: 'center' }}>
+          <a href={config.handleUrl} target="_blank" rel="noreferrer"
+            style={{ display: 'inline-block', transform: 'skewX(-8deg)',
+              backgroundColor: config.accent, color: COLOR.base, textDecoration: 'none',
+              fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 14, padding: '4px 12px' }}>
+            <span style={{ display: 'inline-block', transform: 'skewX(8deg)' }}>@RamenNagi ►</span>
+          </a>
+        </HoverQuad>
       </div>
       <div style={{ display: 'grid', gap: 24 }}>
         <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}

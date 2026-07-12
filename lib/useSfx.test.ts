@@ -23,4 +23,16 @@ describe('createSfx', () => {
     sfx.select(); sfx.confirm(); sfx.back();
     expect(ctx.createOscillator).not.toHaveBeenCalled();
   });
+  it('hover and tap create oscillators when not muted', () => {
+    const { Ctor, ctx } = fakeAudioCtx();
+    const sfx = createSfx(() => false, Ctor);
+    sfx.hover(); sfx.tap();
+    expect(ctx.createOscillator).toHaveBeenCalledTimes(2);
+  });
+  it('hover and tap are silent when muted', () => {
+    const { Ctor, ctx } = fakeAudioCtx();
+    const sfx = createSfx(() => true, Ctor);
+    sfx.hover(); sfx.tap();
+    expect(ctx.createOscillator).not.toHaveBeenCalled();
+  });
 });

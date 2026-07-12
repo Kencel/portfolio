@@ -1,6 +1,7 @@
 'use client';
 import { ImageSlot } from '@/components/ImageSlot';
 import { AngularCard } from '@/components/AngularCard';
+import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT } from '@/lib/tokens';
 import type { Project } from '@/lib/projects';
 
@@ -37,10 +38,12 @@ export function ProjectCard({ project, selectedTags }: {
               })}
             </div>
             {project.linkUrl && (
-              <a href={project.linkUrl} target="_blank" rel="noopener noreferrer"
-                 style={{ display: 'inline-block', background: COLOR.ink, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', padding: '8px 18px', textDecoration: 'none', fontSize: 17 }}>
-                VISIT SITE ►
-              </a>
+              <HoverQuad seed={60 + project.id} style={{ display: 'inline-block' }}>
+                <a href={project.linkUrl} target="_blank" rel="noopener noreferrer"
+                   style={{ display: 'inline-block', background: COLOR.ink, color: COLOR.base, fontFamily: FONT.bebas, letterSpacing: '.14em', padding: '8px 18px', textDecoration: 'none', fontSize: 17 }}>
+                  VISIT SITE ►
+                </a>
+              </HoverQuad>
             )}
           </div>
         </div>

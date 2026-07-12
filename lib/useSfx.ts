@@ -1,7 +1,10 @@
 'use client';
 import { useRef } from 'react';
 
-export type Sfx = { select: () => void; confirm: () => void; back: () => void };
+export type Sfx = {
+  select: () => void; confirm: () => void; back: () => void;
+  hover: () => void; tap: () => void;
+};
 
 export function createSfx(getMuted: () => boolean, AudioCtx: typeof AudioContext): Sfx {
   let ctx: AudioContext | null = null;
@@ -30,6 +33,8 @@ export function createSfx(getMuted: () => boolean, AudioCtx: typeof AudioContext
     select: () => tone(1180, 0.06, 'square', 0.09),
     confirm: () => { tone(720, 0.05, 'square', 0.11); setTimeout(() => tone(1090, 0.12, 'square', 0.11, 1300), 45); },
     back: () => tone(520, 0.08, 'square', 0.10, 360),
+    hover: () => tone(1500, 0.03, 'square', 0.045),
+    tap: () => tone(950, 0.05, 'square', 0.07),
   };
 }
 
@@ -42,7 +47,7 @@ export function useSfx(muted: boolean): Sfx {
       ? (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)
       : undefined) as typeof AudioContext | undefined;
     ref.current = AC ? createSfx(() => mutedRef.current, AC)
-      : { select() {}, confirm() {}, back() {} };
+      : { select() {}, confirm() {}, back() {}, hover() {}, tap() {} };
   }
   return ref.current;
 }

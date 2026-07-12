@@ -53,4 +53,10 @@ describe('Projects', () => {
     expect(screen.getByText(/TREASURE DATA UNAVAILABLE/i)).toBeInTheDocument();
     expect(screen.queryByTestId('filter-bar')).not.toBeInTheDocument();
   });
+  it('shows a hover quad on a filter chip on mouse enter', () => {
+    render(<Projects projects={fixtures} />);
+    const all = screen.getByRole('button', { name: 'ALL' });
+    fireEvent.mouseEnter(all.parentElement!.parentElement!);
+    expect(screen.getByTestId('hover-quad')).toBeInTheDocument();
+  });
 });

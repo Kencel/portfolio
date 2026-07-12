@@ -7,6 +7,7 @@ import { SECTIONS, type SectionId } from '@/lib/data';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
 import { useIsNarrow } from '@/lib/useIsMobile';
+import { SfxProvider } from '@/lib/SfxContext';
 import { Backdrop } from './Backdrop';
 import { MenuView } from './MenuView';
 import { SectionPanel } from './SectionPanel';
@@ -72,14 +73,16 @@ export function Portfolio({ projects, competitions, cpStats }: {
   }, [goMenu, move, open, sfx]);
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden',
-      background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif', userSelect: 'none' }}>
-      <Backdrop />
-      {view === 'menu'
-        ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
-            onEnter={enter} onOpen={open} narrow={narrow} menuVisit={menuVisit} />
-        : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} cpStats={cpStats} />}
-      {splash && <SplashScreen onDone={splashDone} />}
-    </div>
+    <SfxProvider sfx={sfx}>
+      <div style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden',
+        background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif', userSelect: 'none' }}>
+        <Backdrop />
+        {view === 'menu'
+          ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
+              onEnter={enter} onOpen={open} narrow={narrow} menuVisit={menuVisit} />
+          : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} cpStats={cpStats} />}
+        {splash && <SplashScreen onDone={splashDone} />}
+      </div>
+    </SfxProvider>
   );
 }

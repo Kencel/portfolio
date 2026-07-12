@@ -98,4 +98,10 @@ describe('Cp tabs', () => {
     fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
     expect(screen.getByText(/NO BATTLE RECORDS/)).toBeInTheDocument();
   });
+  it('shows a hover quad on a platform tab on mouse enter', () => {
+    render(<Cp stats={stats} competitions={competitions} />);
+    const tab = screen.getByRole('button', { name: 'ATCODER' });
+    fireEvent.mouseEnter(tab.parentElement!.parentElement!);
+    expect(screen.getByTestId('hover-quad')).toBeInTheDocument();
+  });
 });

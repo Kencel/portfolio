@@ -8,6 +8,7 @@ import { AngularCard } from './AngularCard';
 import { COLOR, FONT, POP } from '@/lib/tokens';
 import { CenterFrame } from './CenterFrame';
 import { FitToViewport } from './FitToViewport';
+import { HoverQuad } from './ui/HoverQuad';
 
 const CODENAME = 'RAMENNAGI';
 
@@ -53,16 +54,18 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   );
 
   const muteButton = (
-    <button
-      onClick={onToggleMute}
-      style={{
-        fontFamily: FONT.bebas, border: `2px solid ${COLOR.accent}`,
-        background: COLOR.row, color: COLOR.ink, padding: '7px 14px', letterSpacing: '.16em',
-        fontSize: 14, transform: 'skewX(-6deg)', boxShadow: POP.rowBase, cursor: 'pointer',
-      }}
-    >
-      {!muted ? '♪ SFX ON' : 'SFX MUTED'}
-    </button>
+    <HoverQuad seed={2} style={{ display: 'inline-block' }}>
+      <button
+        onClick={onToggleMute}
+        style={{
+          fontFamily: FONT.bebas, border: `2px solid ${COLOR.accent}`,
+          background: COLOR.row, color: COLOR.ink, padding: '7px 14px', letterSpacing: '.16em',
+          fontSize: 14, transform: 'skewX(-6deg)', boxShadow: POP.rowBase, cursor: 'pointer',
+        }}
+      >
+        {!muted ? '♪ SFX ON' : 'SFX MUTED'}
+      </button>
+    </HoverQuad>
   );
 
   const clockBlock = (
