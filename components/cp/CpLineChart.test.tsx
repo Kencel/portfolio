@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CpLineChart, yDomain, yTicks } from './CpLineChart';
-import { CF_BANDS } from '@/lib/cp/bands';
 import type { CpContest } from '@/lib/cp/types';
 
 const contests: CpContest[] = [
@@ -37,7 +36,6 @@ describe('CpLineChart', () => {
     contests,
     value: (c: CpContest) => c.ratingAfter,
     detail: (c: CpContest) => (c.delta >= 0 ? `+${c.delta}` : `${c.delta}`),
-    bands: CF_BANDS,
   };
 
   it('renders one point per contest and no popup by default', () => {
@@ -69,5 +67,11 @@ describe('CpLineChart', () => {
   it('renders nothing for an empty history', () => {
     const { container } = render(<CpLineChart {...props} contests={[]} />);
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders no band stripes and no dashed gridlines', () => {
+    const { container } = render(<CpLineChart {...props} />);
+    expect(container.querySelector('[stroke-dasharray]')).toBeNull();
+    expect(container.querySelectorAll('rect')).toHaveLength(0);
   });
 });
