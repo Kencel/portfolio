@@ -8,7 +8,7 @@ export interface CpContest {
   rank: number;
 }
 
-export interface RatingBand { lo: number; hi: number; color: string; label: string }
+export interface RatingBand { lo: number; hi: number; label: string }
 export interface Bucket { lo: number; count: number }
 
 export interface PlatformStats {

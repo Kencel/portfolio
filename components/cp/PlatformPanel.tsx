@@ -3,14 +3,13 @@ import { AngularCard } from '@/components/AngularCard';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT } from '@/lib/tokens';
 import { highlights } from '@/lib/cp/stats';
-import type { PlatformStats, RatingBand } from '@/lib/cp/types';
+import type { PlatformStats } from '@/lib/cp/types';
 import { CpLineChart } from './CpLineChart';
 import { CpBarChart } from './CpBarChart';
 
 export interface PlatformConfig {
   title: string;        // "CODEFORCES"
   accent: string;       // heading color for the big-number cards
-  bands: RatingBand[];
   handleUrl: string;    // profile link
   perfApprox: boolean;  // CF: true → chart titled "PERFORMANCE (APPROX)"
   seedBase: number;     // AngularCard seeds (keep clip-paths hydration-safe)
@@ -43,7 +42,7 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(210px,1fr))', gap: 18, marginBottom: 18 }}>
         {bigCard(config.seedBase, `${config.title} · RATING`, config.accent, String(stats.rating), stats.rankLabel)}
         {bigCard(config.seedBase + 1, 'PEAK · RATING', config.accent, String(stats.peakRating), 'all-time high')}
-        {bigCard(config.seedBase + 2, 'TOTAL · SOLVED', COLOR.accent, String(stats.solved), 'distinct problems')}
+        {bigCard(config.seedBase + 2, 'TOTAL · SOLVED', config.accent, String(stats.solved), 'distinct problems')}
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 24 }}>
         {hl.bestRank != null && hlChip('BEST RANK', `#${hl.bestRank}`)}
@@ -59,11 +58,13 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
         </HoverQuad>
       </div>
       <div style={{ display: 'grid', gap: 24 }}>
-        <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
-          detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} bands={config.bands} accent={config.accent} />
-        <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
-          value={c => c.performance} detail={c => `PERF ${c.performance}`} bands={config.bands} accent={config.accent} />
-        <CpBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} bands={config.bands} />
+        <div data-testid="line-charts" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))', gap: 24 }}>
+          <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
+            detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} accent={config.accent} />
+          <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
+            value={c => c.performance} detail={c => `PERF ${c.performance}`} accent={config.accent} />
+        </div>
+        <CpBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} accent={config.accent} />
       </div>
     </div>
   );

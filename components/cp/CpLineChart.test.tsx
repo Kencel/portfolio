@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { CpLineChart, yDomain } from './CpLineChart';
-import { CF_BANDS } from '@/lib/cp/bands';
+import { CpLineChart, yDomain, yTicks } from './CpLineChart';
 import type { CpContest } from '@/lib/cp/types';
 
 const contests: CpContest[] = [
@@ -18,13 +17,25 @@ describe('yDomain', () => {
   });
 });
 
+describe('yTicks', () => {
+  it('uses a 100 step for narrow domains', () => {
+    expect(yTicks(1300, 1600)).toEqual([1300, 1400, 1500, 1600]);
+  });
+  it('widens the step to keep at most 5 ticks', () => {
+    expect(yTicks(1300, 2100)).toEqual([1400, 1600, 1800, 2000]);
+    expect(yTicks(0, 4000)).toEqual([0, 1000, 2000, 3000, 4000]);
+  });
+  it('never exceeds 5 ticks even for huge domains', () => {
+    expect(yTicks(0, 100000).length).toBeLessThanOrEqual(5);
+  });
+});
+
 describe('CpLineChart', () => {
   const props = {
     title: 'RATING',
     contests,
     value: (c: CpContest) => c.ratingAfter,
     detail: (c: CpContest) => (c.delta >= 0 ? `+${c.delta}` : `${c.delta}`),
-    bands: CF_BANDS,
   };
 
   it('renders one point per contest and no popup by default', () => {
@@ -56,5 +67,11 @@ describe('CpLineChart', () => {
   it('renders nothing for an empty history', () => {
     const { container } = render(<CpLineChart {...props} contests={[]} />);
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders no band stripes and no dashed gridlines', () => {
+    const { container } = render(<CpLineChart {...props} />);
+    expect(container.querySelector('[stroke-dasharray]')).toBeNull();
+    expect(container.querySelectorAll('rect')).toHaveLength(0);
   });
 });

@@ -40,13 +40,13 @@ describe('Cp tabs', () => {
     expect(screen.getByText(/PERFORMANCE.*APPROX/)).toBeInTheDocument(); // CF perf is approximated
   });
 
-  it('styles the profile link as a platform-accent chip', () => {
+  it('styles the profile link as a theme-accent chip', () => {
     render(<Cp stats={stats} competitions={competitions} />);
     const profile = screen.getByRole('link', { name: /@RamenNagi/ });
     expect(profile).toHaveAttribute('href', 'https://codeforces.com/profile/RamenNagi');
-    expect(profile).toHaveStyle({ backgroundColor: '#17A2A2' }); // cfteal on the CF tab
+    expect(profile).toHaveStyle({ backgroundColor: '#E4002B' }); // theme red on the CF tab
     fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
-    expect(screen.getByRole('link', { name: /@RamenNagi/ })).toHaveStyle({ backgroundColor: '#C0C0C0' });
+    expect(screen.getByRole('link', { name: /@RamenNagi/ })).toHaveStyle({ backgroundColor: '#F4F1EA' }); // ink on AtCoder
   });
 
   it('switches to AtCoder (official performance — no APPROX)', () => {
@@ -54,6 +54,7 @@ describe('Cp tabs', () => {
     fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
     const panel = screen.getByTestId('platform-panel');
     expect(within(panel).getByText('120')).toBeInTheDocument();
+    expect(within(panel).getByText('TOTAL · SOLVED')).toHaveStyle({ color: '#F4F1EA' }); // ink, like the other AtCoder cards
     expect(screen.getByText('PERFORMANCE')).toBeInTheDocument();
     expect(screen.queryByText(/APPROX/)).not.toBeInTheDocument();
   });
@@ -103,5 +104,13 @@ describe('Cp tabs', () => {
     const tab = screen.getByRole('button', { name: 'ATCODER' });
     fireEvent.mouseEnter(tab.parentElement!.parentElement!);
     expect(screen.getByTestId('hover-quad')).toBeInTheDocument();
+  });
+
+  it('lays the rating and performance charts side by side on wide screens', () => {
+    render(<Cp stats={stats} competitions={competitions} />);
+    expect(screen.getByTestId('line-charts')).toHaveStyle({
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))',
+    });
   });
 });

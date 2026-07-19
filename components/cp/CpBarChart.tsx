@@ -1,15 +1,14 @@
 'use client';
 import { COLOR, FONT } from '@/lib/tokens';
-import { bandFor } from '@/lib/cp/bands';
-import type { Bucket, RatingBand } from '@/lib/cp/types';
+import type { Bucket } from '@/lib/cp/types';
 
 const W = 640, H = 200;
 const PAD = { l: 14, r: 14, t: 18, b: 22 };
 
-export function CpBarChart({ title, buckets, bands }: {
+export function CpBarChart({ title, buckets, accent }: {
   title: string;
   buckets: Bucket[];
-  bands: RatingBand[];
+  accent: string;
 }) {
   if (buckets.length === 0) return null;
   const plotW = W - PAD.l - PAD.r;
@@ -17,6 +16,9 @@ export function CpBarChart({ title, buckets, bands }: {
   const maxCount = Math.max(1, ...buckets.map(b => b.count));
   const slot = plotW / buckets.length;
   const barW = Math.min(46, slot * 0.72);
+  // Harder buckets render more opaque — encodes difficulty without foreign hues.
+  const barOpacity = (i: number) =>
+    buckets.length === 1 ? 1 : Math.round((0.4 + (0.6 * i) / (buckets.length - 1)) * 100) / 100;
 
   return (
     <div>
@@ -29,7 +31,7 @@ export function CpBarChart({ title, buckets, bands }: {
           return (
             <g key={b.lo}>
               <rect data-testid={`bar-${b.lo}`} x={cx - barW / 2} y={PAD.t + plotH - h} width={barW} height={h}
-                fill={bandFor(bands, b.lo).color} opacity={0.9} />
+                fill={accent} opacity={barOpacity(i)} />
               {b.count > 0 && (
                 <text x={cx} y={PAD.t + plotH - h - 4} textAnchor="middle" fontSize={10}
                   fill={COLOR.ink} fontFamily={FONT.oswald}>{b.count}</text>

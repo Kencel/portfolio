@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { chip, unskew } from '@/lib/chipStyle';
 import { COLOR, FONT } from '@/lib/tokens';
-import { CF_BANDS, ATCODER_BANDS } from '@/lib/cp/bands';
 import type { CpStats } from '@/lib/cp/types';
 import type { Competition } from '@/lib/competitions';
 import { PlatformPanel, type PlatformConfig } from '@/components/cp/PlatformPanel';
@@ -17,11 +16,11 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 const CF_CONFIG: PlatformConfig = {
-  title: 'CODEFORCES', accent: COLOR.cfteal, bands: CF_BANDS,
+  title: 'CODEFORCES', accent: COLOR.accent,
   handleUrl: 'https://codeforces.com/profile/RamenNagi', perfApprox: true, seedBase: 41,
 };
 const ATCODER_CONFIG: PlatformConfig = {
-  title: 'ATCODER', accent: COLOR.atsilver, bands: ATCODER_BANDS,
+  title: 'ATCODER', accent: COLOR.ink,
   handleUrl: 'https://atcoder.jp/users/RamenNagi', perfApprox: false, seedBase: 51,
 };
 

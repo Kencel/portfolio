@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT, POP } from '@/lib/tokens';
-import type { CpContest, RatingBand } from '@/lib/cp/types';
+import type { CpContest } from '@/lib/cp/types';
 
 const W = 640, H = 240;
 const PAD = { l: 46, r: 14, t: 12, b: 26 };
@@ -18,12 +18,22 @@ export function yDomain(values: number[]): { lo: number; hi: number } {
   };
 }
 
-export function CpLineChart({ title, contests, value, detail, bands, accent = COLOR.cfteal }: {
+// Round-number y-axis ticks: the smallest step that fits the domain in at
+// most 5 labels, so charts stay readable at half width.
+export function yTicks(lo: number, hi: number): number[] {
+  const steps = [100, 200, 500, 1000];
+  let step = steps.find(s => Math.floor(hi / s) - Math.ceil(lo / s) + 1 <= 5) ?? 1000;
+  while (Math.floor(hi / step) - Math.ceil(lo / step) + 1 > 5) step *= 2;
+  const ticks: number[] = [];
+  for (let t = Math.ceil(lo / step) * step; t <= hi; t += step) ticks.push(t);
+  return ticks;
+}
+
+export function CpLineChart({ title, contests, value, detail, accent = COLOR.accent }: {
   title: string;
   contests: CpContest[];
   value: (c: CpContest) => number;
   detail: (c: CpContest) => string;
-  bands: RatingBand[];
   accent?: string; // platform accent for the popup's contest link
 }) {
   const [active, setActive] = useState<number | null>(null);
@@ -36,10 +46,7 @@ export function CpLineChart({ title, contests, value, detail, bands, accent = CO
   const x = (i: number) => PAD.l + (contests.length === 1 ? plotW / 2 : (i * plotW) / (contests.length - 1));
   const y = (v: number) => PAD.t + plotH - ((v - lo) / (hi - lo)) * plotH;
 
-  const visible = bands.filter(b => b.hi > lo && b.lo < hi);
-  // Tick lines at band edges inside the domain, plus the domain ends.
-  const ticks = [...new Set([lo, hi, ...visible.map(b => b.lo), ...visible.map(b => b.hi)])]
-    .filter(t => t >= lo && t <= hi).sort((a, b) => a - b);
+  const ticks = yTicks(lo, hi);
   const cur = active == null ? null : contests[active];
 
   // Popup anchor in percent of the chart box — the svg fills its wrapper and
@@ -55,15 +62,9 @@ export function CpLineChart({ title, contests, value, detail, bands, accent = CO
       <div data-testid="chart-body" style={{ position: 'relative' }} onMouseLeave={() => setActive(null)}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={title}
         style={{ width: '100%', display: 'block', background: COLOR.trackBg, border: `1px solid ${COLOR.trackBorder}` }}>
-        {visible.map(b => {
-          const top = y(Math.min(b.hi, hi));
-          return <rect key={b.lo} x={PAD.l} width={plotW} y={top} height={y(Math.max(b.lo, lo)) - top} fill={b.color} opacity={0.16} />;
-        })}
         {ticks.map(t => (
-          <g key={t}>
-            <line x1={PAD.l} x2={PAD.l + plotW} y1={y(t)} y2={y(t)} stroke={COLOR.trackBorder} strokeDasharray="3 4" />
-            <text x={PAD.l - 6} y={y(t) + 3} textAnchor="end" fontSize={10} fill={COLOR.ink} opacity={0.7} fontFamily={FONT.oswald}>{t}</text>
-          </g>
+          <text key={t} x={PAD.l - 6} y={y(t) + 3} textAnchor="end" fontSize={10}
+            fill={COLOR.ink} opacity={0.7} fontFamily={FONT.oswald}>{t}</text>
         ))}
         <text x={x(0)} y={H - 8} textAnchor="middle" fontSize={10} fill={COLOR.ink} opacity={0.7} fontFamily={FONT.oswald}>1</text>
         {contests.length > 1 && (
