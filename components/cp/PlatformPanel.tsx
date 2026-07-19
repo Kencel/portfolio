@@ -3,14 +3,13 @@ import { AngularCard } from '@/components/AngularCard';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT } from '@/lib/tokens';
 import { highlights } from '@/lib/cp/stats';
-import type { PlatformStats, RatingBand } from '@/lib/cp/types';
+import type { PlatformStats } from '@/lib/cp/types';
 import { CpLineChart } from './CpLineChart';
 import { CpBarChart } from './CpBarChart';
 
 export interface PlatformConfig {
   title: string;        // "CODEFORCES"
   accent: string;       // heading color for the big-number cards
-  bands: RatingBand[];
   handleUrl: string;    // profile link
   perfApprox: boolean;  // CF: true → chart titled "PERFORMANCE (APPROX)"
   seedBase: number;     // AngularCard seeds (keep clip-paths hydration-safe)
@@ -63,7 +62,7 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
           detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} accent={config.accent} />
         <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
           value={c => c.performance} detail={c => `PERF ${c.performance}`} accent={config.accent} />
-        <CpBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} bands={config.bands} />
+        <CpBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} accent={config.accent} />
       </div>
     </div>
   );
