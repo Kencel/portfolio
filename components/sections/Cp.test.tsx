@@ -109,7 +109,7 @@ describe('Cp tabs', () => {
     render(<Cp stats={stats} competitions={competitions} />);
     expect(screen.getByTestId('line-charts')).toHaveStyle({
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))',
+      gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))',
     });
   });
 });
