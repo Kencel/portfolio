@@ -42,7 +42,7 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(210px,1fr))', gap: 18, marginBottom: 18 }}>
         {bigCard(config.seedBase, `${config.title} · RATING`, config.accent, String(stats.rating), stats.rankLabel)}
         {bigCard(config.seedBase + 1, 'PEAK · RATING', config.accent, String(stats.peakRating), 'all-time high')}
-        {bigCard(config.seedBase + 2, 'TOTAL · SOLVED', COLOR.accent, String(stats.solved), 'distinct problems')}
+        {bigCard(config.seedBase + 2, 'TOTAL · SOLVED', config.accent, String(stats.solved), 'distinct problems')}
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 24 }}>
         {hl.bestRank != null && hlChip('BEST RANK', `#${hl.bestRank}`)}

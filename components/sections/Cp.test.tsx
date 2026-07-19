@@ -54,6 +54,7 @@ describe('Cp tabs', () => {
     fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
     const panel = screen.getByTestId('platform-panel');
     expect(within(panel).getByText('120')).toBeInTheDocument();
+    expect(within(panel).getByText('TOTAL · SOLVED')).toHaveStyle({ color: '#F4F1EA' }); // ink, like the other AtCoder cards
     expect(screen.getByText('PERFORMANCE')).toBeInTheDocument();
     expect(screen.queryByText(/APPROX/)).not.toBeInTheDocument();
   });
