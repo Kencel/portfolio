@@ -8,7 +8,6 @@ export const COLOR = {
   trackBorder: '#333',
   tagBorder: '#444',
   cfteal: '#17A2A2',
-  atsilver: '#C0C0C0',
   discord: '#5865F2',
   neonRed: '#FF1744',
   neonCyan: '#00E5FF',
