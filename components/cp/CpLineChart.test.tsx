@@ -26,6 +26,9 @@ describe('yTicks', () => {
     expect(yTicks(1300, 2100)).toEqual([1400, 1600, 1800, 2000]);
     expect(yTicks(0, 4000)).toEqual([0, 1000, 2000, 3000, 4000]);
   });
+  it('never exceeds 5 ticks even for huge domains', () => {
+    expect(yTicks(0, 100000).length).toBeLessThanOrEqual(5);
+  });
 });
 
 describe('CpLineChart', () => {

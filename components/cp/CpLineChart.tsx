@@ -22,7 +22,8 @@ export function yDomain(values: number[]): { lo: number; hi: number } {
 // most 5 labels, so charts stay readable at half width.
 export function yTicks(lo: number, hi: number): number[] {
   const steps = [100, 200, 500, 1000];
-  const step = steps.find(s => Math.floor(hi / s) - Math.ceil(lo / s) + 1 <= 5) ?? 1000;
+  let step = steps.find(s => Math.floor(hi / s) - Math.ceil(lo / s) + 1 <= 5) ?? 1000;
+  while (Math.floor(hi / step) - Math.ceil(lo / step) + 1 > 5) step *= 2;
   const ticks: number[] = [];
   for (let t = Math.ceil(lo / step) * step; t <= hi; t += step) ticks.push(t);
   return ticks;
