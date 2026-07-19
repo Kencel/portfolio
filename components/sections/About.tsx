@@ -14,7 +14,7 @@ export function About() {
                 A third-year Computer Science student at the <b style={{ color: COLOR.accent }}>Ateneo de Manila University</b>, in it for the problem-solving. Competitive programming enthusiast. Chasing cleaner logic and tighter solutions for the thrill of the solve with <b>C++ and Python</b>.
               </p>
               <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 'clamp(16px,1.4vw,21px)', lineHeight: 1.55, margin: 0 }}>
-                Lately I've been pointing that same drive toward <b>AI/ML and data science</b>, and toward actually building things, starting with this site, my first passion project. On the web, I work in <b>Next.js and React</b>.
+                Lately I've been pointing that same drive toward <b>AI/ML and data science</b>, and toward actually building things, starting with this site, my first passion project. The building has already paid off once: my team took <b>Yardshtick</b>, a listings app, to 3rd place at an OpenAI buildathon in Manila. On the web, I work in <b>Next.js</b>.
               </p>
             </div>
           </div>
