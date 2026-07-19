@@ -104,4 +104,12 @@ describe('Cp tabs', () => {
     fireEvent.mouseEnter(tab.parentElement!.parentElement!);
     expect(screen.getByTestId('hover-quad')).toBeInTheDocument();
   });
+
+  it('lays the rating and performance charts side by side on wide screens', () => {
+    render(<Cp stats={stats} competitions={competitions} />);
+    expect(screen.getByTestId('line-charts')).toHaveStyle({
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))',
+    });
+  });
 });

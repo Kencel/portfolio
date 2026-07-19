@@ -58,10 +58,12 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
         </HoverQuad>
       </div>
       <div style={{ display: 'grid', gap: 24 }}>
-        <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
-          detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} accent={config.accent} />
-        <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
-          value={c => c.performance} detail={c => `PERF ${c.performance}`} accent={config.accent} />
+        <div data-testid="line-charts" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))', gap: 24 }}>
+          <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
+            detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} accent={config.accent} />
+          <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
+            value={c => c.performance} detail={c => `PERF ${c.performance}`} accent={config.accent} />
+        </div>
         <CpBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} accent={config.accent} />
       </div>
     </div>
