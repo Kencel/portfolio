@@ -16,11 +16,11 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 const CF_CONFIG: PlatformConfig = {
-  title: 'CODEFORCES', accent: COLOR.cfteal,
+  title: 'CODEFORCES', accent: COLOR.accent,
   handleUrl: 'https://codeforces.com/profile/RamenNagi', perfApprox: true, seedBase: 41,
 };
 const ATCODER_CONFIG: PlatformConfig = {
-  title: 'ATCODER', accent: COLOR.atsilver,
+  title: 'ATCODER', accent: COLOR.ink,
   handleUrl: 'https://atcoder.jp/users/RamenNagi', perfApprox: false, seedBase: 51,
 };
 

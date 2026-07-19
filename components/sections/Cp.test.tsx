@@ -40,13 +40,13 @@ describe('Cp tabs', () => {
     expect(screen.getByText(/PERFORMANCE.*APPROX/)).toBeInTheDocument(); // CF perf is approximated
   });
 
-  it('styles the profile link as a platform-accent chip', () => {
+  it('styles the profile link as a theme-accent chip', () => {
     render(<Cp stats={stats} competitions={competitions} />);
     const profile = screen.getByRole('link', { name: /@RamenNagi/ });
     expect(profile).toHaveAttribute('href', 'https://codeforces.com/profile/RamenNagi');
-    expect(profile).toHaveStyle({ backgroundColor: '#17A2A2' }); // cfteal on the CF tab
+    expect(profile).toHaveStyle({ backgroundColor: '#E4002B' }); // theme red on the CF tab
     fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
-    expect(screen.getByRole('link', { name: /@RamenNagi/ })).toHaveStyle({ backgroundColor: '#C0C0C0' });
+    expect(screen.getByRole('link', { name: /@RamenNagi/ })).toHaveStyle({ backgroundColor: '#F4F1EA' }); // ink on AtCoder
   });
 
   it('switches to AtCoder (official performance — no APPROX)', () => {
