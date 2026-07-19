@@ -18,6 +18,16 @@ export function yDomain(values: number[]): { lo: number; hi: number } {
   };
 }
 
+// Round-number y-axis ticks: the smallest step that fits the domain in at
+// most 5 labels, so charts stay readable at half width.
+export function yTicks(lo: number, hi: number): number[] {
+  const steps = [100, 200, 500, 1000];
+  const step = steps.find(s => Math.floor(hi / s) - Math.ceil(lo / s) + 1 <= 5) ?? 1000;
+  const ticks: number[] = [];
+  for (let t = Math.ceil(lo / step) * step; t <= hi; t += step) ticks.push(t);
+  return ticks;
+}
+
 export function CpLineChart({ title, contests, value, detail, bands, accent = COLOR.cfteal }: {
   title: string;
   contests: CpContest[];

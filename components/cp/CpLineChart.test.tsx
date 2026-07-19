@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { CpLineChart, yDomain } from './CpLineChart';
+import { CpLineChart, yDomain, yTicks } from './CpLineChart';
 import { CF_BANDS } from '@/lib/cp/bands';
 import type { CpContest } from '@/lib/cp/types';
 
@@ -15,6 +15,16 @@ describe('yDomain', () => {
   });
   it('never goes below 0', () => {
     expect(yDomain([10, 50]).lo).toBe(0);
+  });
+});
+
+describe('yTicks', () => {
+  it('uses a 100 step for narrow domains', () => {
+    expect(yTicks(1300, 1600)).toEqual([1300, 1400, 1500, 1600]);
+  });
+  it('widens the step to keep at most 5 ticks', () => {
+    expect(yTicks(1300, 2100)).toEqual([1400, 1600, 1800, 2000]);
+    expect(yTicks(0, 4000)).toEqual([0, 1000, 2000, 3000, 4000]);
   });
 });
 
