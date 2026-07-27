@@ -23,11 +23,18 @@ export const SKILLS: string[] = [
   'POSTGRESQL',
 ];
 
-export const CF_HANDLE = 'RamenNagi';
-export const CF_DEFAULTS = { rating: 1445, maxRating: 1452, rank: 'Specialist' };
-export const SOLVED = 472;
 export const MARQUEE =
   'RAMENNAGI  ✦  COMPUTER SCIENCE @ ATENEO  ✦  COMPETITIVE PROGRAMMER  ✦  PROBLEM SOLVER  ✦ ';
+
+export const CODENAME = 'RAMENNAGI';
+
+// Current-focus lines on the menu status card. Copy is grounded in the About
+// section — evergreen, no stale numbers.
+export const STATUS: [string, string][] = [
+  ['LEARNING', 'AI/ML & DATA SCIENCE'],
+  ['BUILDING', 'THIS SITE'],
+  ['GRINDING', 'COMPETITIVE PROGRAMMING'],
+];
 
 export interface Attribute { axis: string; value: number }
 

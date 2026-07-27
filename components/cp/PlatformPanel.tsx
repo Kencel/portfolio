@@ -2,6 +2,7 @@
 import { AngularCard } from '@/components/AngularCard';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT } from '@/lib/tokens';
+import { unskew } from '@/lib/chipStyle';
 import { highlights } from '@/lib/cp/stats';
 import type { PlatformStats } from '@/lib/cp/types';
 import { CpLineChart } from './CpLineChart';
@@ -10,10 +11,13 @@ import { CpBarChart } from './CpBarChart';
 export interface PlatformConfig {
   title: string;        // "CODEFORCES"
   accent: string;       // heading color for the big-number cards
+  handle: string;       // platform username, rendered on the profile link
   handleUrl: string;    // profile link
   perfApprox: boolean;  // CF: true → chart titled "PERFORMANCE (APPROX)"
   seedBase: number;     // AngularCard seeds (keep clip-paths hydration-safe)
 }
+
+const signed = (n: number) => (n >= 0 ? `+${n}` : String(n));
 
 const bigCard = (seed: number, label: string, color: string, value: string, sub: string) => (
   <AngularCard seed={seed} style={{ transform: 'skewX(-3deg)' }}>
@@ -29,7 +33,7 @@ const bigCard = (seed: number, label: string, color: string, value: string, sub:
 
 const hlChip = (label: string, value: string) => (
   <div style={{ border: `1px solid ${COLOR.tagBorder}`, transform: 'skewX(-8deg)', padding: '4px 14px', fontFamily: FONT.bebas, letterSpacing: '.12em', fontSize: 15 }}>
-    <span style={{ display: 'inline-block', transform: 'skewX(8deg)' }}>
+    <span style={unskew}>
       {label} <b style={{ color: COLOR.accent }}>{value}</b>
     </span>
   </div>
@@ -46,21 +50,21 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 24 }}>
         {hl.bestRank != null && hlChip('BEST RANK', `#${hl.bestRank}`)}
-        {hl.biggestGain != null && hlChip('BIGGEST GAIN', hl.biggestGain >= 0 ? `+${hl.biggestGain}` : String(hl.biggestGain))}
+        {hl.biggestGain != null && hlChip('BIGGEST GAIN', signed(hl.biggestGain))}
         {hlChip('CONTESTS', String(hl.joined))}
         <HoverQuad seed={config.seedBase + 3} style={{ marginLeft: 'auto', alignSelf: 'center' }}>
           <a href={config.handleUrl} target="_blank" rel="noreferrer"
             style={{ display: 'inline-block', transform: 'skewX(-8deg)',
               backgroundColor: config.accent, color: COLOR.base, textDecoration: 'none',
               fontFamily: FONT.bebas, letterSpacing: '.14em', fontSize: 14, padding: '4px 12px' }}>
-            <span style={{ display: 'inline-block', transform: 'skewX(8deg)' }}>@RamenNagi ►</span>
+            <span style={unskew}>@{config.handle} ►</span>
           </a>
         </HoverQuad>
       </div>
       <div style={{ display: 'grid', gap: 24 }}>
         <div data-testid="line-charts" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))', gap: 24 }}>
           <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
-            detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} accent={config.accent} />
+            detail={c => `Δ ${signed(c.delta)}`} accent={config.accent} />
           <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
             value={c => c.performance} detail={c => `PERF ${c.performance}`} accent={config.accent} />
         </div>

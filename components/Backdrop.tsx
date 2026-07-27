@@ -1,9 +1,14 @@
+import { memo } from 'react';
 import { MARQUEE } from '@/lib/data';
 import { COLOR, FONT } from '@/lib/tokens';
 import { HalftoneLayer } from './ui/HalftoneLayer';
 import { Shard } from './ui/Shard';
 
-export function Backdrop() {
+const MARQUEE_BAND = MARQUEE.repeat(6);
+
+// memo: prop-less and purely decorative, so it renders once instead of on
+// every keypress/hover state change in Portfolio.
+export const Backdrop = memo(function Backdrop() {
   return (
     <>
       {/* halftone dots — PROTOTYPE line 33 */}
@@ -33,10 +38,10 @@ export function Backdrop() {
           for 2 copies, so 6 copies → 102s. Change both together. */}
       <div style={{ position: 'absolute', bottom: '6%', left: '-10%', width: '130%', transform: 'rotate(-4deg)', overflow: 'hidden', pointerEvents: 'none', opacity: .9, zIndex: 1 }}>
         <div style={{ display: 'flex', width: 'max-content', whiteSpace: 'nowrap', animation: 'p5marquee 102s linear infinite', background: COLOR.base, borderTop: `2px solid ${COLOR.accent}`, borderBottom: `2px solid ${COLOR.accent}` }}>
-          <span style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE.repeat(6)}</span>
-          <span aria-hidden style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE.repeat(6)}</span>
+          <span style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE_BAND}</span>
+          <span aria-hidden style={{ fontFamily: `'Anton', ${FONT.anton}`, fontSize: 16, letterSpacing: '.32em', color: COLOR.accent, padding: '5px 0' }}>{MARQUEE_BAND}</span>
         </div>
       </div>
     </>
   );
-}
+});

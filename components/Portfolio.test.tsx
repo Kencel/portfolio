@@ -14,6 +14,7 @@ const emptyStats: CpStats = { cf: null, atcoder: null };
 
 vi.mock('@/lib/useIsMobile', () => ({ useIsNarrow: () => mockNarrow.value }));
 vi.mock('@/lib/useSfx', () => ({
+  NOOP_SFX: { select: () => {}, confirm: () => {}, back: () => {}, hover: () => {}, tap: () => {} },
   useSfx: () => ({ select: () => {}, confirm: () => {}, back: () => {} }),
 }));
 vi.mock('./Backdrop', () => ({ Backdrop: () => null }));

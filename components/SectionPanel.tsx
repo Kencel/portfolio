@@ -18,8 +18,16 @@ import { Skills } from './sections/Skills';
 import { Education } from './sections/Education';
 import { Contact } from './sections/Contact';
 
-const BODY: Record<Exclude<SectionId, 'projects' | 'cp'>, () => JSX.Element> = {
-  about: About, skills: Skills, education: Education, contact: Contact,
+// Complete section registry: every section renders from the same props bag;
+// sections that need no data just ignore it.
+type SectionData = { projects: Project[]; competitions: Competition[]; cpStats: CpStats };
+const BODY: Record<SectionId, (data: SectionData) => JSX.Element> = {
+  about: () => <About />,
+  cp: d => <Cp stats={d.cpStats} competitions={d.competitions} />,
+  projects: d => <Projects projects={d.projects} />,
+  skills: () => <Skills />,
+  education: () => <Education />,
+  contact: () => <Contact />,
 };
 
 export function SectionPanel({ view, onBack, projects, competitions, cpStats }: {
@@ -27,7 +35,6 @@ export function SectionPanel({ view, onBack, projects, competitions, cpStats }: 
   competitions: Competition[]; cpStats: CpStats;
 }) {
   const cur = SECTIONS.find(s => s.id === view)!;
-  const Body = view === 'projects' || view === 'cp' ? null : BODY[view];
 
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: COLOR.base, overflow: 'hidden' }}>
@@ -72,11 +79,7 @@ export function SectionPanel({ view, onBack, projects, competitions, cpStats }: 
             {/* divider — centered — PROTOTYPE 132 */}
             <div style={{ height: 4, background: COLOR.accent, margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
 
-            {Body
-              ? <Body />
-              : view === 'projects'
-                ? <Projects projects={projects} />
-                : <Cp stats={cpStats} competitions={competitions} />}
+            {BODY[view]({ projects, competitions, cpStats })}
           </CenterFrame>
         </div>
       </div>

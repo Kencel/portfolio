@@ -6,6 +6,10 @@ export type Sfx = {
   hover: () => void; tap: () => void;
 };
 
+// Shared silent fallback: the context default and the no-AudioContext
+// (SSR / test) path both use it.
+export const NOOP_SFX: Sfx = { select() {}, confirm() {}, back() {}, hover() {}, tap() {} };
+
 export function createSfx(getMuted: () => boolean, AudioCtx: typeof AudioContext): Sfx {
   let ctx: AudioContext | null = null;
   const ac = (): AudioContext | null => {
@@ -46,8 +50,7 @@ export function useSfx(muted: boolean): Sfx {
     const AC = (typeof window !== 'undefined'
       ? (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)
       : undefined) as typeof AudioContext | undefined;
-    ref.current = AC ? createSfx(() => mutedRef.current, AC)
-      : { select() {}, confirm() {}, back() {}, hover() {}, tap() {} };
+    ref.current = AC ? createSfx(() => mutedRef.current, AC) : NOOP_SFX;
   }
   return ref.current;
 }

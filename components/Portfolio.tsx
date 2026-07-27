@@ -4,6 +4,7 @@ import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
 import type { CpStats } from '@/lib/cp/types';
 import { SECTIONS, type SectionId } from '@/lib/data';
+import { COLOR, FONT } from '@/lib/tokens';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
 import { useIsNarrow } from '@/lib/useIsMobile';
@@ -75,7 +76,7 @@ export function Portfolio({ projects, competitions, cpStats }: {
   return (
     <SfxProvider sfx={sfx}>
       <div style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden',
-        background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif', userSelect: 'none' }}>
+        background: COLOR.base, color: COLOR.ink, fontFamily: FONT.oswald, userSelect: 'none' }}>
         <Backdrop />
         {view === 'menu'
           ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}

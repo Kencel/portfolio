@@ -1,13 +1,16 @@
 import { ATTRIBUTES } from '@/lib/data';
-import { COLOR } from '@/lib/tokens';
+import { COLOR, FONT } from '@/lib/tokens';
 
 const CX = 150;
 const CY = 150;
 const MAX_R = 110;
 const ACCENT = COLOR.accent;
+// Spokes divide the circle evenly, so ATTRIBUTES can gain or lose an axis
+// without breaking the geometry.
+const STEP = 360 / ATTRIBUTES.length;
 
 function pt(i: number, f: number): [number, number] {
-  const ang = (-90 + i * 60) * (Math.PI / 180);
+  const ang = (-90 + i * STEP) * (Math.PI / 180);
   return [CX + Math.cos(ang) * MAX_R * f, CY + Math.sin(ang) * MAX_R * f];
 }
 
@@ -47,8 +50,8 @@ export function AttributesRadar() {
             y={y}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="#F4F1EA"
-            style={{ fontFamily: 'var(--font-bebas), sans-serif', fontSize: 13, letterSpacing: '.12em' }}
+            fill={COLOR.ink}
+            style={{ fontFamily: FONT.bebas, fontSize: 13, letterSpacing: '.12em' }}
           >
             {a.axis}<tspan dx={4} fill={ACCENT}>{a.value}</tspan>
           </text>
