@@ -28,22 +28,22 @@ pushes to master. Both must pass.
 **One page, one server boundary.** `app/page.tsx` is the only route. It runs on
 the server with ISR (`revalidate = 60`) solely to fetch data — projects and
 competitions from Neon Postgres (`lib/projectsDb.ts`, `lib/competitionsDb.ts`)
-and Codeforces/AtCoder stats (`lib/cp/fetchStats.ts`) — then hands everything to
+and Codeforces/AtCoder stats (`lib/compprog/fetchStats.ts`) — then hands everything to
 the fully client-side `components/Portfolio.tsx`. Everything below that line is
 `'use client'`.
 
 **Server fetchers never throw.** CI builds offline (no `DATABASE_URL`, no
 network) and an upstream outage must not take the page down — every server
 fetcher degrades: `getProjects`/`getCompetitions` warn and return `[]` (one
-retry absorbs Neon's scale-to-zero cold start), `getCpStats` returns `null` per
+retry absorbs Neon's scale-to-zero cold start), `getCompprogStats` returns `null` per
 platform so the affected tab shows a fallback. `lib/projects.ts#mapRow` and
 `lib/competitions.ts` sanitize each row (URL scheme allowlist, type checks) and
 drop unusable rows instead of crashing, because rows are hand-edited free-text
 in the Neon dashboard. Keep these invariants when touching any data path.
 
-**CP stats caching is deliberate.** kenkoooo's ~4MB difficulty file exceeds
+**Comp prog stats caching is deliberate.** kenkoooo's ~4MB difficulty file exceeds
 Vercel's 2MB per-item data-cache limit, so per-fetch TTLs can't stop it
-refetching on every ISR pass — the reduced `CpStats` (a few KB) is wrapped in
+refetching on every ISR pass — the reduced `CompprogStats` (a few KB) is wrapped in
 hourly `unstable_cache` in `app/page.tsx`. Upstream fetches also carry their own
 `next.revalidate` TTLs and a user-agent identifying the site (kenkoooo asks API
 users to identify themselves and pace requests — keep the 1s page delay).
@@ -53,10 +53,14 @@ competition result = inserting a row in the Neon dashboard; it appears on the
 live site within ~60s, no deploy. Columns and conventions are documented in
 `db/README.md`.
 
-**Client state machine.** `Portfolio.tsx` owns the view state
-(`'menu' | SectionId`), global keyboard navigation (arrows/WASD/digits/Enter/Esc),
-and sound effects (`lib/useSfx.ts`, synthesized — no audio assets). `MenuView`
-renders the menu; `SectionPanel` renders the active section. Sections live in
+**Client state machine.** `lib/useHashRoute.ts` owns the view state
+(`'menu' | SectionId`), kept in lockstep with `window.history` — opening a
+section pushes a `#<sectionId>` entry, so the browser's own back/forward
+(mouse buttons, `Alt+←/→`, chrome arrows, mobile back-swipe) navigates
+sections instead of leaving the site; `Portfolio.tsx` consumes the hook and
+owns global keyboard navigation (arrows/WASD/digits/Enter/Esc) and sound
+effects (`lib/useSfx.ts`, synthesized — no audio assets). `MenuView` renders
+the menu; `SectionPanel` renders the active section. Sections live in
 `components/sections/` and are registered in the `SECTIONS` array in
 `lib/data.ts` — that array drives menu order, digit shortcuts, and panel titles.
 
@@ -74,7 +78,7 @@ hand-built SVG — prefer that over adding a charting dependency; it matches the
 angular aesthetic and keeps the bundle lean.
 
 **Live stats with offline fallbacks.** The COMP. PROG dashboard gets its
-stats server-side at ISR time (`lib/cp/`, rendered by `components/cp/`). Any new
+stats server-side at ISR time (`lib/compprog/`, rendered by `components/compprog/`). Any new
 external data source should follow the same pattern: fallback first, live data
 as enhancement.
 
@@ -84,8 +88,8 @@ When writing or editing section copy: audience is (1) recruiters, (2) general
 showcase, (3) fellow students. Clear professional prose with only a light wink
 of the Persona theme. Stay honest about Kenaz's experience — he is a 3rd-year
 CS student and this is his first passion project; do not inflate (e.g. he has
-attended one onsite hackathon, he does not "ship products"). CP stats belong
-only in the COMP. PROG section.
+attended one onsite hackathon, he does not "ship products"). Comp prog stats
+belong only in the COMP. PROG section.
 
 ## Repo conventions
 

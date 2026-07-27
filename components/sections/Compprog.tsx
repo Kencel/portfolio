@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { chip, unskew, themedLine } from '@/lib/chipStyle';
 import { COLOR } from '@/lib/tokens';
-import type { CpStats } from '@/lib/cp/types';
+import type { CompprogStats } from '@/lib/compprog/types';
 import type { Competition } from '@/lib/competitions';
-import { PlatformPanel, type PlatformConfig } from '@/components/cp/PlatformPanel';
-import { CompetitionsList } from '@/components/cp/CompetitionsList';
+import { PlatformPanel, type PlatformConfig } from '@/components/compprog/PlatformPanel';
+import { CompetitionsList } from '@/components/compprog/CompetitionsList';
 
 type Tab = 'cf' | 'atcoder' | 'competitions';
 const TABS: { id: Tab; label: string }[] = [
@@ -24,7 +24,7 @@ const ATCODER_CONFIG: PlatformConfig = {
   handleUrl: 'https://atcoder.jp/users/RamenNagi', perfApprox: false, seedBase: 51,
 };
 
-export function Cp({ stats, competitions }: { stats: CpStats; competitions: Competition[] }) {
+export function Compprog({ stats, competitions }: { stats: CompprogStats; competitions: Competition[] }) {
   const [tab, setTab] = useState<Tab>('cf');
   return (
     <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>

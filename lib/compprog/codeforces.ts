@@ -1,6 +1,6 @@
-// Pure mappers from Codeforces API JSON to CP dashboard types. Fetching lives
-// in lib/cp/fetchStats.ts; keeping these pure makes them unit-testable.
-import type { CpContest } from './types';
+// Pure mappers from Codeforces API JSON to compprog dashboard types. Fetching lives
+// in lib/compprog/fetchStats.ts; keeping these pure makes them unit-testable.
+import type { CompprogContest } from './types';
 
 type CfEnvelope = { status?: string; result?: unknown[] };
 
@@ -29,8 +29,8 @@ export function mapCfInfo(json: unknown): { rating: number; peakRating: number; 
   };
 }
 
-export function mapCfContests(json: unknown): CpContest[] {
-  const out: CpContest[] = [];
+export function mapCfContests(json: unknown): CompprogContest[] {
+  const out: CompprogContest[] = [];
   for (const raw of resultRows(json)) {
     if (!raw || typeof raw !== 'object') continue;
     const r = raw as {

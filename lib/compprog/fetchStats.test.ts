@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getCpStats, fetchAtcoderSubmissions } from './fetchStats';
+import { getCompprogStats, fetchAtcoderSubmissions } from './fetchStats';
 
 const noSleep = () => Promise.resolve();
 
@@ -37,9 +37,9 @@ function fakeFetch(overrides: Record<string, unknown | ((url: string) => Respons
   }) as unknown as typeof fetch;
 }
 
-describe('getCpStats', () => {
+describe('getCompprogStats', () => {
   it('assembles both platforms from mocked endpoints', async () => {
-    const stats = await getCpStats(fakeFetch(), noSleep);
+    const stats = await getCompprogStats(fakeFetch(), noSleep);
     expect(stats.cf).toMatchObject({ rating: 1445, peakRating: 1452, rankLabel: 'Specialist', solved: 1 });
     expect(stats.cf!.contests).toHaveLength(1);
     expect(stats.cf!.buckets).toEqual([{ lo: 800, count: 1 }]);
@@ -48,13 +48,13 @@ describe('getCpStats', () => {
   });
 
   it('one platform failing does not sink the other', async () => {
-    const stats = await getCpStats(fakeFetch({ 'codeforces.com': () => jsonRes({}, false) }), noSleep);
+    const stats = await getCompprogStats(fakeFetch({ 'codeforces.com': () => jsonRes({}, false) }), noSleep);
     expect(stats.cf).toBeNull();
     expect(stats.atcoder).not.toBeNull();
   });
 
   it('empty atcoder history yields null platform', async () => {
-    const stats = await getCpStats(fakeFetch({ 'history/json': [] }), noSleep);
+    const stats = await getCompprogStats(fakeFetch({ 'history/json': [] }), noSleep);
     expect(stats.atcoder).toBeNull();
   });
 });

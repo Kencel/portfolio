@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
-import type { CpStats } from '@/lib/cp/types';
+import type { CompprogStats } from '@/lib/compprog/types';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { RansomText } from './RansomText';
 import { CenterFrame } from './CenterFrame';
@@ -12,7 +12,7 @@ import { SkewBox } from './ui/SkewBox';
 import { HoverQuad } from './ui/HoverQuad';
 import { COLOR, FONT, SKEW } from '@/lib/tokens';
 import { About } from './sections/About';
-import { Cp } from './sections/Cp';
+import { Compprog } from './sections/Compprog';
 import { Projects } from './sections/Projects';
 import { Skills } from './sections/Skills';
 import { Education } from './sections/Education';
@@ -20,19 +20,19 @@ import { Contact } from './sections/Contact';
 
 // Complete section registry: every section renders from the same props bag;
 // sections that need no data just ignore it.
-type SectionData = { projects: Project[]; competitions: Competition[]; cpStats: CpStats };
+type SectionData = { projects: Project[]; competitions: Competition[]; compprogStats: CompprogStats };
 const BODY: Record<SectionId, (data: SectionData) => JSX.Element> = {
   about: () => <About />,
-  cp: d => <Cp stats={d.cpStats} competitions={d.competitions} />,
+  compprog: d => <Compprog stats={d.compprogStats} competitions={d.competitions} />,
   projects: d => <Projects projects={d.projects} />,
   skills: () => <Skills />,
   education: () => <Education />,
   contact: () => <Contact />,
 };
 
-export function SectionPanel({ view, onBack, projects, competitions, cpStats }: {
+export function SectionPanel({ view, onBack, projects, competitions, compprogStats }: {
   view: SectionId; onBack: () => void; projects: Project[];
-  competitions: Competition[]; cpStats: CpStats;
+  competitions: Competition[]; compprogStats: CompprogStats;
 }) {
   const cur = SECTIONS.find(s => s.id === view)!;
 
@@ -79,7 +79,7 @@ export function SectionPanel({ view, onBack, projects, competitions, cpStats }: 
             {/* divider — centered — PROTOTYPE 132 */}
             <div style={{ height: 4, background: COLOR.accent, margin: '22px auto 30px', transform: 'skewX(-40deg)', width: 'min(560px,70%)' }} />
 
-            {BODY[view]({ projects, competitions, cpStats })}
+            {BODY[view]({ projects, competitions, compprogStats })}
           </CenterFrame>
         </div>
       </div>

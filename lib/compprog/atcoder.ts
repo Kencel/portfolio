@@ -1,5 +1,5 @@
 // Pure mappers from atcoder.jp history JSON and kenkoooo AtCoder Problems JSON.
-import type { CpContest } from './types';
+import type { CompprogContest } from './types';
 import { ATCODER_BANDS, bandFor } from './bands';
 
 // kenkoooo's standard clipping: raw difficulties below 400 are internal model
@@ -12,9 +12,9 @@ export function atcoderRankLabel(rating: number): string {
   return bandFor(ATCODER_BANDS, rating).label;
 }
 
-export function mapAtcoderContests(json: unknown): CpContest[] {
+export function mapAtcoderContests(json: unknown): CompprogContest[] {
   if (!Array.isArray(json)) return [];
-  const out: CpContest[] = [];
+  const out: CompprogContest[] = [];
   for (const raw of json) {
     if (!raw || typeof raw !== 'object') continue;
     const r = raw as {

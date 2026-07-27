@@ -1,9 +1,9 @@
-export type SectionId = 'about' | 'cp' | 'projects' | 'skills' | 'education' | 'contact';
+export type SectionId = 'about' | 'compprog' | 'projects' | 'skills' | 'education' | 'contact';
 export interface Section { id: SectionId; n: string; label: string; sub: string }
 
 export const SECTIONS: Section[] = [
   { id: 'about',     n: '01', label: 'ABOUT ME',           sub: 'PROFILE' },
-  { id: 'cp',        n: '02', label: 'COMP. PROG',         sub: 'BATTLE RECORD' },
+  { id: 'compprog',  n: '02', label: 'COMP. PROG',         sub: 'BATTLE RECORD' },
   { id: 'projects',  n: '03', label: 'PROJECTS',           sub: 'TREASURES' },
   { id: 'skills',    n: '04', label: 'SKILLS',             sub: 'ARCANA' },
   { id: 'education', n: '05', label: 'EDUCATION',          sub: 'STATUS' },

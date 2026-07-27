@@ -2,45 +2,54 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
-import type { CpStats } from '@/lib/cp/types';
-import { SECTIONS, type SectionId } from '@/lib/data';
+import type { CompprogStats } from '@/lib/compprog/types';
+import { SECTIONS } from '@/lib/data';
 import { COLOR, FONT } from '@/lib/tokens';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
 import { useIsNarrow } from '@/lib/useIsMobile';
 import { SfxProvider } from '@/lib/SfxContext';
+import { useHashRoute } from '@/lib/useHashRoute';
+import type { View } from '@/lib/hashRoute';
 import { Backdrop } from './Backdrop';
 import { MenuView } from './MenuView';
 import { SectionPanel } from './SectionPanel';
 import { SplashScreen } from './SplashScreen';
 
-type View = 'menu' | SectionId;
-
-export function Portfolio({ projects, competitions, cpStats }: {
+export function Portfolio({ projects, competitions, compprogStats }: {
   projects: Project[];
   competitions: Competition[];
-  cpStats: CpStats;
+  compprogStats: CompprogStats;
 }) {
-  const [view, setView] = useState<View>('menu');
   const [hovered, setHovered] = useState<number | null>(null);
   const [muted, setMuted] = useState(false);
   const [menuVisit, setMenuVisit] = useState(0);
   const sfx = useSfx(muted);
   const narrow = useIsNarrow();
 
-  // The splash plays on every load: the site has no routing, so a reload is
-  // always a genuine re-entry. Starts true on server and client alike.
+  // The splash plays on every load: the site has only hash routing, so a
+  // reload is always a genuine re-entry. Starts true on server and client alike.
   const [splash, setSplash] = useState(true);
   const splashRef = useRef(splash);
   splashRef.current = splash;
   const splashDone = useCallback(() => { setSplash(false); }, []);
 
+  // Every route to the menu — Esc, C, the mouse back button, the chrome arrow,
+  // the mobile back-swipe — arrives here, so the sound and the menu re-entry
+  // animation stay identical whichever one the visitor used.
+  const onTransition = useCallback((to: View) => {
+    if (!splashRef.current) {
+      if (to === 'menu') sfx.back(); else sfx.confirm();
+    }
+    if (to === 'menu') { setHovered(null); setMenuVisit(v => v + 1); }
+  }, [sfx]);
+
+  const { view, open, goMenu } = useHashRoute(onTransition);
+
   const viewRef = useRef<View>(view);
   const hoveredRef = useRef<number | null>(hovered);
   viewRef.current = view; hoveredRef.current = hovered;
 
-  const open = useCallback((id: SectionId) => { sfx.confirm(); setView(id); }, [sfx]);
-  const goMenu = useCallback(() => { sfx.back(); setView('menu'); setHovered(null); setMenuVisit(v => v + 1); }, [sfx]);
   const enter = useCallback((i: number) => {
     setHovered(prev => { if (prev !== i) sfx.select(); return i; });
   }, [sfx]);
@@ -81,7 +90,7 @@ export function Portfolio({ projects, competitions, cpStats }: {
         {view === 'menu'
           ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
               onEnter={enter} onOpen={open} narrow={narrow} menuVisit={menuVisit} />
-          : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} cpStats={cpStats} />}
+          : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} compprogStats={compprogStats} />}
         {splash && <SplashScreen onDone={splashDone} />}
       </div>
     </SfxProvider>

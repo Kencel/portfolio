@@ -1,12 +1,12 @@
 'use client';
 import { COLOR, FONT } from '@/lib/tokens';
 import { chartTitle, chartFrame, tickLabel } from './chartChrome';
-import type { Bucket } from '@/lib/cp/types';
+import type { Bucket } from '@/lib/compprog/types';
 
 const W = 640, H = 200;
 const PAD = { l: 14, r: 14, t: 18, b: 22 };
 
-export function CpBarChart({ title, buckets, accent }: {
+export function CompprogBarChart({ title, buckets, accent }: {
   title: string;
   buckets: Bucket[];
   accent: string;

@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT, POP } from '@/lib/tokens';
 import { chartTitle, chartFrame, tickLabel } from './chartChrome';
-import type { CpContest } from '@/lib/cp/types';
+import type { CompprogContest } from '@/lib/compprog/types';
 
 const W = 640, H = 240;
 const PAD = { l: 46, r: 14, t: 12, b: 26 };
@@ -30,11 +30,11 @@ export function yTicks(lo: number, hi: number): number[] {
   return ticks;
 }
 
-export function CpLineChart({ title, contests, value, detail, accent = COLOR.accent }: {
+export function CompprogLineChart({ title, contests, value, detail, accent = COLOR.accent }: {
   title: string;
-  contests: CpContest[];
-  value: (c: CpContest) => number;
-  detail: (c: CpContest) => string;
+  contests: CompprogContest[];
+  value: (c: CompprogContest) => number;
+  detail: (c: CompprogContest) => string;
   accent?: string; // platform accent for the popup's contest link
 }) {
   const [active, setActive] = useState<number | null>(null);
