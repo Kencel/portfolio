@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
 import type { CpStats } from '@/lib/cp/types';
-import { SECTIONS, type SectionId } from '@/lib/data';
+import { SECTIONS } from '@/lib/data';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
 import { useIsNarrow } from '@/lib/useIsMobile';
