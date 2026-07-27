@@ -53,10 +53,14 @@ competition result = inserting a row in the Neon dashboard; it appears on the
 live site within ~60s, no deploy. Columns and conventions are documented in
 `db/README.md`.
 
-**Client state machine.** `Portfolio.tsx` owns the view state
-(`'menu' | SectionId`), global keyboard navigation (arrows/WASD/digits/Enter/Esc),
-and sound effects (`lib/useSfx.ts`, synthesized — no audio assets). `MenuView`
-renders the menu; `SectionPanel` renders the active section. Sections live in
+**Client state machine.** `lib/useHashRoute.ts` owns the view state
+(`'menu' | SectionId`), kept in lockstep with `window.history` — opening a
+section pushes a `#<sectionId>` entry, so the browser's own back/forward
+(mouse buttons, `Alt+←/→`, chrome arrows, mobile back-swipe) navigates
+sections instead of leaving the site; `Portfolio.tsx` consumes the hook and
+owns global keyboard navigation (arrows/WASD/digits/Enter/Esc) and sound
+effects (`lib/useSfx.ts`, synthesized — no audio assets). `MenuView` renders
+the menu; `SectionPanel` renders the active section. Sections live in
 `components/sections/` and are registered in the `SECTIONS` array in
 `lib/data.ts` — that array drives menu order, digit shortcuts, and panel titles.
 

@@ -26,8 +26,8 @@ export function Portfolio({ projects, competitions, cpStats }: {
   const sfx = useSfx(muted);
   const narrow = useIsNarrow();
 
-  // The splash plays on every load: the site has no routing, so a reload is
-  // always a genuine re-entry. Starts true on server and client alike.
+  // The splash plays on every load: the site has only hash routing, so a
+  // reload is always a genuine re-entry. Starts true on server and client alike.
   const [splash, setSplash] = useState(true);
   const splashRef = useRef(splash);
   splashRef.current = splash;

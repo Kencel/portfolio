@@ -2,6 +2,9 @@ import { SECTIONS, type SectionId } from './data';
 
 export type View = 'menu' | SectionId;
 
+// Section ids double as URL fragments, so a future SectionId must never
+// collide with a DOM element id anywhere on the page — the browser will
+// scroll-to-fragment on a matching id instead of leaving navigation to us.
 export function viewToHash(view: View): string {
   return view === 'menu' ? '' : `#${view}`;
 }
