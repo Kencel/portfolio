@@ -98,7 +98,6 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         <ImageSlot
           src="/avatar.jpg"
           alt="RAMENNAGI"
-          placeholder="DROP YOUR PHOTO"
           mask="polygon(14% 0, 100% 6%, 92% 100%, 0 90%)"
           style={{ width: 'clamp(220px,24vw,360px)', height: 'clamp(300px,32vw,470px)', display: 'block', position: 'relative' }}
         />

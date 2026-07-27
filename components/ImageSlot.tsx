@@ -3,7 +3,7 @@ import { useState, type CSSProperties } from 'react';
 import { FONT } from '@/lib/tokens';
 
 export function ImageSlot({ src, alt = '', placeholder, mask, className, style }: {
-  src?: string; alt?: string; placeholder: string; mask?: string; className?: string; style?: CSSProperties;
+  src?: string; alt?: string; placeholder?: string; mask?: string; className?: string; style?: CSSProperties;
 }) {
   const [errored, setErrored] = useState(false);
   const showImg = !!src && !errored;
@@ -15,6 +15,11 @@ export function ImageSlot({ src, alt = '', placeholder, mask, className, style }
              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       </div>
     );
+  }
+  // No placeholder text: render a plain tinted panel so an unfilled slot reads
+  // as part of the layout rather than as an empty upload widget.
+  if (!placeholder) {
+    return <div className={className} style={{ ...base, background: 'rgba(244,241,234,.04)' }} />;
   }
   return (
     <div className={className} style={{ ...base, background: 'rgba(244,241,234,.04)', border: '2px dashed rgba(244,241,234,.35)',
