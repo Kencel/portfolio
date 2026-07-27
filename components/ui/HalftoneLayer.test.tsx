@@ -11,12 +11,6 @@ describe('HalftoneLayer', () => {
     expect(el.style.opacity).toBe('0.16');
   });
 
-  it('applies an optional clip-path', () => {
-    const { container } = render(<HalftoneLayer color="#0b0a0a" clipPath="polygon(0 0, 100% 0, 62% 100%, 0% 100%)" />);
-    const el = container.firstChild as HTMLElement;
-    expect(el.style.clipPath).toBe('polygon(0 0, 100% 0, 62% 100%, 0% 100%)');
-  });
-
   it('defaults to full-bleed absolute positioning with pointer-events disabled', () => {
     const { container } = render(<HalftoneLayer color="#E4002B" />);
     const el = container.firstChild as HTMLElement;

@@ -78,10 +78,7 @@ hand-built SVG — prefer that over adding a charting dependency; it matches the
 angular aesthetic and keeps the bundle lean.
 
 **Live stats with offline fallbacks.** The COMP. PROG dashboard gets its
-stats server-side at ISR time (`lib/compprog/`, rendered by `components/compprog/`). A
-client-side Codeforces fetcher with hardcoded fallbacks also exists
-(`lib/codeforces.ts`, `CF_DEFAULTS` in `lib/data.ts`) — kept for reuse, though
-the menu HUD no longer surfaces CF stats (they'd duplicate COMP. PROG). Any new
+stats server-side at ISR time (`lib/compprog/`, rendered by `components/compprog/`). Any new
 external data source should follow the same pattern: fallback first, live data
 as enhancement.
 

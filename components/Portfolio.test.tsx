@@ -12,7 +12,7 @@ const mockNarrow = vi.hoisted(() => ({ value: false }));
 // assert on behavior *while the splash is up* sets this false first.
 const mockSplashAutoDone = vi.hoisted(() => ({ value: true }));
 const mockSfx = vi.hoisted(() => ({
-  select: vi.fn(), confirm: vi.fn(), back: vi.fn(),
+  select: vi.fn(), confirm: vi.fn(), back: vi.fn(), hover: vi.fn(), tap: vi.fn(),
 }));
 
 const emptyProjects: Project[] = [];
@@ -20,7 +20,10 @@ const emptyCompetitions: Competition[] = [];
 const emptyStats: CompprogStats = { cf: null, atcoder: null };
 
 vi.mock('@/lib/useIsMobile', () => ({ useIsNarrow: () => mockNarrow.value }));
-vi.mock('@/lib/useSfx', () => ({ useSfx: () => mockSfx }));
+vi.mock('@/lib/useSfx', () => ({
+  NOOP_SFX: { select: () => {}, confirm: () => {}, back: () => {}, hover: () => {}, tap: () => {} },
+  useSfx: () => mockSfx,
+}));
 vi.mock('./Backdrop', () => ({ Backdrop: () => null }));
 vi.mock('./MenuView', () => ({ MenuView: () => null }));
 // Calls onDone once mounted (via an effect, not during render) so the splash

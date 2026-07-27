@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT, POP } from '@/lib/tokens';
+import { chartTitle, chartFrame, tickLabel } from './chartChrome';
 import type { CompprogContest } from '@/lib/compprog/types';
 
 const W = 640, H = 240;
@@ -37,16 +38,22 @@ export function CompprogLineChart({ title, contests, value, detail, accent = COL
   accent?: string; // platform accent for the popup's contest link
 }) {
   const [active, setActive] = useState<number | null>(null);
-  if (contests.length === 0) return null;
 
-  const vals = contests.map(value);
-  const { lo, hi } = yDomain(vals);
-  const plotW = W - PAD.l - PAD.r;
-  const plotH = H - PAD.t - PAD.b;
-  const x = (i: number) => PAD.l + (contests.length === 1 ? plotW / 2 : (i * plotW) / (contests.length - 1));
-  const y = (v: number) => PAD.t + plotH - ((v - lo) / (hi - lo)) * plotH;
+  // Geometry depends only on the data, not the hovered point — memoized so a
+  // hover re-render touches just the active circle and the popup.
+  const geom = useMemo(() => {
+    if (contests.length === 0) return null;
+    const { lo, hi } = yDomain(contests.map(value));
+    const plotW = W - PAD.l - PAD.r;
+    const plotH = H - PAD.t - PAD.b;
+    const x = (i: number) => PAD.l + (contests.length === 1 ? plotW / 2 : (i * plotW) / (contests.length - 1));
+    const y = (v: number) => PAD.t + plotH - ((v - lo) / (hi - lo)) * plotH;
+    const points = contests.map((c, i) => `${x(i)},${y(value(c))}`).join(' ');
+    return { x, y, ticks: yTicks(lo, hi), points };
+  }, [contests, value]);
+  if (geom === null) return null;
+  const { x, y, ticks, points } = geom;
 
-  const ticks = yTicks(lo, hi);
   const cur = active == null ? null : contests[active];
 
   // Popup anchor in percent of the chart box — the svg fills its wrapper and
@@ -58,19 +65,17 @@ export function CompprogLineChart({ title, contests, value, detail, accent = COL
 
   return (
     <div>
-      <div style={{ fontFamily: FONT.bebas, letterSpacing: '.18em', fontSize: 15, color: COLOR.ink, opacity: .85, marginBottom: 6 }}>{title}</div>
+      <div style={chartTitle}>{title}</div>
       <div data-testid="chart-body" style={{ position: 'relative' }} onMouseLeave={() => setActive(null)}>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={title}
-        style={{ width: '100%', display: 'block', background: COLOR.trackBg, border: `1px solid ${COLOR.trackBorder}` }}>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={title} style={chartFrame}>
         {ticks.map(t => (
-          <text key={t} x={PAD.l - 6} y={y(t) + 3} textAnchor="end" fontSize={10}
-            fill={COLOR.ink} opacity={0.7} fontFamily={FONT.oswald}>{t}</text>
+          <text key={t} {...tickLabel} x={PAD.l - 6} y={y(t) + 3} textAnchor="end">{t}</text>
         ))}
-        <text x={x(0)} y={H - 8} textAnchor="middle" fontSize={10} fill={COLOR.ink} opacity={0.7} fontFamily={FONT.oswald}>1</text>
+        <text {...tickLabel} x={x(0)} y={H - 8} textAnchor="middle">1</text>
         {contests.length > 1 && (
-          <text x={x(contests.length - 1)} y={H - 8} textAnchor="middle" fontSize={10} fill={COLOR.ink} opacity={0.7} fontFamily={FONT.oswald}>{contests.length}</text>
+          <text {...tickLabel} x={x(contests.length - 1)} y={H - 8} textAnchor="middle">{contests.length}</text>
         )}
-        <polyline points={contests.map((c, i) => `${x(i)},${y(value(c))}`).join(' ')} fill="none" stroke={COLOR.ink} strokeWidth={2} />
+        <polyline points={points} fill="none" stroke={COLOR.ink} strokeWidth={2} />
         {contests.map((c, i) => (
           <circle key={i} data-testid={`pt-${i}`} cx={x(i)} cy={y(value(c))} r={5}
             fill={active === i ? COLOR.accent : COLOR.ink} stroke={COLOR.base} strokeWidth={1.5}

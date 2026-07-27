@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
 import { HoverQuad } from '@/components/ui/HoverQuad';
-import { chip, unskew } from '@/lib/chipStyle';
-import { COLOR, FONT } from '@/lib/tokens';
+import { chip, unskew, themedLine } from '@/lib/chipStyle';
+import { COLOR } from '@/lib/tokens';
 import type { CompprogStats } from '@/lib/compprog/types';
 import type { Competition } from '@/lib/competitions';
 import { PlatformPanel, type PlatformConfig } from '@/components/compprog/PlatformPanel';
@@ -16,17 +16,12 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 const CF_CONFIG: PlatformConfig = {
-  title: 'CODEFORCES', accent: COLOR.accent,
+  title: 'CODEFORCES', accent: COLOR.accent, handle: 'RamenNagi',
   handleUrl: 'https://codeforces.com/profile/RamenNagi', perfApprox: true, seedBase: 41,
 };
 const ATCODER_CONFIG: PlatformConfig = {
-  title: 'ATCODER', accent: COLOR.ink,
+  title: 'ATCODER', accent: COLOR.ink, handle: 'RamenNagi',
   handleUrl: 'https://atcoder.jp/users/RamenNagi', perfApprox: false, seedBase: 51,
-};
-
-const themedLine = {
-  fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 22,
-  color: COLOR.ink, opacity: .75, textAlign: 'center' as const, padding: '40px 0',
 };
 
 export function Compprog({ stats, competitions }: { stats: CompprogStats; competitions: Competition[] }) {
