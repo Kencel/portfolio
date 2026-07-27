@@ -7,22 +7,28 @@ import type { Competition } from '@/lib/competitions';
 import type { CpStats } from '@/lib/cp/types';
 
 const mockNarrow = vi.hoisted(() => ({ value: false }));
+// Controls the SplashScreen mock below: true (default) auto-clears the splash
+// on mount so keyboard nav in most tests isn't blocked; a test that needs to
+// assert on behavior *while the splash is up* sets this false first.
+const mockSplashAutoDone = vi.hoisted(() => ({ value: true }));
+const mockSfx = vi.hoisted(() => ({
+  select: vi.fn(), confirm: vi.fn(), back: vi.fn(),
+}));
 
 const emptyProjects: Project[] = [];
 const emptyCompetitions: Competition[] = [];
 const emptyStats: CpStats = { cf: null, atcoder: null };
 
 vi.mock('@/lib/useIsMobile', () => ({ useIsNarrow: () => mockNarrow.value }));
-vi.mock('@/lib/useSfx', () => ({
-  useSfx: () => ({ select: () => {}, confirm: () => {}, back: () => {} }),
-}));
+vi.mock('@/lib/useSfx', () => ({ useSfx: () => mockSfx }));
 vi.mock('./Backdrop', () => ({ Backdrop: () => null }));
 vi.mock('./MenuView', () => ({ MenuView: () => null }));
 // Calls onDone once mounted (via an effect, not during render) so the splash
-// gate clears immediately and keyboard nav in tests below isn't blocked.
+// gate clears immediately and keyboard nav in tests below isn't blocked —
+// unless mockSplashAutoDone is set false, in which case the splash stays up.
 vi.mock('./SplashScreen', () => ({
   SplashScreen: ({ onDone }: { onDone: () => void }) => {
-    useEffect(() => { onDone(); }, []);
+    useEffect(() => { if (mockSplashAutoDone.value) onDone(); }, []);
     return null;
   },
 }));
@@ -30,7 +36,13 @@ vi.mock('./SplashScreen', () => ({
 // jsdom shares history across tests in a file; without this, a test that
 // opens a section leaves '#cp' in the URL and the next mount deep-links
 // into it instead of starting on the menu.
-beforeEach(() => { window.history.replaceState(null, '', '/'); });
+beforeEach(() => {
+  window.history.replaceState(null, '', '/');
+  mockSplashAutoDone.value = true;
+  mockSfx.select.mockClear();
+  mockSfx.confirm.mockClear();
+  mockSfx.back.mockClear();
+});
 
 describe('Portfolio root layout', () => {
   it('wide mode grows with content so the document can scroll (no 100vh height lock)', () => {
@@ -101,5 +113,19 @@ describe('Portfolio history integration', () => {
       <Portfolio projects={emptyProjects} competitions={emptyCompetitions} cpStats={emptyStats} />
     );
     expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+  });
+
+  it('a deep-linked mount does not play a sound behind the splash', () => {
+    mockNarrow.value = false;
+    mockSplashAutoDone.value = false; // keep the splash up for this test
+    window.history.replaceState(null, '', '#cp');
+    render(
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} cpStats={emptyStats} />
+    );
+    // The section panel is already open underneath the (still-up) splash...
+    expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+    // ...but a deep-linked visitor should not hear a blip before it lifts.
+    expect(mockSfx.confirm).not.toHaveBeenCalled();
+    expect(mockSfx.back).not.toHaveBeenCalled();
   });
 });
