@@ -1,19 +1,13 @@
-import type { CSSProperties } from 'react';
-
 export function HalftoneLayer({
   color,
   dotRadius = 1.3,
   gap = 15,
   opacity = 1,
-  clipPath,
-  style,
 }: {
   color: string;
   dotRadius?: number;
   gap?: number;
   opacity?: number;
-  clipPath?: string;
-  style?: CSSProperties;
 }) {
   return (
     <div
@@ -24,8 +18,6 @@ export function HalftoneLayer({
         backgroundSize: `${gap}px ${gap}px`,
         opacity,
         pointerEvents: 'none',
-        ...(clipPath ? { clipPath } : {}),
-        ...style,
       }}
     />
   );

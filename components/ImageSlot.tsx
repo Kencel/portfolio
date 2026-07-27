@@ -1,5 +1,6 @@
 'use client';
 import { useState, type CSSProperties } from 'react';
+import { FONT } from '@/lib/tokens';
 
 export function ImageSlot({ src, alt = '', placeholder, mask, className, style }: {
   src?: string; alt?: string; placeholder: string; mask?: string; className?: string; style?: CSSProperties;
@@ -18,7 +19,7 @@ export function ImageSlot({ src, alt = '', placeholder, mask, className, style }
   return (
     <div className={className} style={{ ...base, background: 'rgba(244,241,234,.04)', border: '2px dashed rgba(244,241,234,.35)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 12 }}>
-      <span style={{ fontFamily: "var(--font-bebas), sans-serif", letterSpacing: '.16em', fontSize: 14,
+      <span style={{ fontFamily: FONT.bebas, letterSpacing: '.16em', fontSize: 14,
         color: 'rgba(244,241,234,.7)' }}>{placeholder}</span>
     </div>
   );

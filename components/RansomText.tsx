@@ -1,26 +1,16 @@
-import type { CSSProperties } from 'react';
+import { memo, type CSSProperties } from 'react';
+import { COLOR, FONT } from '@/lib/tokens';
+import { rand } from '@/lib/rand';
 
-// Deterministic pseudo-random in [0,1) from an integer seed. Stable across
-// SSR and client render (no Math.random / Date) so the ransom-note tiles never
-// cause a hydration mismatch — the same letter always gets the same treatment.
-function rand(seed: number): number {
-  const x = Math.sin(seed * 99991.7) * 10000;
-  return x - Math.floor(x);
-}
-
-const FONTS = [
-  'var(--font-anton), sans-serif',
-  'var(--font-bebas), sans-serif',
-  'var(--font-oswald), sans-serif',
-];
+const FONTS = [FONT.anton, FONT.bebas, FONT.oswald];
 
 // [background, text] tiles — bone / crimson / ink, the phantom-ui palette.
 const TILES: ReadonlyArray<readonly [string, string]> = [
-  ['#F4F1EA', '#0b0a0a'],
-  ['#E4002B', '#0b0a0a'],
-  ['#0b0a0a', '#F4F1EA'],
-  ['#F4F1EA', '#E4002B'],
-  ['#E4002B', '#F4F1EA'],
+  [COLOR.ink, COLOR.base],
+  [COLOR.accent, COLOR.base],
+  [COLOR.base, COLOR.ink],
+  [COLOR.ink, COLOR.accent],
+  [COLOR.accent, COLOR.ink],
 ];
 
 /**
@@ -28,8 +18,11 @@ const TILES: ReadonlyArray<readonly [string, string]> = [
  * a mixed font, size, tilt, baseline jitter, harsh black keyline and hard
  * offset shadow. Sizing is in `em` so it scales with the parent's font-size
  * (keep the existing clamp() on the wrapping element).
+ *
+ * memo: pure in (text, seed, tiles) and recomputes per-character styling on
+ * every render, so parents that re-render per keypress skip it entirely.
  */
-export function RansomText({
+export const RansomText = memo(function RansomText({
   text,
   className,
   style,
@@ -75,7 +68,7 @@ export function RansomText({
               background: bg,
               color,
               padding: `0.03em ${px}em`,
-              border: '2px solid #0b0a0a',
+              border: `2px solid ${COLOR.base}`,
               boxShadow: '2px 2px 0 rgba(0,0,0,.6)',
               transform: `rotate(${rot}deg) translateY(${dy}em)`,
             }}
@@ -86,4 +79,4 @@ export function RansomText({
       })}
     </span>
   );
-}
+});

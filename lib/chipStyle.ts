@@ -12,3 +12,9 @@ export const chip = (active: boolean): CSSProperties => ({
 });
 
 export const unskew: CSSProperties = { display: 'inline-block', transform: 'skewX(8deg)' };
+
+// Centered themed line for empty states ("X UNAVAILABLE — CHECK BACK SOON").
+export const themedLine: CSSProperties = {
+  fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 22,
+  color: COLOR.ink, opacity: .75, textAlign: 'center', padding: '40px 0',
+};

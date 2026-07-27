@@ -1,5 +1,5 @@
 'use client';
-import { SECTIONS, type SectionId } from '@/lib/data';
+import { SECTIONS, CODENAME, STATUS, type SectionId } from '@/lib/data';
 import { useClock } from '@/lib/useClock';
 import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
@@ -10,22 +10,24 @@ import { CenterFrame } from './CenterFrame';
 import { FitToViewport } from './FitToViewport';
 import { HoverQuad } from './ui/HoverQuad';
 
-const CODENAME = 'RAMENNAGI';
+// Isolated so the 20-second clock tick re-renders only these two lines,
+// not the whole menu (title RansomText, six MenuRows, avatar cluster).
+function ClockBlock() {
+  const { time, day } = useClock();
+  return (
+    <div style={{ textAlign: 'right', transform: 'skewX(-6deg)', marginRight: 'clamp(20px,7vw,120px)' }}>
+      <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: '3px 3px 0 rgba(0,0,0,.9)' }}>{time}</div>
+      <div style={{ fontFamily: FONT.bebas, letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.ink }}>{day} · TAKE YOUR TIME</div>
+    </div>
+  );
+}
 
 export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow, menuVisit }: {
   hovered: number | null; muted: boolean; onToggleMute: () => void;
   onEnter: (i: number) => void; onOpen: (id: SectionId) => void; narrow?: boolean; menuVisit: number;
 }) {
-  const { time, day } = useClock();
-
   // current-focus card — mirrors the AngularCard + panel shell the sections use.
   // Replaces the old CF/solved stat bars (those stats live in COMP. PROG now).
-  // Copy is grounded in the About section — evergreen, no stale numbers.
-  const STATUS: [string, string][] = [
-    ['LEARNING', 'AI/ML & DATA SCIENCE'],
-    ['BUILDING', 'THIS SITE'],
-    ['GRINDING', 'COMPETITIVE PROGRAMMING'],
-  ];
   const statusCard = (
     <AngularCard seed={11} style={{ width: 'min(360px,100%)', transform: 'skewX(-4deg)' }}>
     <div style={{ background: COLOR.panel, padding: '18px 22px' }}>
@@ -66,13 +68,6 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
         {!muted ? '♪ SFX ON' : 'SFX MUTED'}
       </button>
     </HoverQuad>
-  );
-
-  const clockBlock = (
-    <div style={{ textAlign: 'right', transform: 'skewX(-6deg)', marginRight: 'clamp(20px,7vw,120px)' }}>
-      <div style={{ fontFamily: FONT.anton, fontSize: 'clamp(30px,4vw,58px)', lineHeight: .9, textShadow: '3px 3px 0 rgba(0,0,0,.9)' }}>{time}</div>
-      <div style={{ fontFamily: FONT.bebas, letterSpacing: '.3em', fontSize: 'clamp(14px,1.4vw,20px)', color: COLOR.ink }}>{day} · TAKE YOUR TIME</div>
-    </div>
   );
 
   const titleBlock = (
@@ -157,7 +152,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
           {/* footer strip: status card left, clock right */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 'clamp(20px,3vw,48px)', marginTop: 'clamp(20px,3vh,40px)' }}>
             <div style={{ flex: '1 1 auto' }}>{statusCard}</div>
-            {clockBlock}
+            <ClockBlock />
           </div>
         </CenterFrame>
         </FitToViewport>

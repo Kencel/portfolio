@@ -1,14 +1,9 @@
 'use client';
-import { useMemo, useState, type CSSProperties } from 'react';
+import { useMemo, useState } from 'react';
 import { ProjectCard } from '@/components/ProjectCard';
 import { HoverQuad } from '@/components/ui/HoverQuad';
-import { COLOR, FONT } from '@/lib/tokens';
 import { allTags, filterByTags, sortProjects, type Project, type SortMode } from '@/lib/projects';
-import { chip, unskew } from '@/lib/chipStyle';
-const themedLine: CSSProperties = {
-  fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 22,
-  color: COLOR.ink, opacity: .75, textAlign: 'center', padding: '40px 0',
-};
+import { chip, unskew, themedLine } from '@/lib/chipStyle';
 
 export function Projects({ projects }: { projects: Project[] }) {
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());

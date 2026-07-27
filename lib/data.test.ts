@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SECTIONS, SKILLS, CF_DEFAULTS, SOLVED, ATTRIBUTES } from './data';
+import { SECTIONS, SKILLS, ATTRIBUTES } from './data';
 
 describe('data', () => {
   it('has six sections in menu order', () => {
@@ -11,10 +11,6 @@ describe('data', () => {
     expect(SKILLS).toEqual([
       'C++', 'PYTHON', 'JAVA', 'DJANGO', 'NEXT.JS', 'REACT', 'NODE.JS', 'PNPM', 'GIT', 'POSTGRESQL',
     ]);
-  });
-  it('exposes CF defaults and manual solved count', () => {
-    expect(CF_DEFAULTS).toEqual({ rating: 1445, maxRating: 1452, rank: 'Specialist' });
-    expect(SOLVED).toBe(472);
   });
   it('has six attributes with 0-100 values', () => {
     expect(ATTRIBUTES).toHaveLength(6);

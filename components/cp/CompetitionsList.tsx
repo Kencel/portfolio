@@ -4,12 +4,8 @@ import { AngularCard } from '@/components/AngularCard';
 import { SkewBox } from '@/components/ui/SkewBox';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT, POP } from '@/lib/tokens';
+import { themedLine } from '@/lib/chipStyle';
 import { formatMonthYear, type Competition } from '@/lib/competitions';
-
-const themedLine = {
-  fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 22,
-  color: COLOR.ink, opacity: .75, textAlign: 'center' as const, padding: '40px 0',
-};
 
 export function CompetitionsList({ competitions }: { competitions: Competition[] }) {
   // Competition whose certificate is open in the modal; null = closed.

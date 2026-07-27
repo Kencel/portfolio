@@ -1,6 +1,7 @@
 'use client';
 import { useId, type CSSProperties, type ReactNode } from 'react';
-import { POP } from '@/lib/tokens';
+import { COLOR, POP } from '@/lib/tokens';
+import { rand } from '@/lib/rand';
 
 // Fallback seed only — useId is NOT guaranteed to match between the server
 // render and client hydration (it diverges under Next dev), so every call
@@ -9,10 +10,6 @@ function hashStr(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
   return Math.abs(h) || 1;
-}
-function rand(seed: number): number {
-  const x = Math.sin(seed * 99991.7) * 10000;
-  return x - Math.floor(x);
 }
 
 // A quadrilateral — exactly one vertex per corner — with a small deterministic
@@ -56,7 +53,7 @@ export function AngularCard({
   const clip = quadClip(s, Math.max(1, frame - 2));
   return (
     <div
-      style={{ position: 'relative', background: '#F4F1EA', padding: frame, clipPath: clip, filter: `drop-shadow(${pop})`, ...style }}
+      style={{ position: 'relative', background: COLOR.ink, padding: frame, clipPath: clip, filter: `drop-shadow(${pop})`, ...style }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       {...(rowMarker ? { 'data-p5row': '1' } : {})}

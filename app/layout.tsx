@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Anton, Bebas_Neue, Oswald } from 'next/font/google';
+import { COLOR, FONT } from '@/lib/tokens';
 import './globals.css';
 
 const anton = Anton({ weight: '400', subsets: ['latin'], variable: '--font-anton' });
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // attribute mismatches on these two elements, not real mismatches deeper in
     // the tree.
     <html lang="en" suppressHydrationWarning className={`${anton.variable} ${bebas.variable} ${oswald.variable}`}>
-      <body suppressHydrationWarning style={{ margin: 0, background: '#0b0a0a', color: '#F4F1EA', fontFamily: 'var(--font-oswald), sans-serif' }}>
+      <body suppressHydrationWarning style={{ margin: 0, background: COLOR.base, color: COLOR.ink, fontFamily: FONT.oswald }}>
         {children}
       </body>
     </html>
