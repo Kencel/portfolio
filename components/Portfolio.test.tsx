@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Portfolio } from './Portfolio';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
@@ -26,6 +26,11 @@ vi.mock('./SplashScreen', () => ({
     return null;
   },
 }));
+
+// jsdom shares history across tests in a file; without this, a test that
+// opens a section leaves '#cp' in the URL and the next mount deep-links
+// into it instead of starting on the menu.
+beforeEach(() => { window.history.replaceState(null, '', '/'); });
 
 describe('Portfolio root layout', () => {
   it('wide mode grows with content so the document can scroll (no 100vh height lock)', () => {
@@ -59,6 +64,42 @@ describe('Portfolio section props', () => {
     // own keydown handler opens the section directly, independent of the
     // mocked-out MenuView.
     fireEvent.keyDown(window, { key: '2' });
+    expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+  });
+});
+
+describe('Portfolio history integration', () => {
+  it('opening a section pushes a hash entry', () => {
+    mockNarrow.value = false;
+    render(
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} cpStats={emptyStats} />
+    );
+    fireEvent.keyDown(window, { key: '2' });
+    expect(window.location.hash).toBe('#cp');
+  });
+
+  it('a browser back traversal returns to the menu', () => {
+    mockNarrow.value = false;
+    render(
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} cpStats={emptyStats} />
+    );
+    fireEvent.keyDown(window, { key: '2' });
+    expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+
+    // Simulate the mouse back button / chrome arrow: the browser moves first,
+    // then fires popstate.
+    window.history.replaceState(null, '', '/');
+    fireEvent.popState(window);
+
+    expect(screen.queryByText(/CODEFORCES DATA UNAVAILABLE/)).not.toBeInTheDocument();
+  });
+
+  it('a deep link opens that section on mount', () => {
+    mockNarrow.value = false;
+    window.history.replaceState(null, '', '#cp');
+    render(
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} cpStats={emptyStats} />
+    );
     expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
   });
 });
