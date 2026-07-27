@@ -1,10 +1,17 @@
 import { act, renderHook } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { StrictMode } from 'react';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { useHashRoute } from './useHashRoute';
 
 // jsdom shares one history/location across tests in a file; reset so each
 // test starts on a clean "/" with no hash.
 beforeEach(() => { window.history.replaceState(null, '', '/'); });
+
+// Safety net: if an assertion throws mid-test, a manual spy.mockRestore()
+// below it never runs, leaking the spy (and its call history) into the next
+// test. Restore unconditionally so a failing assertion can't contaminate
+// tests that come after it.
+afterEach(() => { vi.restoreAllMocks(); });
 
 /** Simulate a browser history traversal landing on `hash`. */
 function traverseTo(hash: string) {
@@ -69,12 +76,55 @@ describe('useHashRoute', () => {
   it('deep link opens the section and leaves a menu entry behind it', () => {
     window.history.replaceState(null, '', '#education');
     const push = vi.spyOn(window.history, 'pushState');
-    const { result } = renderHook(() => useHashRoute());
+    const replace = vi.spyOn(window.history, 'replaceState');
+    // StrictMode double-invokes effects in dev; the mount effect must be
+    // idempotent (a run-once guard) or this synthesizes a duplicate menu
+    // entry, leaving [menu, menu, education] instead of [menu, education].
+    const { result } = renderHook(() => useHashRoute(), { wrapper: StrictMode });
     expect(result.current.view).toBe('education');
     // A menu entry was synthesised underneath, so back returns to the
-    // portfolio rather than leaving the site.
+    // portfolio rather than leaving the site — and only once, even under
+    // StrictMode's double-invoke.
+    expect(replace).toHaveBeenCalledTimes(1);
+    expect(replace).toHaveBeenCalledWith({ view: 'menu' }, '', '/');
+    expect(push).toHaveBeenCalledTimes(1);
     expect(push).toHaveBeenCalledWith({ view: 'education' }, '', '#education');
     push.mockRestore();
+    replace.mockRestore();
+  });
+
+  it('preserves the query string when resolving a deep link', () => {
+    window.history.replaceState(null, '', '/?utm_source=x#education');
+    const replace = vi.spyOn(window.history, 'replaceState');
+    const { result } = renderHook(() => useHashRoute());
+    expect(result.current.view).toBe('education');
+    // Rebuilding the landing entry from pathname alone would drop the query
+    // string; a shared link's UTM params must survive.
+    expect(replace).toHaveBeenCalledWith({ view: 'menu' }, '', '/?utm_source=x');
+  });
+
+  it('a hash typed straight into the address bar updates the view via hashchange', () => {
+    const { result } = renderHook(() => useHashRoute());
+    act(() => {
+      window.history.pushState(null, '', '#projects');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    expect(result.current.view).toBe('projects');
+  });
+
+  it('a traversal firing both popstate and hashchange fires onTransition exactly once', () => {
+    const seen: string[] = [];
+    const { result } = renderHook(() => useHashRoute(to => { seen.push(to); }));
+    act(() => { result.current.open('skills'); });
+    act(() => {
+      window.history.replaceState(null, '', '/');
+      // A real back/forward traversal fires both events for the same
+      // destination; without the early-return guard in `go`, onTransition
+      // (and any sound it drives) would fire twice.
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    expect(seen).toEqual(['skills', 'menu']);
   });
 
   it('strips an unrecognised hash and lands on the menu', () => {

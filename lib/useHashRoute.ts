@@ -40,17 +40,27 @@ export function useHashRoute(onTransition?: (to: View) => void) {
   // Resolve an incoming deep link once, after mount. The server always renders
   // the menu and initial client state is 'menu', so there's no hydration
   // mismatch; the splash covers this, so there's no flash of menu either.
+  //
+  // Guarded by a run-once ref: React Strict Mode double-invokes mount effects
+  // in dev (no cleanup here to make that idempotent on its own), and without
+  // the guard a recognized deep-link hash gets its replaceState+pushState
+  // pair re-run on the second invocation, leaving a redundant duplicate menu
+  // entry in history. Mirrors the `if (!ref.current)` pattern in useSfx.
+  const deepLinkResolvedRef = useRef(false);
   useEffect(() => {
+    if (deepLinkResolvedRef.current) return;
+    deepLinkResolvedRef.current = true;
+    const landingUrl = window.location.pathname + window.location.search;
     const initial = hashToView(window.location.hash);
     if (initial === 'menu') {
       if (window.location.hash) {
-        window.history.replaceState({ view: 'menu' }, '', window.location.pathname);
+        window.history.replaceState({ view: 'menu' }, '', landingUrl);
       }
       return;
     }
     // Rewrite the landing entry as the menu, then push the section on top, so
     // back from a deep link returns to the portfolio instead of leaving it.
-    window.history.replaceState({ view: 'menu' }, '', window.location.pathname);
+    window.history.replaceState({ view: 'menu' }, '', landingUrl);
     window.history.pushState({ view: initial }, '', viewToHash(initial));
     go(initial);
   }, [go]);
