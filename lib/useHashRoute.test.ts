@@ -133,4 +133,94 @@ describe('useHashRoute', () => {
     expect(result.current.view).toBe('menu');
     expect(window.location.hash).toBe('');
   });
+
+  it('strips a bogus hash typed into the address bar mid-session', () => {
+    const { result } = renderHook(() => useHashRoute());
+    act(() => {
+      window.history.pushState(null, '', '#nonsense');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    expect(result.current.view).toBe('menu');
+    expect(window.location.hash).toBe('');
+  });
+
+  // jsdom 25's history implementation genuinely supports same-document
+  // traversal (unlike the older assumption that drove the spy-based tests
+  // above): a real history.back() call queues an internal task that fires
+  // both `popstate` and `hashchange` asynchronously. A single microtask or a
+  // single `setTimeout(0)` isn't enough to observe it — flushing the macrotask
+  // queue twice is what reliably surfaces the effect in this environment.
+  it('a real history.back() traversal from a section lands on the menu', async () => {
+    const { result } = renderHook(() => useHashRoute());
+    act(() => { result.current.open('cp'); });
+    expect(window.location.hash).toBe('#cp');
+
+    await act(async () => {
+      window.history.back();
+      // A single microtask or a single setTimeout(0) isn't enough to observe
+      // jsdom's internal traversal task; flushing the macrotask queue twice
+      // reliably surfaces the popstate/hashchange pair in this environment.
+      await new Promise(r => setTimeout(r, 0));
+      await new Promise(r => setTimeout(r, 0));
+    });
+
+    expect(result.current.view).toBe('menu');
+    expect(window.location.hash).toBe('');
+  });
+
+  it('a real history.back() traversal from a resolved deep link lands on the menu', async () => {
+    window.history.replaceState(null, '', '#education');
+    const { result } = renderHook(() => useHashRoute());
+    expect(result.current.view).toBe('education');
+
+    await act(async () => {
+      window.history.back();
+      await new Promise(r => setTimeout(r, 0));
+      await new Promise(r => setTimeout(r, 0));
+    });
+
+    expect(result.current.view).toBe('menu');
+  });
+
+  it('open() on the section already showing is a no-op (no duplicate history entry)', () => {
+    const push = vi.spyOn(window.history, 'pushState');
+    const { result } = renderHook(() => useHashRoute());
+    act(() => { result.current.open('about'); });
+    expect(push).toHaveBeenCalledTimes(1);
+    act(() => { result.current.open('about'); });
+    // No second pushState, so a single back() still lands on the menu instead
+    // of appearing to do nothing on a duplicate entry.
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(result.current.view).toBe('about');
+    push.mockRestore();
+  });
+
+  it('two rapid goMenu() calls only traverse back once', () => {
+    const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
+    const { result } = renderHook(() => useHashRoute());
+    act(() => { result.current.open('about'); });
+    act(() => {
+      result.current.goMenu();
+      result.current.goMenu();
+    });
+    expect(back).toHaveBeenCalledTimes(1);
+    back.mockRestore();
+  });
+
+  it('goMenu() works again once a traversal has landed', async () => {
+    const { result } = renderHook(() => useHashRoute());
+    act(() => { result.current.open('about'); });
+    await act(async () => {
+      result.current.goMenu();
+      await new Promise(r => setTimeout(r, 0));
+      await new Promise(r => setTimeout(r, 0));
+    });
+    expect(result.current.view).toBe('menu');
+
+    act(() => { result.current.open('cp'); });
+    const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
+    act(() => { result.current.goMenu(); });
+    expect(back).toHaveBeenCalledTimes(1);
+    back.mockRestore();
+  });
 });
