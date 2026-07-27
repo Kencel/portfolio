@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { bucketize, highlights } from './stats';
-import type { CpContest } from './types';
+import type { CompprogContest } from './types';
 
-const c = (over: Partial<CpContest>): CpContest => ({
+const c = (over: Partial<CompprogContest>): CompprogContest => ({
   name: 'X', url: 'https://x', date: '2025-01-01',
   ratingAfter: 1000, delta: 0, performance: 1000, rank: 100, ...over,
 });

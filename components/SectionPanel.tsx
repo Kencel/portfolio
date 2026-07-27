@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
-import type { CpStats } from '@/lib/cp/types';
+import type { CompprogStats } from '@/lib/compprog/types';
 import { SECTIONS, type SectionId } from '@/lib/data';
 import { RansomText } from './RansomText';
 import { CenterFrame } from './CenterFrame';
@@ -12,22 +12,22 @@ import { SkewBox } from './ui/SkewBox';
 import { HoverQuad } from './ui/HoverQuad';
 import { COLOR, FONT, SKEW } from '@/lib/tokens';
 import { About } from './sections/About';
-import { Cp } from './sections/Cp';
+import { Compprog } from './sections/Compprog';
 import { Projects } from './sections/Projects';
 import { Skills } from './sections/Skills';
 import { Education } from './sections/Education';
 import { Contact } from './sections/Contact';
 
-const BODY: Record<Exclude<SectionId, 'projects' | 'cp'>, () => JSX.Element> = {
+const BODY: Record<Exclude<SectionId, 'projects' | 'compprog'>, () => JSX.Element> = {
   about: About, skills: Skills, education: Education, contact: Contact,
 };
 
-export function SectionPanel({ view, onBack, projects, competitions, cpStats }: {
+export function SectionPanel({ view, onBack, projects, competitions, compprogStats }: {
   view: SectionId; onBack: () => void; projects: Project[];
-  competitions: Competition[]; cpStats: CpStats;
+  competitions: Competition[]; compprogStats: CompprogStats;
 }) {
   const cur = SECTIONS.find(s => s.id === view)!;
-  const Body = view === 'projects' || view === 'cp' ? null : BODY[view];
+  const Body = view === 'projects' || view === 'compprog' ? null : BODY[view];
 
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 20, background: COLOR.base, overflow: 'hidden' }}>
@@ -76,7 +76,7 @@ export function SectionPanel({ view, onBack, projects, competitions, cpStats }: 
               ? <Body />
               : view === 'projects'
                 ? <Projects projects={projects} />
-                : <Cp stats={cpStats} competitions={competitions} />}
+                : <Compprog stats={compprogStats} competitions={competitions} />}
           </CenterFrame>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { SECTIONS, SKILLS, CF_DEFAULTS, SOLVED, ATTRIBUTES } from './data';
 
 describe('data', () => {
   it('has six sections in menu order', () => {
-    expect(SECTIONS.map(s => s.id)).toEqual(['about','cp','projects','skills','education','contact']);
+    expect(SECTIONS.map(s => s.id)).toEqual(['about','compprog','projects','skills','education','contact']);
     expect(SECTIONS[0]).toMatchObject({ n: '01', label: 'ABOUT ME', sub: 'PROFILE' });
     expect(SECTIONS[5]).toMatchObject({ n: '06', label: 'CONTACT', sub: 'CONFIDANTS' });
   });

@@ -13,7 +13,7 @@ describe('hashToView', () => {
   });
   it('treats an empty hash as the menu', () => expect(hashToView('')).toBe('menu'));
   it('treats a bare # as the menu', () => expect(hashToView('#')).toBe('menu'));
-  it('tolerates a missing leading #', () => expect(hashToView('cp')).toBe('cp'));
+  it('tolerates a missing leading #', () => expect(hashToView('compprog')).toBe('compprog'));
   it('falls back to the menu for an unknown hash', () => expect(hashToView('#nonsense')).toBe('menu'));
   it('falls back to the menu for a removed section id', () => expect(hashToView('#battle-record')).toBe('menu'));
 });

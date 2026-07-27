@@ -2,10 +2,10 @@
 import { AngularCard } from '@/components/AngularCard';
 import { HoverQuad } from '@/components/ui/HoverQuad';
 import { COLOR, FONT } from '@/lib/tokens';
-import { highlights } from '@/lib/cp/stats';
-import type { PlatformStats } from '@/lib/cp/types';
-import { CpLineChart } from './CpLineChart';
-import { CpBarChart } from './CpBarChart';
+import { highlights } from '@/lib/compprog/stats';
+import type { PlatformStats } from '@/lib/compprog/types';
+import { CompprogLineChart } from './CompprogLineChart';
+import { CompprogBarChart } from './CompprogBarChart';
 
 export interface PlatformConfig {
   title: string;        // "CODEFORCES"
@@ -59,12 +59,12 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
       </div>
       <div style={{ display: 'grid', gap: 24 }}>
         <div data-testid="line-charts" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))', gap: 24 }}>
-          <CpLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
+          <CompprogLineChart title="RATING" contests={stats.contests} value={c => c.ratingAfter}
             detail={c => (c.delta >= 0 ? `Δ +${c.delta}` : `Δ ${c.delta}`)} accent={config.accent} />
-          <CpLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
+          <CompprogLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
             value={c => c.performance} detail={c => `PERF ${c.performance}`} accent={config.accent} />
         </div>
-        <CpBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} accent={config.accent} />
+        <CompprogBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} accent={config.accent} />
       </div>
     </div>
   );

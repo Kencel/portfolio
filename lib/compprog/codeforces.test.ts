@@ -39,7 +39,7 @@ describe('mapCfInfo', () => {
 });
 
 describe('mapCfContests', () => {
-  it('maps history rows to CpContest', () => {
+  it('maps history rows to CompprogContest', () => {
     const out = mapCfContests(ratingHistory);
     expect(out).toHaveLength(2);
     expect(out[0]).toEqual({

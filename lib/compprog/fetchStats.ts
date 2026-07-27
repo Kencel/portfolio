@@ -1,7 +1,7 @@
 // Server-only: fetches CF + AtCoder data during ISR revalidation and reduces it
-// to a compact CpStats. Never throws — CI builds offline, and an upstream
+// to a compact CompprogStats. Never throws — CI builds offline, and an upstream
 // outage must not take the page down (the affected tab shows a fallback).
-import type { CpStats, PlatformStats } from './types';
+import type { CompprogStats, PlatformStats } from './types';
 import { bucketize } from './stats';
 import { mapCfInfo, mapCfContests, mapCfSolved } from './codeforces';
 import { mapAtcoderContests, mapAtcoderSolved, atcoderRankLabel } from './atcoder';
@@ -60,13 +60,13 @@ async function getCf(fetcher: Fetcher): Promise<PlatformStats | null> {
     ]);
     const head = mapCfInfo(info);
     if (!head) {
-      console.error('getCpStats: codeforces user.info unusable');
+      console.error('getCompprogStats: codeforces user.info unusable');
       return null;
     }
     const { solved, ratings } = mapCfSolved(status);
     return { ...head, solved, contests: mapCfContests(rating), buckets: bucketize(ratings, 100) };
   } catch (err) {
-    console.error('getCpStats: codeforces failed:', err);
+    console.error('getCompprogStats: codeforces failed:', err);
     return null;
   }
 }
@@ -80,7 +80,7 @@ async function getAtcoder(fetcher: Fetcher, sleep: Sleep): Promise<PlatformStats
     ]);
     const contests = mapAtcoderContests(history);
     if (contests.length === 0) {
-      console.warn('getCpStats: atcoder history empty or unusable');
+      console.warn('getCompprogStats: atcoder history empty or unusable');
       return null;
     }
     const { solved, difficulties } = mapAtcoderSolved(submissions, models);
@@ -94,12 +94,12 @@ async function getAtcoder(fetcher: Fetcher, sleep: Sleep): Promise<PlatformStats
       buckets: bucketize(difficulties, 400),
     };
   } catch (err) {
-    console.error('getCpStats: atcoder failed:', err);
+    console.error('getCompprogStats: atcoder failed:', err);
     return null;
   }
 }
 
-export async function getCpStats(fetcher: Fetcher = fetch, sleep: Sleep = defaultSleep): Promise<CpStats> {
+export async function getCompprogStats(fetcher: Fetcher = fetch, sleep: Sleep = defaultSleep): Promise<CompprogStats> {
   const [cf, atcoder] = await Promise.all([getCf(fetcher), getAtcoder(fetcher, sleep)]);
   return { cf, atcoder };
 }

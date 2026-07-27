@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import { Cp } from './Cp';
-import type { CpStats } from '@/lib/cp/types';
+import { Compprog } from './Compprog';
+import type { CompprogStats } from '@/lib/compprog/types';
 import type { Competition } from '@/lib/competitions';
 
 const cf = {
@@ -19,16 +19,16 @@ const atcoder = {
   ],
   buckets: [{ lo: 0, count: 10 }],
 };
-const stats: CpStats = { cf, atcoder };
+const stats: CompprogStats = { cf, atcoder };
 
 const competitions: Competition[] = [
   { id: 1, name: 'UP ACM Algolympics 2026', eventDate: '2026-05-01', team: 'Team KMP', result: 'Finalist', placement: 'Finalist', note: null, certImageUrl: '/algolympics2026_cert.jpg' },
   { id: 2, name: 'Canadian Computing Competition 2023', eventDate: '2023-02-01', team: null, result: '60 points', placement: 'Top 25%', note: 'Certificate of Distinction, Junior Division', certImageUrl: null },
 ];
 
-describe('Cp tabs', () => {
+describe('Compprog tabs', () => {
   it('shows the Codeforces tab by default with big numbers and highlights', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     const panel = screen.getByTestId('platform-panel');
     expect(within(panel).getByText('1445')).toBeInTheDocument();
     expect(within(panel).getByText(/1452/)).toBeInTheDocument();
@@ -41,7 +41,7 @@ describe('Cp tabs', () => {
   });
 
   it('styles the profile link as a theme-accent chip', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     const profile = screen.getByRole('link', { name: /@RamenNagi/ });
     expect(profile).toHaveAttribute('href', 'https://codeforces.com/profile/RamenNagi');
     expect(profile).toHaveStyle({ backgroundColor: '#E4002B' }); // theme red on the CF tab
@@ -50,7 +50,7 @@ describe('Cp tabs', () => {
   });
 
   it('switches to AtCoder (official performance — no APPROX)', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
     const panel = screen.getByTestId('platform-panel');
     expect(within(panel).getByText('120')).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe('Cp tabs', () => {
   });
 
   it('switches to Competitions, newest first, with team chips, notes, and cert button', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
     const names = screen.getAllByTestId('competition-name').map(el => el.textContent);
     expect(names).toEqual(['UP ACM Algolympics 2026', 'Canadian Computing Competition 2023']);
@@ -72,7 +72,7 @@ describe('Cp tabs', () => {
   });
 
   it('opens the certificate in a modal and closes via the close button', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
     fireEvent.click(screen.getByRole('button', { name: /VIEW CERTIFICATE/ }));
     const dialog = screen.getByRole('dialog');
@@ -82,7 +82,7 @@ describe('Cp tabs', () => {
   });
 
   it('closes the certificate modal on backdrop click', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
     fireEvent.click(screen.getByRole('button', { name: /VIEW CERTIFICATE/ }));
     fireEvent.click(screen.getByTestId('cert-backdrop'));
@@ -90,24 +90,24 @@ describe('Cp tabs', () => {
   });
 
   it('shows a themed fallback when a platform is null', () => {
-    render(<Cp stats={{ cf: null, atcoder }} competitions={competitions} />);
+    render(<Compprog stats={{ cf: null, atcoder }} competitions={competitions} />);
     expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
   });
 
   it('shows a themed empty state when there are no competitions', () => {
-    render(<Cp stats={stats} competitions={[]} />);
+    render(<Compprog stats={stats} competitions={[]} />);
     fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
     expect(screen.getByText(/NO BATTLE RECORDS/)).toBeInTheDocument();
   });
   it('shows a hover quad on a platform tab on mouse enter', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     const tab = screen.getByRole('button', { name: 'ATCODER' });
     fireEvent.mouseEnter(tab.parentElement!.parentElement!);
     expect(screen.getByTestId('hover-quad')).toBeInTheDocument();
   });
 
   it('lays the rating and performance charts side by side on wide screens', () => {
-    render(<Cp stats={stats} competitions={competitions} />);
+    render(<Compprog stats={stats} competitions={competitions} />);
     expect(screen.getByTestId('line-charts')).toHaveStyle({
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))',

@@ -41,10 +41,10 @@ describe('useHashRoute', () => {
 
   it('a forward traversal re-opens the section', () => {
     const { result } = renderHook(() => useHashRoute());
-    act(() => { result.current.open('cp'); });
+    act(() => { result.current.open('compprog'); });
     act(() => { traverseTo(''); });
-    act(() => { traverseTo('#cp'); });
-    expect(result.current.view).toBe('cp');
+    act(() => { traverseTo('#compprog'); });
+    expect(result.current.view).toBe('compprog');
   });
 
   it('goMenu() delegates to history.back() and never sets state itself', () => {
@@ -152,8 +152,8 @@ describe('useHashRoute', () => {
   // queue twice is what reliably surfaces the effect in this environment.
   it('a real history.back() traversal from a section lands on the menu', async () => {
     const { result } = renderHook(() => useHashRoute());
-    act(() => { result.current.open('cp'); });
-    expect(window.location.hash).toBe('#cp');
+    act(() => { result.current.open('compprog'); });
+    expect(window.location.hash).toBe('#compprog');
 
     await act(async () => {
       window.history.back();
@@ -217,7 +217,7 @@ describe('useHashRoute', () => {
     });
     expect(result.current.view).toBe('menu');
 
-    act(() => { result.current.open('cp'); });
+    act(() => { result.current.open('compprog'); });
     const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
     act(() => { result.current.goMenu(); });
     expect(back).toHaveBeenCalledTimes(1);

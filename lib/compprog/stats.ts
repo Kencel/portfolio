@@ -1,4 +1,4 @@
-import type { Bucket, CpContest } from './types';
+import type { Bucket, CompprogContest } from './types';
 
 // Histogram over fixed-width buckets. Buckets run contiguously from the lowest
 // to the highest occupied bucket so the bar chart has no gaps in its x axis.
@@ -14,7 +14,7 @@ export function bucketize(values: number[], width: number): Bucket[] {
   return out;
 }
 
-export function highlights(contests: CpContest[]): { bestRank: number | null; biggestGain: number | null; joined: number } {
+export function highlights(contests: CompprogContest[]): { bestRank: number | null; biggestGain: number | null; joined: number } {
   if (contests.length === 0) return { bestRank: null, biggestGain: null, joined: 0 };
   return {
     bestRank: Math.min(...contests.map(c => c.rank)),

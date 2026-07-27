@@ -1,4 +1,4 @@
-export interface CpContest {
+export interface CompprogContest {
   name: string;
   url: string;
   date: string; // ISO yyyy-mm-dd
@@ -16,8 +16,8 @@ export interface PlatformStats {
   peakRating: number;
   rankLabel: string; // "Specialist" / "Brown"
   solved: number;
-  contests: CpContest[]; // chronological, rated only
+  contests: CompprogContest[]; // chronological, rated only
   buckets: Bucket[];     // solved-by-difficulty histogram
 }
 
-export interface CpStats { cf: PlatformStats | null; atcoder: PlatformStats | null }
+export interface CompprogStats { cf: PlatformStats | null; atcoder: PlatformStats | null }

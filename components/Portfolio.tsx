@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
-import type { CpStats } from '@/lib/cp/types';
+import type { CompprogStats } from '@/lib/compprog/types';
 import { SECTIONS } from '@/lib/data';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
@@ -15,10 +15,10 @@ import { MenuView } from './MenuView';
 import { SectionPanel } from './SectionPanel';
 import { SplashScreen } from './SplashScreen';
 
-export function Portfolio({ projects, competitions, cpStats }: {
+export function Portfolio({ projects, competitions, compprogStats }: {
   projects: Project[];
   competitions: Competition[];
-  cpStats: CpStats;
+  compprogStats: CompprogStats;
 }) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [muted, setMuted] = useState(false);
@@ -89,7 +89,7 @@ export function Portfolio({ projects, competitions, cpStats }: {
         {view === 'menu'
           ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
               onEnter={enter} onOpen={open} narrow={narrow} menuVisit={menuVisit} />
-          : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} cpStats={cpStats} />}
+          : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} compprogStats={compprogStats} />}
         {splash && <SplashScreen onDone={splashDone} />}
       </div>
     </SfxProvider>
