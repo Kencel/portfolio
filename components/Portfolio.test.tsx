@@ -5,6 +5,7 @@ import { Portfolio } from './Portfolio';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
 import type { CompprogStats } from '@/lib/compprog/types';
+import { RESUME_URL } from '@/lib/data';
 
 const mockNarrow = vi.hoisted(() => ({ value: false }));
 // Controls the SplashScreen mock below: true (default) auto-clears the splash
@@ -80,6 +81,25 @@ describe('Portfolio section props', () => {
     // mocked-out MenuView.
     fireEvent.keyDown(window, { key: '2' });
     expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+  });
+});
+
+describe('Portfolio external menu entry', () => {
+  // '5' is RESUME's digit shortcut (SECTIONS[4].n === '05'). It has no panel
+  // and no hash, so the menu must be untouched underneath the new tab.
+  it('opens the resume in a new tab and leaves the view and history alone', () => {
+    mockNarrow.value = false;
+    const openSpy = vi.spyOn(window, 'open').mockReturnValue(null);
+    render(
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+    );
+
+    fireEvent.keyDown(window, { key: '5' });
+
+    expect(openSpy).toHaveBeenCalledWith(RESUME_URL, '_blank', 'noopener,noreferrer');
+    expect(window.location.hash).toBe('');
+    expect(screen.queryByText('◄ BACK')).not.toBeInTheDocument();
+    openSpy.mockRestore();
   });
 });
 

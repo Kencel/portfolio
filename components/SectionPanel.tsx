@@ -15,7 +15,6 @@ import { About } from './sections/About';
 import { Compprog } from './sections/Compprog';
 import { Projects } from './sections/Projects';
 import { Skills } from './sections/Skills';
-import { Education } from './sections/Education';
 import { Contact } from './sections/Contact';
 
 // Complete section registry: every section renders from the same props bag;
@@ -26,7 +25,6 @@ const BODY: Record<SectionId, (data: SectionData) => JSX.Element> = {
   compprog: d => <Compprog stats={d.compprogStats} competitions={d.competitions} />,
   projects: d => <Projects projects={d.projects} />,
   skills: () => <Skills />,
-  education: () => <Education />,
   contact: () => <Contact />,
 };
 

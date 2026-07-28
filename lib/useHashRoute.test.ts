@@ -74,30 +74,30 @@ describe('useHashRoute', () => {
   });
 
   it('deep link opens the section and leaves a menu entry behind it', () => {
-    window.history.replaceState(null, '', '#education');
+    window.history.replaceState(null, '', '#skills');
     const push = vi.spyOn(window.history, 'pushState');
     const replace = vi.spyOn(window.history, 'replaceState');
     // StrictMode double-invokes effects in dev; the mount effect must be
     // idempotent (a run-once guard) or this synthesizes a duplicate menu
-    // entry, leaving [menu, menu, education] instead of [menu, education].
+    // entry, leaving [menu, menu, skills] instead of [menu, skills].
     const { result } = renderHook(() => useHashRoute(), { wrapper: StrictMode });
-    expect(result.current.view).toBe('education');
+    expect(result.current.view).toBe('skills');
     // A menu entry was synthesised underneath, so back returns to the
     // portfolio rather than leaving the site — and only once, even under
     // StrictMode's double-invoke.
     expect(replace).toHaveBeenCalledTimes(1);
     expect(replace).toHaveBeenCalledWith({ view: 'menu' }, '', '/');
     expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith({ view: 'education' }, '', '#education');
+    expect(push).toHaveBeenCalledWith({ view: 'skills' }, '', '#skills');
     push.mockRestore();
     replace.mockRestore();
   });
 
   it('preserves the query string when resolving a deep link', () => {
-    window.history.replaceState(null, '', '/?utm_source=x#education');
+    window.history.replaceState(null, '', '/?utm_source=x#skills');
     const replace = vi.spyOn(window.history, 'replaceState');
     const { result } = renderHook(() => useHashRoute());
-    expect(result.current.view).toBe('education');
+    expect(result.current.view).toBe('skills');
     // Rebuilding the landing entry from pathname alone would drop the query
     // string; a shared link's UTM params must survive.
     expect(replace).toHaveBeenCalledWith({ view: 'menu' }, '', '/?utm_source=x');
@@ -169,9 +169,9 @@ describe('useHashRoute', () => {
   });
 
   it('a real history.back() traversal from a resolved deep link lands on the menu', async () => {
-    window.history.replaceState(null, '', '#education');
+    window.history.replaceState(null, '', '#skills');
     const { result } = renderHook(() => useHashRoute());
-    expect(result.current.view).toBe('education');
+    expect(result.current.view).toBe('skills');
 
     await act(async () => {
       window.history.back();

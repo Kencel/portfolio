@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Project } from '@/lib/projects';
 import type { Competition } from '@/lib/competitions';
 import type { CompprogStats } from '@/lib/compprog/types';
-import { SECTIONS } from '@/lib/data';
+import { SECTIONS, isExternal } from '@/lib/data';
 import { COLOR, FONT } from '@/lib/tokens';
 import { wrapIndex, sectionIndexForDigit } from '@/lib/nav';
 import { useSfx } from '@/lib/useSfx';
@@ -53,6 +53,20 @@ export function Portfolio({ projects, competitions, compprogStats }: {
   const enter = useCallback((i: number) => {
     setHovered(prev => { if (prev !== i) sfx.select(); return i; });
   }, [sfx]);
+
+  // Single entry point for every way a row can be triggered — click, Enter/Z,
+  // digit shortcut. An external entry (RESUME) opens a tab and leaves the view
+  // and history untouched, so the menu is still there when the visitor comes
+  // back to it. Every caller is a real user gesture, so no popup blocker.
+  const activate = useCallback((i: number) => {
+    const entry = SECTIONS[i];
+    if (isExternal(entry)) {
+      sfx.confirm();
+      window.open(entry.href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    open(entry.id);
+  }, [open, sfx]);
   const move = useCallback((dir: 1 | -1) => {
     setHovered(prev => { const next = wrapIndex(prev, dir, SECTIONS.length); sfx.select(); return next; });
   }, [sfx]);
@@ -64,11 +78,11 @@ export function Portfolio({ projects, competitions, compprogStats }: {
       if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') { if (v !== 'menu') goMenu(); return; }
       if (v !== 'menu') return;
       const digit = sectionIndexForDigit(e.key);
-      if (digit >= 0) { setHovered(digit); sfx.select(); open(SECTIONS[digit].id); return; }
+      if (digit >= 0) { setHovered(digit); sfx.select(); activate(digit); return; }
       if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') { e.preventDefault(); move(1); }
       else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') { e.preventDefault(); move(-1); }
       else if (e.key === 'Enter' || e.key === 'z' || e.key === 'Z') {
-        const h = hoveredRef.current; if (h != null) open(SECTIONS[h].id);
+        const h = hoveredRef.current; if (h != null) activate(h);
       }
     };
     const onMove = (e: MouseEvent) => {
@@ -80,7 +94,7 @@ export function Portfolio({ projects, competitions, compprogStats }: {
     window.addEventListener('keydown', onKey);
     window.addEventListener('mousemove', onMove);
     return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('mousemove', onMove); };
-  }, [goMenu, move, open, sfx]);
+  }, [goMenu, move, activate, sfx]);
 
   return (
     <SfxProvider sfx={sfx}>
@@ -89,7 +103,7 @@ export function Portfolio({ projects, competitions, compprogStats }: {
         <Backdrop />
         {view === 'menu'
           ? <MenuView hovered={hovered} muted={muted} onToggleMute={() => setMuted(m => !m)}
-              onEnter={enter} onOpen={open} narrow={narrow} menuVisit={menuVisit} />
+              onEnter={enter} onOpen={activate} narrow={narrow} menuVisit={menuVisit} />
           : <SectionPanel view={view} onBack={goMenu} projects={projects} competitions={competitions} compprogStats={compprogStats} />}
         {splash && <SplashScreen onDone={splashDone} />}
       </div>

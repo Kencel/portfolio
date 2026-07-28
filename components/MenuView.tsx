@@ -1,5 +1,5 @@
 'use client';
-import { SECTIONS, CODENAME, STATUS, type SectionId } from '@/lib/data';
+import { SECTIONS, CODENAME, STATUS } from '@/lib/data';
 import { useClock } from '@/lib/useClock';
 import { ImageSlot } from './ImageSlot';
 import { MenuRow } from './MenuRow';
@@ -24,7 +24,7 @@ function ClockBlock() {
 
 export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow, menuVisit }: {
   hovered: number | null; muted: boolean; onToggleMute: () => void;
-  onEnter: (i: number) => void; onOpen: (id: SectionId) => void; narrow?: boolean; menuVisit: number;
+  onEnter: (i: number) => void; onOpen: (i: number) => void; narrow?: boolean; menuVisit: number;
 }) {
   // current-focus card — mirrors the AngularCard + panel shell the sections use.
   // Replaces the old CF/solved stat bars (those stats live in COMP. PROG now).
@@ -85,7 +85,7 @@ export function MenuView({ hovered, muted, onToggleMute, onEnter, onOpen, narrow
   const menuList = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(6px,1vh,11px)' }}>
       {SECTIONS.map((s, i) => (
-        <MenuRow key={`${s.id}-${menuVisit}`} section={s} index={i} hovered={hovered} onEnter={onEnter} onOpen={onOpen} visit={menuVisit} />
+        <MenuRow key={`${s.id ?? s.href}-${menuVisit}`} section={s} index={i} hovered={hovered} onEnter={onEnter} onOpen={onOpen} visit={menuVisit} />
       ))}
     </div>
   );
