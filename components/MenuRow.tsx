@@ -1,6 +1,6 @@
 'use client';
 import type { CSSProperties } from 'react';
-import type { Section, SectionId } from '@/lib/data';
+import type { MenuEntry } from '@/lib/data';
 import { rowState } from '@/lib/rowStyle';
 import { AngularCard } from './AngularCard';
 import { COLOR, FONT, SKEW } from '@/lib/tokens';
@@ -8,9 +8,11 @@ import { COLOR, FONT, SKEW } from '@/lib/tokens';
 // PROTOTYPE lines 64-69, housed in a white encasing frame (AngularCard). The
 // skew + hover transform live on the frame, so the white border stays concentric
 // with the content and tracks the hover slide/scale as one unit.
+// onOpen takes the row index rather than a section id: a row can also be an
+// external entry, which has no id and opens a tab instead of a panel.
 export function MenuRow({ section, index, hovered, onEnter, onOpen, visit }: {
-  section: Section; index: number; hovered: number | null;
-  onEnter: (i: number) => void; onOpen: (id: SectionId) => void; visit: number;
+  section: MenuEntry; index: number; hovered: number | null;
+  onEnter: (i: number) => void; onOpen: (i: number) => void; visit: number;
 }) {
   const st = rowState(hovered, index);
   const isHovered = hovered === index;
@@ -34,7 +36,7 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen, visit }: {
         seed={index + 1}
         rowMarker
         onMouseEnter={() => onEnter(index)}
-        onClick={() => onOpen(section.id)}
+        onClick={() => onOpen(index)}
         style={{
           cursor: 'pointer', opacity: st.opacity, transform: st.transform,
           transition: 'transform .16s cubic-bezier(.2,.9,.3,1), opacity .16s',
@@ -46,6 +48,10 @@ export function MenuRow({ section, index, hovered, onEnter, onOpen, visit }: {
             <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(14px,1.3vw,20px)', opacity: .65, minWidth: 34 }}>{section.n}</span>
             <span style={{ fontFamily: FONT.anton, fontSize: 'clamp(20px,2.7vw,38px)', lineHeight: .92, letterSpacing: '.005em' }}>{section.label}</span>
             <span style={{ fontFamily: FONT.bebas, fontSize: 'clamp(12px,1.1vw,17px)', letterSpacing: '.18em', opacity: .7, alignSelf: 'center' }}>{section.sub}</span>
+            {/* leaving-the-site marker, so a new tab isn't a surprise */}
+            {section.href && (
+              <span aria-label="opens in a new tab" style={{ fontFamily: FONT.bebas, fontSize: 'clamp(12px,1.1vw,17px)', letterSpacing: '.18em', opacity: .7, alignSelf: 'center' }}>↗</span>
+            )}
           </div>
         </div>
       </AngularCard>

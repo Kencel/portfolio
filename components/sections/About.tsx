@@ -1,5 +1,6 @@
 import { AngularCard } from '@/components/AngularCard';
 import { AttributesRadar } from '@/components/AttributesRadar';
+import { EducationCard } from '@/components/EducationCard';
 import { COLOR, FONT } from '@/lib/tokens';
 
 // PROTOTYPE lines 135-156
@@ -41,14 +42,26 @@ export function About() {
           </AngularCard>
         </div>
       </div>
-      <div style={{ maxWidth: 1200, marginTop: 22, marginLeft: 'auto', marginRight: 'auto' }}>
-        <AngularCard seed={24} style={{ transform: 'skewX(-2deg)' }}>
-          <div style={{ background: COLOR.panel, padding: '26px 24px' }}>
+      {/* The radar tops out at 340px wide, so on its own it left a lot of dead
+          panel either side — education shares the row with it now. */}
+      <div data-testid="about-stats-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22, maxWidth: 1200, marginTop: 22, marginLeft: 'auto', marginRight: 'auto' }}>
+        <AngularCard seed={24} style={{ transform: 'skewX(-2deg)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ background: COLOR.panel, padding: '26px 24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ transform: 'skewX(2deg)' }}>
               <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 15, opacity: .7, marginBottom: 8, textAlign: 'center' }}>
                 ATTRIBUTES
               </div>
               <AttributesRadar />
+            </div>
+          </div>
+        </AngularCard>
+        <AngularCard seed={25} style={{ transform: 'skewX(-2deg)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ background: COLOR.panel, padding: '26px 24px', flex: 1 }}>
+            <div style={{ transform: 'skewX(2deg)' }}>
+              <div style={{ fontFamily: FONT.bebas, letterSpacing: '.2em', fontSize: 15, opacity: .7, marginBottom: 14, textAlign: 'center' }}>
+                EDUCATION
+              </div>
+              <EducationCard />
             </div>
           </div>
         </AngularCard>

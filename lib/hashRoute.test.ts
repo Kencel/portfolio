@@ -8,8 +8,17 @@ describe('viewToHash', () => {
 });
 
 describe('hashToView', () => {
-  it('round-trips every section in SECTIONS', () => {
-    for (const s of SECTIONS) expect(hashToView(viewToHash(s.id))).toBe(s.id);
+  it('round-trips every routable section in SECTIONS', () => {
+    for (const s of SECTIONS) {
+      if (!s.id) continue;
+      expect(hashToView(viewToHash(s.id))).toBe(s.id);
+    }
+  });
+  it('falls back to the menu for an external entry that has no view', () => {
+    expect(hashToView('#resume')).toBe('menu');
+  });
+  it('falls back to the menu for the retired education section', () => {
+    expect(hashToView('#education')).toBe('menu');
   });
   it('treats an empty hash as the menu', () => expect(hashToView('')).toBe('menu'));
   it('treats a bare # as the menu', () => expect(hashToView('#')).toBe('menu'));

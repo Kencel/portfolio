@@ -1,12 +1,31 @@
-export type SectionId = 'about' | 'compprog' | 'projects' | 'skills' | 'education' | 'contact';
-export interface Section { id: SectionId; n: string; label: string; sub: string }
+export type SectionId = 'about' | 'compprog' | 'projects' | 'skills' | 'contact';
 
-export const SECTIONS: Section[] = [
+interface MenuEntryBase { n: string; label: string; sub: string }
+/** A row that opens a panel in place; the id doubles as the URL fragment. */
+export interface Section extends MenuEntryBase { id: SectionId; href?: never }
+/** A row that leaves the site: new tab, no panel, no history entry. */
+export interface ExternalEntry extends MenuEntryBase { id?: never; href: string }
+export type MenuEntry = Section | ExternalEntry;
+
+/** Explicit guard: a bare `entry.href` truthiness check narrows one branch of
+ *  the union but leaves `entry.id` optional in the other. */
+export function isExternal(entry: MenuEntry): entry is ExternalEntry {
+  return entry.href !== undefined;
+}
+
+// Served by the same deployment as this site — a host rewrite in
+// next.config.mjs points the whole subdomain at `public/resume.pdf`.
+export const RESUME_URL = 'https://resume.kenazc.com';
+
+// Menu order, digit shortcuts, and panel titles all read from this array.
+// Most rows are sections; RESUME is an external entry, so it has an `href`
+// instead of an `id` and never becomes a view.
+export const SECTIONS: MenuEntry[] = [
   { id: 'about',     n: '01', label: 'ABOUT ME',           sub: 'PROFILE' },
   { id: 'compprog',  n: '02', label: 'COMP. PROG',         sub: 'BATTLE RECORD' },
   { id: 'projects',  n: '03', label: 'PROJECTS',           sub: 'TREASURES' },
   { id: 'skills',    n: '04', label: 'SKILLS',             sub: 'ARCANA' },
-  { id: 'education', n: '05', label: 'EDUCATION',          sub: 'STATUS' },
+  { href: RESUME_URL, n: '05', label: 'RESUME',            sub: 'DOSSIER' },
   { id: 'contact',   n: '06', label: 'CONTACT',            sub: 'CONFIDANTS' },
 ];
 
