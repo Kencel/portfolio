@@ -2,7 +2,7 @@
 
 Hi! I'm Kenaz, a computer science student who spends most of his free time on
 competitive programming. This repo is my personal portfolio site —
-**[ramennagi.vercel.app](https://ramennagi.vercel.app)** — styled after the
+**[kenazc.com](https://www.kenazc.com)** — styled after the
 Persona 5 Royal menu UI.
 
 ## About me
