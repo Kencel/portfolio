@@ -11,10 +11,10 @@ export function About() {
           <div style={{ background: COLOR.panel, padding: '26px 28px' }}>
             <div style={{ transform: 'skewX(2deg)' }}>
               <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 'clamp(16px,1.4vw,21px)', lineHeight: 1.55, margin: '0 0 16px' }}>
-                A third-year Computer Science student at the <b style={{ color: COLOR.accent }}>Ateneo de Manila University</b>, in it for the problem-solving. Competitive programming enthusiast. Chasing cleaner logic and tighter solutions for the thrill of the solve with <b>C++ and Python</b>.
+                I&apos;m a third-year Computer Science student at the <b style={{ color: COLOR.accent }}>Ateneo de Manila University</b>, and most of my time goes to competitive programming. I write contest solutions in <b>C++ and Python</b>. What keeps me there is the part where a messy problem turns into something short and correct.
               </p>
               <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 'clamp(16px,1.4vw,21px)', lineHeight: 1.55, margin: 0 }}>
-                Lately I've been pointing that same drive toward <b>AI/ML and data science</b>, and toward actually building things, starting with this site, my first passion project. The building has already paid off once: my team took <b>Yardshtick</b>, a listings app, to 3rd place at an OpenAI buildathon in Manila. On the web, I work in <b>Next.js</b>.
+                Lately I've been putting more of that time into <b>AI/ML and data science</b>, and into actually building things rather than only solving problems. This site is my first passion project. My team also took <b>Yardshtick</b>, a listings app, to 3rd place at an OpenAI buildathon in Manila. On the web I work in <b>Next.js</b>.
               </p>
             </div>
           </div>
