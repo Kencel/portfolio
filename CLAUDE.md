@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Kenaz's personal portfolio site (ramennagi.vercel.app) — a Persona 5 Royal–inspired
+Kenaz's personal portfolio site (kenazc.com) — a Persona 5 Royal–inspired
 menu UI built from scratch in Next.js 15 (App Router) + React 19 + TypeScript.
 Deployed on Vercel; production branch is `master`.
 

@@ -7,7 +7,7 @@ const anton = Anton({ weight: '400', subsets: ['latin'], variable: '--font-anton
 const bebas = Bebas_Neue({ weight: '400', subsets: ['latin'], variable: '--font-bebas' });
 const oswald = Oswald({ weight: ['300','400','500','600','700'], subsets: ['latin'], variable: '--font-oswald' });
 
-const SITE_URL = 'https://ramennagi.vercel.app';
+const SITE_URL = 'https://www.kenazc.com';
 const DESCRIPTION =
   'Portfolio of Kenaz Celestino: computer science student at Ateneo de Manila, competitive programmer (@RamenNagi).';
 
