@@ -13,7 +13,7 @@ export function Education() {
               <span style={{ fontFamily: FONT.bebas, letterSpacing: '.16em', color: COLOR.accent, fontSize: 18 }}>BS COMPUTER SCIENCE</span>
             </div>
             <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 17, lineHeight: 1.5, opacity: .9, margin: '10px 0 0' }}>
-              Member of <b>CompSAt</b> (Ateneo&apos;s premier CS organization). Served as a <b style={{ color: COLOR.accent }}>Trainer for Learn-2-Dev 2026</b>, teaching development fundamentals to fellow students.
+              Member of <b>CompSAt</b>, Ateneo&apos;s computer science organization. Served as a <b style={{ color: COLOR.accent }}>Trainer for Learn-2-Dev 2026</b> and taught development fundamentals to other students.
             </p>
           </div>
         </div>
@@ -26,7 +26,7 @@ export function Education() {
               <span style={{ fontFamily: FONT.bebas, letterSpacing: '.16em', opacity: .8, fontSize: 18 }}>PSHS-MC</span>
             </div>
             <p style={{ fontFamily: FONT.oswald, fontWeight: 300, fontSize: 17, lineHeight: 1.5, opacity: .9, margin: '10px 0 0' }}>
-              Took <b>CS5 (Data Structures &amp; Algorithms)</b> as an elective — the first spark for the competitive-programming path.
+              Took <b>CS5 (Data Structures &amp; Algorithms)</b> as an elective. That class is where the competitive programming started.
             </p>
           </div>
         </div>
