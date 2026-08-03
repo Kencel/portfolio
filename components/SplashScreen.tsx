@@ -19,9 +19,14 @@ const MONO_TILES: ReadonlyArray<readonly [string, string]> = [
   [INK, BONE],
 ];
 
-// Scale that fits the bowl silhouette (123 art units wide) into ~40 units of
-// the reveal's 200x200 viewBox, so the hole starts small enough to grow.
-const HOLE_SCALE = 0.325;
+// Start size of the hole: the bowl silhouette (123 art units wide) shrunk into
+// ~25 units of the reveal's 200x200 viewBox. Sized against the spin it follows
+// — the spun bowl ends ~126px wide, and 0.224 here would match that exactly on
+// a typical desktop — so sitting just under it lets the hole read as growing
+// out of the bowl rather than popping open wider than it. Paired with the
+// scale(49) end of p5splashReveal, which is raised from 30 by the same factor
+// this was lowered, so the hole still ends up swallowing the viewport.
+const HOLE_SCALE = 0.2;
 
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined'
@@ -78,7 +83,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
     return (
       <div data-splash-phase="reveal" role="presentation" aria-hidden="true"
         style={{ position: 'fixed', inset: 0, zIndex: 100, overflow: 'hidden' }}>
-        {/* Ink sheet with a bowl-shaped hole; scaling it 30x makes the hole
+        {/* Ink sheet with a bowl-shaped hole; scaling it 49x makes the hole
             swallow the viewport. slice + xMidYMid pins the hole to screen
             center, which is also the transform origin. */}
         <svg width="100%" height="100%" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"
