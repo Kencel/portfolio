@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { COLOR } from '@/lib/tokens';
 import { RansomText } from './RansomText';
+import { RamenIcon, BowlSilhouette, BOWL_CENTER, BOWL_ORIGIN } from './RamenIcon';
 
 export const SPIN_MS = 1900;
 export const REVEAL_MS = 1100;
@@ -18,36 +19,14 @@ const MONO_TILES: ReadonlyArray<readonly [string, string]> = [
   [INK, BONE],
 ];
 
-// Bowl silhouette in a 200x200 box: lower hemisphere (r=72) plus the rim
-// ellipse top. Doubles as the reveal hole, so it must stay a closed path.
-const BOWL_SILHOUETTE = 'M28 88 A72 72 0 0 0 172 88 A72 14 0 0 0 28 88 Z';
-const BOWL_FOOT = 'M84 150 h32 v20 h-32 Z';
+// Scale that fits the bowl silhouette (123 art units wide) into ~40 units of
+// the reveal's 200x200 viewBox, so the hole starts small enough to grow.
+const HOLE_SCALE = 0.325;
 
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined'
     && typeof window.matchMedia === 'function'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-// The spinning splash art: bone bowl, ink band, chopsticks, noodles, steam.
-function RamenBowl() {
-  return (
-    <svg width="180" height="180" viewBox="0 0 200 200" aria-hidden="true">
-      {/* steam */}
-      <path d="M78 44 q6 -10 0 -20 q-5 -9 2 -16" fill="none" stroke={BONE} strokeWidth="6" strokeLinecap="square" opacity=".75" />
-      <path d="M116 48 q6 -10 0 -20 q-5 -9 2 -16" fill="none" stroke={BONE} strokeWidth="6" strokeLinecap="square" opacity=".55" />
-      {/* chopsticks, leaning out of the bowl */}
-      <rect x="120" y="6" width="7" height="86" rx="2" transform="rotate(24 123 49)" fill={BONE} stroke={INK} strokeWidth="3" />
-      <rect x="136" y="12" width="7" height="82" rx="2" transform="rotate(31 139 53)" fill={BONE} stroke={INK} strokeWidth="3" />
-      {/* foot, then bowl body over it */}
-      <path d={BOWL_FOOT} fill={BONE} stroke={INK} strokeWidth="5" />
-      <path d="M28 88 A72 72 0 0 0 172 88 Z" fill={BONE} stroke={INK} strokeWidth="5" />
-      {/* rim + broth + noodles + narutomaki */}
-      <ellipse cx="100" cy="88" rx="72" ry="14" fill={BONE} stroke={INK} strokeWidth="5" />
-      <ellipse cx="100" cy="88" rx="58" ry="9" fill={INK} />
-      <path d="M52 88 q12 -8 24 0 t24 0 t24 0 t24 0" fill="none" stroke={BONE} strokeWidth="4" />
-    </svg>
-  );
 }
 
 /**
@@ -108,9 +87,8 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           <defs>
             <mask id="p5splash-hole">
               <rect x="-2900" y="-2900" width="6000" height="6000" fill="#fff" />
-              <g transform="translate(100 100) scale(.28) translate(-100 -122)">
-                <path d={BOWL_SILHOUETTE} fill="#000" />
-                <path d={BOWL_FOOT} fill="#000" />
+              <g transform={`translate(100 100) scale(${HOLE_SCALE}) translate(${-BOWL_CENTER.x} ${-BOWL_CENTER.y})`}>
+                <BowlSilhouette fill="#000" />
               </g>
             </mask>
           </defs>
@@ -133,9 +111,10 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
       style={{ position: 'fixed', inset: 0, zIndex: 100, background: INK, display: 'flex',
         flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 28,
         cursor: 'pointer', userSelect: 'none' }}>
-      <div style={{ animation: `p5splashSpin ${SPIN_MS}ms cubic-bezier(.22,.9,.3,1) both` }}>
+      <div style={{ transformOrigin: BOWL_ORIGIN,
+        animation: `p5splashSpin ${SPIN_MS}ms cubic-bezier(.22,.9,.3,1) both` }}>
         {/* Keyframes hold the final ~16% as an intentional settle beat before reveal. */}
-        <RamenBowl />
+        <RamenIcon />
       </div>
       <div style={{ fontSize: 'clamp(20px, 3.4vw, 34px)', animation: 'p5pulse 1.6s ease-in-out infinite' }}>
         <RansomText text="TAKE YOUR TIME" seed={42} tiles={MONO_TILES} />
