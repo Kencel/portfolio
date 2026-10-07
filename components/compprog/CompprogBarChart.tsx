@@ -6,10 +6,11 @@ import type { Bucket } from '@/lib/compprog/types';
 const W = 640, H = 200;
 const PAD = { l: 14, r: 14, t: 18, b: 22 };
 
-export function CompprogBarChart({ title, buckets, accent }: {
+export function CompprogBarChart({ title, buckets, accent, width }: {
   title: string;
   buckets: Bucket[];
   accent: string;
+  width?: number; // bucket width → x labels read as ranges ("400–799"); omit for bare lows
 }) {
   if (buckets.length === 0) return null;
   const plotW = W - PAD.l - PAD.r;
@@ -36,7 +37,9 @@ export function CompprogBarChart({ title, buckets, accent }: {
                 <text x={cx} y={PAD.t + plotH - h - 4} textAnchor="middle" fontSize={10}
                   fill={COLOR.ink} fontFamily={FONT.oswald}>{b.count}</text>
               )}
-              <text {...tickLabel} x={cx} y={H - 6} textAnchor="middle" fontSize={9}>{b.lo}</text>
+              <text {...tickLabel} x={cx} y={H - 6} textAnchor="middle" fontSize={9}>
+                {width ? `${b.lo}–${b.lo + width - 1}` : b.lo}
+              </text>
             </g>
           );
         })}

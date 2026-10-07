@@ -19,7 +19,7 @@ import { Contact } from './sections/Contact';
 
 // Complete section registry: every section renders from the same props bag;
 // sections that need no data just ignore it.
-type SectionData = { projects: Project[]; competitions: Competition[]; compprogStats: CompprogStats };
+type SectionData = { projects: Project[]; competitions: Competition[]; compprogStats: CompprogStats | null };
 const BODY: Record<SectionId, (data: SectionData) => JSX.Element> = {
   about: () => <About />,
   compprog: d => <Compprog stats={d.compprogStats} competitions={d.competitions} />,
@@ -30,7 +30,7 @@ const BODY: Record<SectionId, (data: SectionData) => JSX.Element> = {
 
 export function SectionPanel({ view, onBack, projects, competitions, compprogStats }: {
   view: SectionId; onBack: () => void; projects: Project[];
-  competitions: Competition[]; compprogStats: CompprogStats;
+  competitions: Competition[]; compprogStats: CompprogStats | null;
 }) {
   const cur = SECTIONS.find(s => s.id === view)!;
 

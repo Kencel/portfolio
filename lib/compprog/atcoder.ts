@@ -8,6 +8,16 @@ export function clipDifficulty(d: number): number {
   return d >= 400 ? d : Math.round(400 / Math.exp(1 - d / 400));
 }
 
+// Solved-by-difficulty histogram bucket width — one bucket per color band.
+export const ATCODER_BUCKET_WIDTH = 400;
+
+// The history JSON's Performance is the raw value, which goes negative in a bad
+// contest; atcoder.jp displays sub-400 performances positivized the same way
+// as ratings (and floors, unlike kenkoooo's rounding above).
+export function atcoderPerformance(p: number): number {
+  return p >= 400 ? p : Math.floor(400 / Math.exp((400 - p) / 400));
+}
+
 export function atcoderRankLabel(rating: number): string {
   return bandFor(ATCODER_BANDS, rating).label;
 }
@@ -34,7 +44,7 @@ export function mapAtcoderContests(json: unknown): CompprogContest[] {
       date: r.EndTime.slice(0, 10),
       ratingAfter: r.NewRating,
       delta: r.NewRating - r.OldRating,
-      performance: r.Performance,
+      performance: atcoderPerformance(r.Performance),
       rank: r.Place,
     });
   }

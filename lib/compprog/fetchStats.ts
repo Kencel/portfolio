@@ -5,7 +5,7 @@ import type { CompprogStats, PlatformStats } from './types';
 import { bucketize } from './stats';
 import { mapCfInfo, mapCfContests, mapCfSolved, cfContestId } from './codeforces';
 import { cfContestants, cfContestantsByRank, cfPerformance, type CfContestant } from './cfPerf';
-import { mapAtcoderContests, mapAtcoderSolved, atcoderRankLabel } from './atcoder';
+import { mapAtcoderContests, mapAtcoderSolved, atcoderRankLabel, ATCODER_BUCKET_WIDTH } from './atcoder';
 
 const CF_HANDLE = 'RamenNagi';
 const ATCODER_HANDLE = 'RamenNagi';
@@ -18,6 +18,11 @@ const KENKOOOO_PAGE = 500;
 const MAX_PAGES = 40;
 
 const HOUR = 3600;
+
+// Upper bound on any single upstream call. Without it a struggling API (CF
+// answering 504s only after its gateway gives up) holds the render for minutes.
+// Generous enough for CF's ~10MB contest standings, which take ~4s when healthy.
+const FETCH_TIMEOUT_MS = 15_000;
 
 // A real CF performance needs the contest's full ratingChanges and standings
 // (~2-4MB and ~5-10MB). The result never changes once a contest is rated, so
@@ -37,7 +42,9 @@ const defaultSleep: Sleep = ms => new Promise(res => setTimeout(res, ms));
 
 async function getJson(fetcher: Fetcher, url: string, revalidate: number, headers?: Record<string, string>): Promise<unknown> {
   // `next.revalidate` is Next's per-request data-cache TTL; plain fetch ignores it.
-  const res = await fetcher(url, { headers, next: { revalidate } } as RequestInit);
+  const res = await fetcher(url, {
+    headers, next: { revalidate }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  } as RequestInit);
   if (!res.ok) throw new Error(`${url} -> HTTP ${res.status}`);
   return res.json();
 }
@@ -65,6 +72,33 @@ export async function fetchAtcoderSubmissions(fetcher: Fetcher, sleep: Sleep): P
 
 const CF_API = 'https://codeforces.com/api';
 class BudgetSpent extends Error {}
+
+// How long a contest whose computation failed is left alone.
+const CF_PERF_COOLDOWN_MS = 30 * 60_000;
+
+// Wraps a PerfCache so a contest that just failed (CF 504, timeout) is skipped
+// for a while instead of being retried first on every pass — newest-first
+// order would otherwise let one broken contest spend budget forever while the
+// rest never get filled in. A skipped contest resolves null and keeps its
+// approximation; running out of budget is not a failure. `failures` (contest
+// id → when it failed) lives as long as the server instance, which is all a
+// cooldown needs.
+export function withCooldown(
+  cache: PerfCache, failures: Map<number, number>, now: () => number = Date.now,
+): PerfCache {
+  return async (contestId, compute) => {
+    const failedAt = failures.get(contestId);
+    if (failedAt !== undefined && now() - failedAt < CF_PERF_COOLDOWN_MS) return null;
+    try {
+      const perf = await cache(contestId, compute);
+      failures.delete(contestId);
+      return perf;
+    } catch (err) {
+      if (!(err instanceof BudgetSpent)) failures.set(contestId, now());
+      throw err;
+    }
+  };
+}
 
 export async function getCfPerfs(
   fetcher: Fetcher, sleep: Sleep, cache: PerfCache, contestIds: number[],
@@ -158,7 +192,7 @@ async function getAtcoder(fetcher: Fetcher, sleep: Sleep): Promise<PlatformStats
       rankLabel: atcoderRankLabel(rating),
       solved,
       contests,
-      buckets: bucketize(difficulties, 400),
+      buckets: bucketize(difficulties, ATCODER_BUCKET_WIDTH),
     };
   } catch (err) {
     console.error('getCompprogStats: atcoder failed:', err);

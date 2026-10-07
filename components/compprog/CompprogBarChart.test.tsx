@@ -16,6 +16,12 @@ describe('CompprogBarChart', () => {
     expect(screen.getByText('5')).toBeInTheDocument();
     expect(screen.getByText('800')).toBeInTheDocument();
   });
+  it('labels bars with inclusive ranges when given a bucket width', () => {
+    render(<CompprogBarChart title="T" buckets={buckets} accent="#E4002B" width={400} />);
+    expect(screen.getByText('0–399')).toBeInTheDocument();
+    expect(screen.getByText('400–799')).toBeInTheDocument();
+    expect(screen.getByText('800–1199')).toBeInTheDocument();
+  });
   it('fills every bar with the accent, ramping opacity by difficulty', () => {
     render(<CompprogBarChart title="T" buckets={buckets} accent="#E4002B" />);
     expect(screen.getByTestId('bar-0')).toHaveAttribute('fill', '#E4002B');

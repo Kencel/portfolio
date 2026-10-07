@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { clipDifficulty, mapAtcoderContests, atcoderRankLabel, mapAtcoderSolved } from './atcoder';
+import { clipDifficulty, atcoderPerformance, mapAtcoderContests, atcoderRankLabel, mapAtcoderSolved } from './atcoder';
 
 const history = [
   { IsRated: true,  Place: 512, OldRating: 0,   NewRating: 120, Performance: 400,
@@ -32,6 +32,15 @@ describe('clipDifficulty', () => {
   });
 });
 
+describe('atcoderPerformance', () => {
+  it('is identity at/above 400 and positivizes below like atcoder.jp', () => {
+    expect(atcoderPerformance(1045)).toBe(1045);
+    expect(atcoderPerformance(400)).toBe(400);
+    expect(atcoderPerformance(-375)).toBe(57); // ABC468: history JSON says -375, site shows 57
+    expect(atcoderPerformance(0)).toBe(Math.floor(400 / Math.E)); // 147
+  });
+});
+
 describe('mapAtcoderContests', () => {
   it('maps rated rows only, deriving url from screen name', () => {
     const out = mapAtcoderContests(history);
@@ -42,6 +51,10 @@ describe('mapAtcoderContests', () => {
       date: '2023-04-30',
       ratingAfter: 120, delta: 120, performance: 400, rank: 512,
     });
+  });
+  it('reports the displayed performance, not the raw one', () => {
+    const out = mapAtcoderContests([{ ...history[0], Performance: -375 }]);
+    expect(out[0].performance).toBe(57);
   });
   it('returns [] for malformed payloads', () => {
     expect(mapAtcoderContests({ not: 'an array' })).toEqual([]);
