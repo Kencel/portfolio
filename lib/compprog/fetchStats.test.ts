@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getCompprogStats, fetchAtcoderSubmissions, getCfPerfs, withCfPerformances, type PerfCache } from './fetchStats';
+import {
+  getCompprogStats, fetchAtcoderSubmissions, getCfPerfs, withCfPerformances, withCooldown, type PerfCache,
+} from './fetchStats';
 import { cfContestants, cfContestantsByRank, cfPerformance } from './cfPerf';
 
 const noSleep = () => Promise.resolve();
@@ -57,6 +59,14 @@ describe('getCompprogStats', () => {
     expect(stats.atcoder!.buckets).toEqual([{ lo: 400, count: 1 }]);
   });
 
+  it('gives every upstream call a timeout so a hung API cannot stall the render', async () => {
+    const fetcher = fakeFetch();
+    await getCompprogStats(fetcher, noSleep);
+    const calls = (fetcher as unknown as ReturnType<typeof vi.fn>).mock.calls as [string, RequestInit][];
+    const inits = calls.map(c => c[1]);
+    expect(inits.length).toBeGreaterThan(0);
+    for (const init of inits) expect(init.signal).toBeInstanceOf(AbortSignal);
+  });
   it('one platform failing does not sink the other', async () => {
     const stats = await getCompprogStats(fakeFetch({ 'codeforces.com': () => jsonRes({}, false) }), noSleep);
     expect(stats.cf).toBeNull();
@@ -133,6 +143,39 @@ describe('getCfPerfs', () => {
     const perfs = await getCfPerfs(fetcher, noSleep, recording, [1]);
     expect(perfs.size).toBe(0);
     expect(seen).toEqual([]);
+  });
+});
+
+describe('withCooldown', () => {
+  const failing: PerfCache = () => Promise.reject(new Error('HTTP 504'));
+
+  it('skips a contest that failed recently, without calling compute', async () => {
+    let t = 0;
+    const cache = withCooldown(failing, new Map(), () => t);
+    await expect(cache(7, async () => 1)).rejects.toThrow('HTTP 504');
+    const compute = vi.fn(async () => 1);
+    t = 29 * 60_000;
+    expect(await cache(7, compute)).toBeNull();
+    expect(compute).not.toHaveBeenCalled();
+    t = 31 * 60_000; // cooldown over → retried
+    await expect(cache(7, compute)).rejects.toThrow('HTTP 504');
+  });
+
+  it('lets a cooling contest\'s budget go to the next one', async () => {
+    const fetcher = fakeFetch({ 'contestId=6': () => jsonRes({}, false) });
+    const cache = withCooldown((_id, compute) => compute(), new Map(), () => 0);
+    const first = await getCfPerfs(fetcher, noSleep, cache, [1, 2, 3, 4, 5, 6]);
+    expect([...first.keys()]).toEqual([5, 4]); // 6 failed and spent a slot
+    const second = await getCfPerfs(fetcher, noSleep, cache, [1, 2, 3, 4, 5, 6]);
+    expect([...second.keys()]).toEqual([5, 4, 3]); // 6 cooling: skipped for free
+  });
+
+  it('does not put a contest on cooldown for running out of budget', async () => {
+    const cache = withCooldown((_id, compute) => compute(), new Map(), () => 0);
+    const fetcher = fakeFetch();
+    await getCfPerfs(fetcher, noSleep, cache, [1, 2, 3, 4]); // 1 is over budget
+    const perfs = await getCfPerfs(fetcher, noSleep, cache, [1]);
+    expect(perfs.has(1)).toBe(true);
   });
 });
 

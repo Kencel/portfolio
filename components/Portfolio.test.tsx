@@ -18,7 +18,7 @@ const mockSfx = vi.hoisted(() => ({
 
 const emptyProjects: Project[] = [];
 const emptyCompetitions: Competition[] = [];
-const emptyStats: CompprogStats = { cf: null, atcoder: null };
+const emptyStages = [Promise.resolve<CompprogStats>({ cf: null, atcoder: null })];
 
 vi.mock('@/lib/useIsMobile', () => ({ useIsNarrow: () => mockNarrow.value }));
 vi.mock('@/lib/useSfx', () => ({
@@ -52,7 +52,7 @@ describe('Portfolio root layout', () => {
   it('wide mode grows with content so the document can scroll (no 100vh height lock)', () => {
     mockNarrow.value = false;
     const { container } = render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
     const root = container.firstChild as HTMLElement;
     expect(root.style.height).not.toBe('100vh');
@@ -62,7 +62,7 @@ describe('Portfolio root layout', () => {
   it('narrow mode grows with content', () => {
     mockNarrow.value = true;
     const { container } = render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
     const root = container.firstChild as HTMLElement;
     expect(root.style.height).not.toBe('100vh');
@@ -71,16 +71,16 @@ describe('Portfolio root layout', () => {
 });
 
 describe('Portfolio section props', () => {
-  it('navigating to COMP. PROG renders Compprog with the passed-through stats/competitions', () => {
+  it('navigating to COMP. PROG renders Compprog with the passed-through stats/competitions', async () => {
     mockNarrow.value = false;
     render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
     // '2' is COMP. PROG's digit shortcut (SECTIONS[1].n === '02'); Portfolio's
     // own keydown handler opens the section directly, independent of the
     // mocked-out MenuView.
     fireEvent.keyDown(window, { key: '2' });
-    expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+    expect(await screen.findByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
   });
 });
 
@@ -91,7 +91,7 @@ describe('Portfolio external menu entry', () => {
     mockNarrow.value = false;
     const openSpy = vi.spyOn(window, 'open').mockReturnValue(null);
     render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
 
     fireEvent.keyDown(window, { key: '5' });
@@ -107,19 +107,19 @@ describe('Portfolio history integration', () => {
   it('opening a section pushes a hash entry', () => {
     mockNarrow.value = false;
     render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
     fireEvent.keyDown(window, { key: '2' });
     expect(window.location.hash).toBe('#compprog');
   });
 
-  it('a browser back traversal returns to the menu', () => {
+  it('a browser back traversal returns to the menu', async () => {
     mockNarrow.value = false;
     render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
     fireEvent.keyDown(window, { key: '2' });
-    expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+    expect(await screen.findByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
 
     // Simulate the mouse back button / chrome arrow: the browser moves first,
     // then fires popstate.
@@ -129,24 +129,24 @@ describe('Portfolio history integration', () => {
     expect(screen.queryByText(/CODEFORCES DATA UNAVAILABLE/)).not.toBeInTheDocument();
   });
 
-  it('a deep link opens that section on mount', () => {
+  it('a deep link opens that section on mount', async () => {
     mockNarrow.value = false;
     window.history.replaceState(null, '', '#compprog');
     render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
-    expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+    expect(await screen.findByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
   });
 
-  it('a deep-linked mount does not play a sound behind the splash', () => {
+  it('a deep-linked mount does not play a sound behind the splash', async () => {
     mockNarrow.value = false;
     mockSplashAutoDone.value = false; // keep the splash up for this test
     window.history.replaceState(null, '', '#compprog');
     render(
-      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStats={emptyStats} />
+      <Portfolio projects={emptyProjects} competitions={emptyCompetitions} compprogStages={emptyStages} />
     );
     // The section panel is already open underneath the (still-up) splash...
-    expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
+    expect(await screen.findByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();
     // ...but a deep-linked visitor should not hear a blip before it lifts.
     expect(mockSfx.confirm).not.toHaveBeenCalled();
     expect(mockSfx.back).not.toHaveBeenCalled();

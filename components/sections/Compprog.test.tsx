@@ -89,6 +89,15 @@ describe('Compprog tabs', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
+  it('shows a loading line on both platform tabs until stats arrive', () => {
+    render(<Compprog stats={null} competitions={competitions} />);
+    expect(screen.getByText(/LOADING CODEFORCES STATS/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'ATCODER' }));
+    expect(screen.getByText(/LOADING ATCODER STATS/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'COMPETITIONS' }));
+    expect(screen.queryByText(/LOADING/)).not.toBeInTheDocument();
+  });
+
   it('shows a themed fallback when a platform is null', () => {
     render(<Compprog stats={{ cf: null, atcoder }} competitions={competitions} />);
     expect(screen.getByText(/CODEFORCES DATA UNAVAILABLE/)).toBeInTheDocument();

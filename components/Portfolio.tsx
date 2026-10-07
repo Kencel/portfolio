@@ -10,17 +10,23 @@ import { useSfx } from '@/lib/useSfx';
 import { useIsNarrow } from '@/lib/useIsMobile';
 import { SfxProvider } from '@/lib/SfxContext';
 import { useHashRoute } from '@/lib/useHashRoute';
+import { useProgressive } from '@/lib/useProgressive';
 import type { View } from '@/lib/hashRoute';
 import { Backdrop } from './Backdrop';
 import { MenuView } from './MenuView';
 import { SectionPanel } from './SectionPanel';
 import { SplashScreen } from './SplashScreen';
 
-export function Portfolio({ projects, competitions, compprogStats }: {
+export function Portfolio({ projects, competitions, compprogStages }: {
   projects: Project[];
   competitions: Competition[];
-  compprogStats: CompprogStats;
+  // Streamed from the server, quick version first (see app/page.tsx).
+  compprogStages: readonly Promise<CompprogStats>[];
 }) {
+  // Resolved here rather than in the COMP. PROG section, which mounts only when
+  // opened — so the stats are usually in hand by then, and a stage landing
+  // while it's open updates it in place instead of remounting (keeping its tab).
+  const compprogStats = useProgressive(compprogStages);
   const [hovered, setHovered] = useState<number | null>(null);
   const [muted, setMuted] = useState(false);
   const [menuVisit, setMenuVisit] = useState(0);

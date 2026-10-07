@@ -26,7 +26,8 @@ const ATCODER_CONFIG: PlatformConfig = {
   bucketWidth: ATCODER_BUCKET_WIDTH,
 };
 
-export function Compprog({ stats, competitions }: { stats: CompprogStats; competitions: Competition[] }) {
+// stats is null while still streaming in from the server.
+export function Compprog({ stats, competitions }: { stats: CompprogStats | null; competitions: Competition[] }) {
   const [tab, setTab] = useState<Tab>('cf');
   return (
     <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto' }}>
@@ -39,12 +40,16 @@ export function Compprog({ stats, competitions }: { stats: CompprogStats; compet
           </HoverQuad>
         ))}
       </div>
-      {tab === 'cf' && (stats.cf
-        ? <PlatformPanel stats={stats.cf} config={CF_CONFIG} />
-        : <p style={themedLine}>CODEFORCES DATA UNAVAILABLE — CHECK BACK SOON</p>)}
-      {tab === 'atcoder' && (stats.atcoder
-        ? <PlatformPanel stats={stats.atcoder} config={ATCODER_CONFIG} />
-        : <p style={themedLine}>ATCODER DATA UNAVAILABLE — CHECK BACK SOON</p>)}
+      {tab === 'cf' && (stats === null
+        ? <p style={themedLine}>LOADING CODEFORCES STATS…</p>
+        : stats.cf
+          ? <PlatformPanel stats={stats.cf} config={CF_CONFIG} />
+          : <p style={themedLine}>CODEFORCES DATA UNAVAILABLE — CHECK BACK SOON</p>)}
+      {tab === 'atcoder' && (stats === null
+        ? <p style={themedLine}>LOADING ATCODER STATS…</p>
+        : stats.atcoder
+          ? <PlatformPanel stats={stats.atcoder} config={ATCODER_CONFIG} />
+          : <p style={themedLine}>ATCODER DATA UNAVAILABLE — CHECK BACK SOON</p>)}
       {tab === 'competitions' && <CompetitionsList competitions={competitions} />}
     </div>
   );
