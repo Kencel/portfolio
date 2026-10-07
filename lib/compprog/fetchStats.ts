@@ -5,7 +5,7 @@ import type { CompprogStats, PlatformStats } from './types';
 import { bucketize } from './stats';
 import { mapCfInfo, mapCfContests, mapCfSolved, cfContestId } from './codeforces';
 import { cfContestants, cfContestantsByRank, cfPerformance, type CfContestant } from './cfPerf';
-import { mapAtcoderContests, mapAtcoderSolved, atcoderRankLabel } from './atcoder';
+import { mapAtcoderContests, mapAtcoderSolved, atcoderRankLabel, ATCODER_BUCKET_WIDTH } from './atcoder';
 
 const CF_HANDLE = 'RamenNagi';
 const ATCODER_HANDLE = 'RamenNagi';
@@ -158,7 +158,7 @@ async function getAtcoder(fetcher: Fetcher, sleep: Sleep): Promise<PlatformStats
       rankLabel: atcoderRankLabel(rating),
       solved,
       contests,
-      buckets: bucketize(difficulties, 400),
+      buckets: bucketize(difficulties, ATCODER_BUCKET_WIDTH),
     };
   } catch (err) {
     console.error('getCompprogStats: atcoder failed:', err);

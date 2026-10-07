@@ -15,6 +15,7 @@ export interface PlatformConfig {
   handleUrl: string;    // profile link
   perfApprox: boolean;  // CF: true → chart titled "PERFORMANCE (APPROX)"
   seedBase: number;     // AngularCard seeds (keep clip-paths hydration-safe)
+  bucketWidth?: number; // set → difficulty bars labeled as ranges (AtCoder's wide buckets)
 }
 
 const signed = (n: number) => (n >= 0 ? `+${n}` : String(n));
@@ -68,7 +69,8 @@ export function PlatformPanel({ stats, config }: { stats: PlatformStats; config:
           <CompprogLineChart title={config.perfApprox ? 'PERFORMANCE (APPROX)' : 'PERFORMANCE'} contests={stats.contests}
             value={c => c.performance} detail={c => `PERF ${c.performance}`} accent={config.accent} />
         </div>
-        <CompprogBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} accent={config.accent} />
+        <CompprogBarChart title="SOLVED BY DIFFICULTY" buckets={stats.buckets} accent={config.accent}
+          width={config.bucketWidth} />
       </div>
     </div>
   );

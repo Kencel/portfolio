@@ -4,6 +4,7 @@ import { HoverQuad } from '@/components/ui/HoverQuad';
 import { chip, unskew, themedLine } from '@/lib/chipStyle';
 import { COLOR } from '@/lib/tokens';
 import type { CompprogStats } from '@/lib/compprog/types';
+import { ATCODER_BUCKET_WIDTH } from '@/lib/compprog/atcoder';
 import type { Competition } from '@/lib/competitions';
 import { PlatformPanel, type PlatformConfig } from '@/components/compprog/PlatformPanel';
 import { CompetitionsList } from '@/components/compprog/CompetitionsList';
@@ -22,6 +23,7 @@ const CF_CONFIG: PlatformConfig = {
 const ATCODER_CONFIG: PlatformConfig = {
   title: 'ATCODER', accent: COLOR.ink, handle: 'RamenNagi',
   handleUrl: 'https://atcoder.jp/users/RamenNagi', perfApprox: false, seedBase: 51,
+  bucketWidth: ATCODER_BUCKET_WIDTH,
 };
 
 export function Compprog({ stats, competitions }: { stats: CompprogStats; competitions: Competition[] }) {

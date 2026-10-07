@@ -18,8 +18,8 @@ const cfPerfCache: PerfCache = (contestId, compute) =>
 // The kenkoooo difficulty file (~4MB) exceeds Vercel's 2MB per-item data-cache
 // limit, so per-fetch TTLs alone can't stop refetching it on every ISR pass.
 // Caching the reduced CompprogStats (a few KB) runs the upstream fetches at most
-// once an hour regardless.
-const getCompprogStatsCached = unstable_cache(() => getCompprogStats(), ['compprog-stats'], { revalidate: 3600 });
+// once an hour regardless. Bump the version if the mapping changes.
+const getCompprogStatsCached = unstable_cache(() => getCompprogStats(), ['compprog-stats-v2'], { revalidate: 3600 });
 
 export default async function Page() {
   const [projects, competitions, compprogStats] = await Promise.all([
