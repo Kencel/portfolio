@@ -1,14 +1,14 @@
 // Runs db/<name>.sql files against DATABASE_URL. Neon's HTTP driver rejects
 // multi-statement queries, so files hold one statement per blank-line-separated
 // block (terminating semicolon, then an empty line — the existing formatting).
-// Usage: npm run db:apply -- schema seed
+// Usage: pnpm db:apply schema seed
 import { readFileSync } from 'node:fs';
 import { neon } from '@neondatabase/serverless';
 
 const url = process.env.DATABASE_URL;
-if (!url) { console.error('DATABASE_URL is not set (run via npm run db:apply)'); process.exit(1); }
+if (!url) { console.error('DATABASE_URL is not set (run via pnpm db:apply)'); process.exit(1); }
 const names = process.argv.slice(2);
-if (names.length === 0) { console.error('usage: npm run db:apply -- <name>... (runs db/<name>.sql)'); process.exit(1); }
+if (names.length === 0) { console.error('usage: pnpm db:apply <name>... (runs db/<name>.sql)'); process.exit(1); }
 
 const sql = neon(url);
 for (const name of names) {

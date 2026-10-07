@@ -6,22 +6,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Kenaz's personal portfolio site (kenazc.com) — a Persona 5 Royal–inspired
 menu UI built from scratch in Next.js 15 (App Router) + React 19 + TypeScript.
-Deployed on Vercel; production branch is `master`.
+Deployed on Vercel; production branch is `main`.
 
 ## Commands
 
 ```bash
-npm run dev                      # dev server at http://localhost:3000
-npm test                         # vitest run (what CI runs)
-npm test -- lib/nav.test.ts      # single test file
-npm test -- -t "wraps around"    # single test by name
-npm run test:watch               # vitest watch mode
-npm run build                    # next build (CI gate; builds fine without DATABASE_URL)
-npm run db:apply -- schema seed  # apply db/schema.sql + db/seed.sql to Neon (needs DATABASE_URL in .env.local)
+pnpm dev                         # dev server at http://localhost:3000
+pnpm test                        # vitest run (what CI runs)
+pnpm test lib/nav.test.ts        # single test file
+pnpm test -t "wraps forward"     # single test by name
+pnpm test:watch                  # vitest watch mode
+pnpm build                       # next build (CI gate; builds fine without DATABASE_URL)
+pnpm db:apply schema seed        # apply db/schema.sql + db/seed.sql to Neon (needs DATABASE_URL in .env.local)
 ```
 
-CI (`.github/workflows/ci.yml`) runs `npm test` then `npm run build` on PRs and
-pushes to master. Both must pass.
+CI (`.github/workflows/ci.yml`) runs `pnpm test` then `pnpm build` on PRs and
+pushes to main. Both must pass.
 
 ## Architecture
 
