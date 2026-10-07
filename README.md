@@ -33,8 +33,8 @@ palette, and the whole menu can be driven from the keyboard.
 ## Run it locally
 
 ```bash
-npm install
-npm run dev    # dev server at http://localhost:3000
-npm run build  # production build
-npm test       # vitest
+pnpm install
+pnpm dev     # dev server at http://localhost:3000
+pnpm build   # production build
+pnpm test    # vitest
 ```

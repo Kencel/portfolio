@@ -40,7 +40,7 @@ Leave `id` and `created_at` alone (auto-filled).
 
 ## Local setup / re-seeding
 
-`npm run db:apply -- schema seed` applies `db/schema.sql` then `db/seed.sql`
+`pnpm db:apply schema seed` applies `db/schema.sql` then `db/seed.sql`
 using `DATABASE_URL` from `.env.local`. The Neon env vars are marked
 *Sensitive* on Vercel, so `vercel env pull` writes them back empty. Copy the
 connection string from the Neon console instead and paste it into `.env.local`

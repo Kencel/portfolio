@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cfPerformance, mapCfInfo, mapCfContests, mapCfSolved } from './codeforces';
+import { cfPerfApprox, cfContestId, mapCfInfo, mapCfContests, mapCfSolved } from './codeforces';
 
 const info = { status: 'OK', result: [{ handle: 'RamenNagi', rating: 1445, maxRating: 1452, rank: 'specialist' }] };
 const ratingHistory = {
@@ -20,10 +20,20 @@ const status = {
   ],
 };
 
-describe('cfPerformance', () => {
+describe('cfPerfApprox', () => {
   it('approximates perf as old + 2*delta', () => {
-    expect(cfPerformance(1400, 1445)).toBe(1490);
-    expect(cfPerformance(1445, 1430)).toBe(1415);
+    expect(cfPerfApprox(1400, 1445)).toBe(1490);
+    expect(cfPerfApprox(1445, 1430)).toBe(1415);
+  });
+});
+
+describe('cfContestId', () => {
+  it('round-trips the url mapCfContests builds', () => {
+    expect(mapCfContests(ratingHistory).map(cfContestId)).toEqual([1900, 1901]);
+  });
+  it('returns null for anything else', () => {
+    expect(cfContestId({ url: 'https://codeforces.com/contest/1900/problem/A' })).toBeNull();
+    expect(cfContestId({ url: 'https://atcoder.jp/contests/abc300' })).toBeNull();
   });
 });
 

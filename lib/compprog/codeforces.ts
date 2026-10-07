@@ -13,10 +13,19 @@ function titleCase(s: string): string {
   return s.replace(/\b\w/g, ch => ch.toUpperCase());
 }
 
-// CF's update rule is roughly new = old + (perf - old)/2, so perf ≈ old + 2*delta.
-// Labeled "APPROX" in the UI; good enough for a trend line.
-export function cfPerformance(oldRating: number, newRating: number): number {
+// Placeholder until the real figure is computed (lib/compprog/cfPerf.ts, via
+// withCfPerformances): CF's update is roughly new = old + (perf - old)/2. Can be
+// off by a few hundred, especially in an account's first contests.
+export function cfPerfApprox(oldRating: number, newRating: number): number {
   return oldRating + 2 * (newRating - oldRating);
+}
+
+const CONTEST_URL = /^https:\/\/codeforces\.com\/contest\/(\d+)$/;
+
+// Recovers the id from a CompprogContest built by mapCfContests.
+export function cfContestId(contest: { url: string }): number | null {
+  const m = CONTEST_URL.exec(contest.url);
+  return m ? Number(m[1]) : null;
 }
 
 export function mapCfInfo(json: unknown): { rating: number; peakRating: number; rankLabel: string } | null {
@@ -48,7 +57,7 @@ export function mapCfContests(json: unknown): CompprogContest[] {
       date: new Date(r.ratingUpdateTimeSeconds * 1000).toISOString().slice(0, 10),
       ratingAfter: r.newRating,
       delta: r.newRating - r.oldRating,
-      performance: cfPerformance(r.oldRating, r.newRating),
+      performance: cfPerfApprox(r.oldRating, r.newRating),
       rank: r.rank,
     });
   }
